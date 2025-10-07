@@ -1,0 +1,17 @@
+research_task:
+  description: >
+        "Research and analyze the current job market for {job_title}. 
+        Collect verified data on open roles, hiring trends, key companies, average salaries, 
+        and common interview themes. Identify what qualifications and skills are most valued 
+        and summarize the insights clearly for downstream agents."
+  expected_output: >
+        "A structured markdown report with the following sections:
+        1. **Job Market Overview**
+        2. **Top Hiring Companies**
+        3. **In-Demand Skills & Tools**
+        4. **Salary Range & Locations**
+        5. **Interview Topics / Skill Focus**
+        6. **Citations or Source URLs**"
+    
+
+
