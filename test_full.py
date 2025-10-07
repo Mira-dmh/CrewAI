@@ -1,5 +1,7 @@
 # pyproject.toml: crewai>=0.61, pydantic, requests, fastapi, uvicorn, pandas, qdrant-client, llama-index, langchain, bs4
 
+
+
 from crewai import Agent, Task, Crew, Process
 import os
 
