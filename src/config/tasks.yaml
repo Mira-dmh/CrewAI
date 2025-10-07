@@ -12,6 +12,21 @@ research_task:
         4. **Salary Range & Locations**
         5. **Interview Topics / Skill Focus**
         6. **Citations or Source URLs**"
+
+linkedin_scraping_task:
+      description: >   
+            "Generate targeted LinkedIn job search links for {job_title} positions in {location}. 
+            Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
+            Collect direct URLs to relevant job postings and summarize the key details (company, title, location, date posted)."
+      expected_output: >
+            "A structured markdown list of job postings with the following details for each:
+            - **Job Title**
+            - **Company Name**
+            - **Location**
+            - **Date Posted**
+            - **Direct Job Posting URL**
+            Additionally, provide the generated LinkedIn search URL used to find these postings."
+
     
 
 
