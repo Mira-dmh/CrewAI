@@ -1,0 +1,56 @@
+[
+  {
+    "keyword": "data science",
+    "location": "PA",
+    "basic_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA",
+    "recent_posts": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&sortBy=DD",
+    "easy_apply": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_AL=true",
+    "remote_jobs": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_WT=2",
+    "full_time": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_JT=F",
+    "entry_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_E=1",
+    "mid_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_E=3",
+    "senior_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_E=4",
+    "google_basic": "https://www.google.com/search?q=site:linkedin.com/jobs+data%20science+PA",
+    "google_recent": "https://www.google.com/search?q=site:linkedin.com/jobs+data%20science+PA&tbs=qdr:w",
+    "google_exact": "https://www.google.com/search?q=site:linkedin.com/jobs/view+data%20science+location:PA",
+    "companies": {
+      "company_Google": {
+        "jobs_page": "https://www.linkedin.com/company/google/jobs/",
+        "jobs_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_C=Google",
+        "google_company": "https://www.google.com/search?q=Google+data%20science+site:linkedin.com/jobs"
+      },
+      "company_Microsoft": {
+        "jobs_page": "https://www.linkedin.com/company/microsoft/jobs/",
+        "jobs_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=PA&f_C=Microsoft",
+        "google_company": "https://www.google.com/search?q=Microsoft+data%20science+site:linkedin.com/jobs"
+      }
+    }
+  },
+  {
+    "keyword": "data science",
+    "location": "CA",
+    "basic_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA",
+    "recent_posts": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&sortBy=DD",
+    "easy_apply": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_AL=true",
+    "remote_jobs": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_WT=2",
+    "full_time": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_JT=F",
+    "entry_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_E=1",
+    "mid_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_E=3",
+    "senior_level": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_E=4",
+    "google_basic": "https://www.google.com/search?q=site:linkedin.com/jobs+data%20science+CA",
+    "google_recent": "https://www.google.com/search?q=site:linkedin.com/jobs+data%20science+CA&tbs=qdr:w",
+    "google_exact": "https://www.google.com/search?q=site:linkedin.com/jobs/view+data%20science+location:CA",
+    "companies": {
+      "company_Google": {
+        "jobs_page": "https://www.linkedin.com/company/google/jobs/",
+        "jobs_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_C=Google",
+        "google_company": "https://www.google.com/search?q=Google+data%20science+site:linkedin.com/jobs"
+      },
+      "company_Microsoft": {
+        "jobs_page": "https://www.linkedin.com/company/microsoft/jobs/",
+        "jobs_search": "https://www.linkedin.com/jobs/search/?keywords=data%20science&location=CA&f_C=Microsoft",
+        "google_company": "https://www.google.com/search?q=Microsoft+data%20science+site:linkedin.com/jobs"
+      }
+    }
+  }
+]
