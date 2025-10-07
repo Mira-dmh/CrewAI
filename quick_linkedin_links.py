@@ -1,7 +1,7 @@
 """
-快速LinkedIn搜索链接生成器
-专注于生成有效的LinkedIn搜索URL，不涉及数据抓取
-适用于快速生成搜索链接进行手动浏览
+Quick LinkedIn Search Link Generator
+Focused on generating effective LinkedIn search URLs without data scraping
+Perfect for quickly generating search links for manual browsing
 """
 
 import pandas as pd
@@ -11,25 +11,25 @@ import json
 
 def generate_linkedin_job_links(keywords, locations, companies=None):
     """
-    生成LinkedIn职位搜索链接
+    Generate LinkedIn job search links
     
-    参数:
-    - keywords: 搜索关键词列表
-    - locations: 地点列表
-    - companies: 公司名称列表（可选）
+    Parameters:
+    - keywords: List of search keywords
+    - locations: List of locations
+    - companies: List of company names (optional)
     
-    返回: 包含所有搜索组合的字典
+    Returns: Dictionary containing all search combinations
     """
     
     search_links = []
     
     for keyword in keywords:
         for location in locations:
-            # URL编码
+            # URL encoding
             keyword_encoded = urllib.parse.quote(keyword)
             location_encoded = urllib.parse.quote(location)
             
-            # 基础搜索链接
+            # Basic search links
             base_link = {
                 'keyword': keyword,
                 'location': location,
@@ -43,17 +43,17 @@ def generate_linkedin_job_links(keywords, locations, companies=None):
                 'senior_level': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_E=4"
             }
             
-            # Google搜索LinkedIn的链接
+            # Google search for LinkedIn links
             google_searches = {
                 'google_basic': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}",
                 'google_recent': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}&tbs=qdr:w",
                 'google_exact': f"https://www.google.com/search?q=site:linkedin.com/jobs/view+{keyword_encoded}+location:{location_encoded}"
             }
             
-            # 合并链接
+            # Combine links
             combined_links = {**base_link, **google_searches}
             
-            # 如果提供了公司列表，添加公司特定搜索
+            # Add company-specific searches if companies provided
             if companies:
                 company_links = {}
                 for company in companies:
@@ -74,66 +74,66 @@ def generate_linkedin_job_links(keywords, locations, companies=None):
 
 def create_quick_access_csv(keywords, locations, companies=None):
     """
-    创建快速访问的CSV文件
+    Create quick access CSV file
     """
     
-    print("🔗 生成LinkedIn搜索链接...")
+    print("🔗 Generating LinkedIn search links...")
     
     all_links = []
     
     for keyword in keywords:
         for location in locations:
-            # URL编码
+            # URL encoding
             keyword_encoded = urllib.parse.quote(keyword)
             location_encoded = urllib.parse.quote(location)
             
-            # 创建基础搜索记录
+            # Create basic search records
             searches = [
                 {
-                    'search_type': '基础搜索',
+                    'search_type': 'Basic Search',
                     'keyword': keyword,
                     'location': location,
-                    'description': '标准LinkedIn职位搜索',
+                    'description': 'Standard LinkedIn job search',
                     'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}",
                     'category': 'linkedin_direct'
                 },
                 {
-                    'search_type': '最新职位',
+                    'search_type': 'Recent Jobs',
                     'keyword': keyword,
                     'location': location,
-                    'description': '按时间排序的最新职位',
+                    'description': 'Jobs sorted by posting date',
                     'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&sortBy=DD",
                     'category': 'linkedin_direct'
                 },
                 {
-                    'search_type': '快速申请',
+                    'search_type': 'Easy Apply',
                     'keyword': keyword,
                     'location': location,
-                    'description': '支持一键申请的职位',
+                    'description': 'Jobs with one-click application',
                     'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_AL=true",
                     'category': 'linkedin_direct'
                 },
                 {
-                    'search_type': '远程工作',
+                    'search_type': 'Remote Jobs',
                     'keyword': keyword,
                     'location': location,
-                    'description': '远程办公职位',
+                    'description': 'Remote work positions',
                     'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_WT=2",
                     'category': 'linkedin_direct'
                 },
                 {
-                    'search_type': 'Google搜索LinkedIn',
+                    'search_type': 'Google LinkedIn Search',
                     'keyword': keyword,
                     'location': location,
-                    'description': '通过Google搜索LinkedIn职位',
+                    'description': 'Search LinkedIn jobs via Google',
                     'url': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}",
                     'category': 'google_search'
                 },
                 {
-                    'search_type': 'Google最近一周',
+                    'search_type': 'Google Recent Week',
                     'keyword': keyword,
                     'location': location,
-                    'description': 'Google搜索最近一周的LinkedIn职位',
+                    'description': 'Google search for LinkedIn jobs in the past week',
                     'url': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}&tbs=qdr:w",
                     'category': 'google_search'
                 }
@@ -141,25 +141,25 @@ def create_quick_access_csv(keywords, locations, companies=None):
             
             all_links.extend(searches)
             
-            # 如果提供了公司，添加公司特定搜索
+            # Add company-specific searches if companies provided
             if companies:
                 for company in companies:
                     company_slug = company.lower().replace(' ', '-').replace('&', 'and')
                     
                     company_searches = [
                         {
-                            'search_type': f'{company} - 公司职位页',
+                            'search_type': f'{company} - Company Jobs Page',
                             'keyword': keyword,
                             'location': location,
-                            'description': f'{company}公司的LinkedIn职位页面',
+                            'description': f'{company} company LinkedIn jobs page',
                             'url': f"https://www.linkedin.com/company/{company_slug}/jobs/",
                             'category': 'company_page'
                         },
                         {
-                            'search_type': f'{company} - Google搜索',
+                            'search_type': f'{company} - Google Search',
                             'keyword': keyword,
                             'location': location,
-                            'description': f'Google搜索{company}在LinkedIn的{keyword}职位',
+                            'description': f'Google search for {company} {keyword} jobs on LinkedIn',
                             'url': f"https://www.google.com/search?q={urllib.parse.quote(company)}+{keyword_encoded}+site:linkedin.com/jobs",
                             'category': 'company_google'
                         }
@@ -167,7 +167,7 @@ def create_quick_access_csv(keywords, locations, companies=None):
                     
                     all_links.extend(company_searches)
     
-    # 添加创建时间
+    # Add creation time
     for link in all_links:
         link['created_time'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
@@ -175,78 +175,78 @@ def create_quick_access_csv(keywords, locations, companies=None):
 
 def main():
     """
-    主函数 - 快速生成LinkedIn搜索链接
+    Main function - Quick LinkedIn search link generator
     """
-    print("🔗 LinkedIn快速搜索链接生成器")
+    print("🔗 LinkedIn Quick Search Link Generator")
     print("=" * 50)
-    print("生成各种LinkedIn搜索链接，无需API或数据抓取")
+    print("Generate various LinkedIn search links without API or data scraping")
     print()
     
-    # 用户输入
-    keywords_input = input("请输入搜索关键词 (用逗号分隔): ").strip()
+    # User input
+    keywords_input = input("Enter search keywords (comma-separated): ").strip()
     if not keywords_input:
         keywords = ["data scientist", "python developer", "machine learning engineer"]
-        print(f"使用默认关键词: {keywords}")
+        print(f"Using default keywords: {keywords}")
     else:
         keywords = [k.strip() for k in keywords_input.split(',')]
     
-    locations_input = input("请输入搜索地点 (用逗号分隔): ").strip()
+    locations_input = input("Enter search locations (comma-separated): ").strip()
     if not locations_input:
         locations = ["United States", "New York", "San Francisco", "Remote"]
-        print(f"使用默认地点: {locations}")
+        print(f"Using default locations: {locations}")
     else:
         locations = [l.strip() for l in locations_input.split(',')]
     
-    companies_input = input("请输入目标公司 (用逗号分隔, 可选): ").strip()
+    companies_input = input("Enter target companies (comma-separated, optional): ").strip()
     companies = [c.strip() for c in companies_input.split(',')] if companies_input else None
     
-    print(f"\n🎯 生成配置:")
-    print(f"关键词数量: {len(keywords)}")
-    print(f"地点数量: {len(locations)}")
-    print(f"目标公司: {len(companies) if companies else 0}")
+    print(f"\n🎯 Generation Configuration:")
+    print(f"Number of keywords: {len(keywords)}")
+    print(f"Number of locations: {len(locations)}")
+    print(f"Target companies: {len(companies) if companies else 0}")
     
-    # 生成所有搜索链接
+    # Generate all search links
     search_data = create_quick_access_csv(keywords, locations, companies)
     
-    # 保存为CSV
+    # Save as CSV
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     csv_filename = f"linkedin_search_links_{timestamp}.csv"
     
     df = pd.DataFrame(search_data)
     df.to_csv(csv_filename, index=False, encoding='utf-8-sig')
     
-    print(f"\n✅ 搜索链接已保存到: {csv_filename}")
-    print(f"📊 生成了 {len(search_data)} 个搜索链接")
+    print(f"\n✅ Search links saved to: {csv_filename}")
+    print(f"📊 Generated {len(search_data)} search links")
     
-    # 显示统计
+    # Display statistics
     category_counts = df['category'].value_counts()
-    print(f"\n📈 链接类型统计:")
+    print(f"\n📈 Link Type Statistics:")
     for category, count in category_counts.items():
-        print(f"  {category}: {count} 个链接")
+        print(f"  {category}: {count} links")
     
-    # 显示前10个链接示例
-    print(f"\n🔝 前10个搜索链接:")
+    # Display first 10 links as examples
+    print(f"\n🔝 First 10 Search Links:")
     for i, row in df.head(10).iterrows():
         print(f"{i+1:2d}. {row['search_type']} | {row['keyword']} @ {row['location']}")
         print(f"    {row['url'][:80]}...")
     
-    # 生成JSON格式（结构化数据）
+    # Generate JSON format (structured data)
     json_filename = f"linkedin_searches_structured_{timestamp}.json"
     structured_data = generate_linkedin_job_links(keywords, locations, companies)
     
     with open(json_filename, 'w', encoding='utf-8') as f:
         json.dump(structured_data, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✅ 结构化数据已保存到: {json_filename}")
+    print(f"\n✅ Structured data saved to: {json_filename}")
     
-    print(f"\n💡 使用建议:")
-    print(f"1. 在Excel或Google Sheets中打开CSV文件")
-    print(f"2. 点击URL列的链接直接访问LinkedIn搜索")
-    print(f"3. 根据需要筛选不同的搜索类型")
-    print(f"4. 结合Google搜索获得更全面的结果")
+    print(f"\n💡 Usage Tips:")
+    print(f"1. Open the CSV file in Excel or Google Sheets")
+    print(f"2. Click on URL column links to directly access LinkedIn searches")
+    print(f"3. Filter by different search types as needed")
+    print(f"4. Combine with Google searches for more comprehensive results")
     
-    # 测试几个链接的可访问性
-    print(f"\n🔍 测试链接可访问性...")
+    # Test accessibility of a few links
+    print(f"\n🔍 Testing Link Accessibility...")
     import requests
     
     test_urls = df.head(3)['url'].tolist()
@@ -257,7 +257,7 @@ def main():
             status = "✅" if response.status_code in [200, 302] else f"❌ {response.status_code}"
             print(f"{i+1}. {status} - {url[:60]}...")
         except Exception as e:
-            print(f"{i+1}. ❌ 网络错误 - {url[:60]}...")
+            print(f"{i+1}. ❌ Network error - {url[:60]}...")
 
 if __name__ == "__main__":
     main()
