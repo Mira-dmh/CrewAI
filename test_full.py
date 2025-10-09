@@ -49,6 +49,14 @@ sourcing_agent = Agent(
     allow_delegation=False,
 )
 
+job_search_agent = Agent(
+    role="Job Search Strategist",
+    goal="Identify and recommend best-fit job opportunities across multiple platforms.",
+    backstory="Expert in LinkedIn, Indeed, and Glassdoor data collection and filtering.",
+    verbose=True,
+    allow_delegation=False,
+)
+
 interview_agent = Agent(
     role="Interviewer",
     goal="Generate role-specific interview questions and scoring rubrics", 
@@ -81,6 +89,12 @@ sourcing_task = Task(
     expected_output="A list of 10 current job postings with titles, companies, locations, and application links.",
 )
 
+job_search_task = Task(
+    description="Generate real-time job listings with title, company, location, and URL.",
+    agent=job_search_agent,
+    expected_output="List of verified job postings with URLs and insights."
+)
+
 interview_task = Task(
     description="Create a 30/60/90-minute interview plan with 10 questions, expected answers, and a rubric.",
     agent=interview_agent,  
@@ -88,8 +102,8 @@ interview_task = Task(
 )
 
 crew = Crew(
-    agents=[insight_agent, dashboard_agent, resume_agent, sourcing_agent, interview_agent],
-    tasks=[insight_task, dashboard_task, resume_task, sourcing_task, interview_task],
+    agents=[insight_agent, dashboard_agent, resume_agent, sourcing_agent,job_search_agent, interview_agent],
+    tasks=[insight_task, dashboard_task, resume_task, sourcing_task, job_search_task, interview_task],
     process=Process.sequential,
     verbose=True,
 )
