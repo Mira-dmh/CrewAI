@@ -27,6 +27,16 @@ linkedin_scraping_task:
             - **Direct Job Posting URL**
             Additionally, provide the generated LinkedIn search URL used to find these postings."
 
-    
-
+job_research_task:  
+  description: >
+        "Conduct comprehensive research on the job market for {job_title} roles. 
+        Identify top companies hiring for this position, key skills and qualifications required, 
+        average salary ranges, and common interview topics. Summarize findings in a clear and concise manner."
+  expected_output: >
+        "A structured markdown report with the following sections:
+        1. **Companies**
+        2. **In-Demand Skills & Qualifications**
+        3. **Average Salary Range**
+        4. **Common Interview Topics**
+        5. **Additional Insights or Trends**"
 
