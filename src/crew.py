@@ -1,6 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool
+from crewai_tools import SerperDevTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
@@ -21,7 +21,7 @@ class JobResearchCrew:
     def lead_research_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['lead_research_analyst'], # type: ignore[index]
-            tools=[SerperDevTool(), ScrapeWebsiteTool()],
+            tools=[SerperDevTool()],
             llm=self.llm 
         )
 
