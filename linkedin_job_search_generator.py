@@ -8,6 +8,7 @@ import pandas as pd
 import urllib.parse
 from datetime import datetime
 import json
+import os
 
 def generate_linkedin_job_links(keywords, locations, companies=None):
     """
@@ -43,15 +44,8 @@ def generate_linkedin_job_links(keywords, locations, companies=None):
                 'senior_level': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_E=4"
             }
             
-            # Google search for LinkedIn links
-            google_searches = {
-                'google_basic': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}",
-                'google_recent': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}&tbs=qdr:w",
-                'google_exact': f"https://www.google.com/search?q=site:linkedin.com/jobs/view+{keyword_encoded}+location:{location_encoded}"
-            }
-            
             # Combine links
-            combined_links = {**base_link, **google_searches}
+            combined_links = base_link
             
             # Add company-specific searches if companies provided
             if companies:
@@ -62,8 +56,7 @@ def generate_linkedin_job_links(keywords, locations, companies=None):
                     
                     company_links[f'company_{company}'] = {
                         'jobs_page': f"https://www.linkedin.com/company/{company_slug}/jobs/",
-                        'jobs_search': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_C={company_encoded}",
-                        'google_company': f"https://www.google.com/search?q={company_encoded}+{keyword_encoded}+site:linkedin.com/jobs"
+                        'jobs_search': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_C={company_encoded}"
                     }
                 
                 combined_links['companies'] = company_links
@@ -137,22 +130,7 @@ def create_quick_access_csv(keywords, locations, companies=None):
                     'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_E=1",
                     'category': 'linkedin_direct'
                 },
-                {
-                    'search_type': 'Google LinkedIn Search',
-                    'keyword': keyword,
-                    'location': location,
-                    'description': 'Search LinkedIn jobs via Google',
-                    'url': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}",
-                    'category': 'google_search'
-                },
-                {
-                    'search_type': 'Google Recent Week',
-                    'keyword': keyword,
-                    'location': location,
-                    'description': 'Google search for LinkedIn jobs in the past week',
-                    'url': f"https://www.google.com/search?q=site:linkedin.com/jobs+{keyword_encoded}+{location_encoded}&tbs=qdr:w",
-                    'category': 'google_search'
-                }
+
             ]
             
             all_links.extend(searches)
@@ -180,14 +158,7 @@ def create_quick_access_csv(keywords, locations, companies=None):
                             'url': f"https://www.linkedin.com/jobs/search/?keywords={keyword_encoded}&location={location_encoded}&f_C={company_encoded}",
                             'category': 'company_targeted'
                         },
-                        {
-                            'search_type': f'{company} - Google Search',
-                            'keyword': keyword,
-                            'location': location,
-                            'description': f'Google search for {company} {keyword} jobs on LinkedIn',
-                            'url': f"https://www.google.com/search?q={company_encoded}+{keyword_encoded}+site:linkedin.com/jobs",
-                            'category': 'company_google'
-                        }
+
                     ]
                     
                     all_links.extend(company_searches)
@@ -233,9 +204,15 @@ def main():
     # Generate all search links
     search_data = create_quick_access_csv(keywords, locations, companies)
     
-    # Save as CSV
+    # Create files folder if it doesn't exist
+    files_folder = "files"
+    if not os.path.exists(files_folder):
+        os.makedirs(files_folder)
+        print(f"📁 Created {files_folder} folder")
+    
+    # Save as CSV in files folder
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    csv_filename = f"linkedin_job_search_links_{timestamp}.csv"
+    csv_filename = f"{files_folder}/linkedin_job_search_links_{timestamp}.csv"
     
     df = pd.DataFrame(search_data)
     df.to_csv(csv_filename, index=False, encoding='utf-8-sig')
@@ -255,8 +232,8 @@ def main():
         print(f"{i+1:2d}. {row['search_type']} | {row['keyword']} @ {row['location']}")
         print(f"    {row['url'][:80]}...")
     
-    # Generate JSON format (structured data)
-    json_filename = f"linkedin_searches_structured_{timestamp}.json"
+    # Generate JSON format (structured data) in files folder
+    json_filename = f"{files_folder}/linkedin_searches_structured_{timestamp}.json"
     structured_data = generate_linkedin_job_links(keywords, locations, companies)
     
     with open(json_filename, 'w', encoding='utf-8') as f:
@@ -268,7 +245,7 @@ def main():
     print(f"1. Open the CSV file in Excel or Google Sheets")
     print(f"2. Click on URL column links to directly access LinkedIn searches")
     print(f"3. Filter by different search types as needed")
-    print(f"4. Combine with Google searches for more comprehensive results")
+    print(f"4. Use different LinkedIn search filters for comprehensive results")
     
     # Test accessibility of a few links
     print(f"\n🔍 Testing Link Accessibility...")
