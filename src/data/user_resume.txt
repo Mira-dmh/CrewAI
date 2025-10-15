@@ -1,0 +1,4 @@
+Mona Zhuang
+Projects: Built a data dashboard in Python; used scikit-learn for regression.
+Skills: Python, SQL, Pandas, NumPy
+Experience: Research assistant; data cleaning; model evaluation.
