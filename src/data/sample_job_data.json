@@ -1,0 +1,13 @@
+{
+  "job_title": "AI Engineer",
+  "company": "Google",
+  "location": "New York, USA",
+  "salary_range": "$120,000 - $150,000",
+  "skills_required": ["Python", "Machine Learning", "Deep Learning", "TensorFlow", "Data Analysis"],
+  "responsibilities": [
+    "Develop and deploy AI models into production.",
+    "Collaborate with data scientists and software engineers.",
+    "Optimize algorithms for scalability and performance."
+  ],
+  "description": "We are looking for an AI Engineer with experience in deep learning and data-driven product development."
+}
