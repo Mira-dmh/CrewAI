@@ -1,0 +1,9 @@
+=== Updated Resume Suggestions ===
+Added keywords: Machine Learning, Deep Learning, TensorFlow, Data Analysis
+
+Mona Zhuang
+Projects: Built a data dashboard in Python; used scikit-learn for regression.
+Skills: Python, SQL, Pandas, NumPy
+Experience: Research assistant; data cleaning; model evaluation.
+
+[Keywords injected for ATS]: Machine Learning, Deep Learning, TensorFlow, Data Analysis
