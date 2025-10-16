@@ -40,3 +40,29 @@ job_research_task:
         4. **Common Interview Topics**
         5. **Additional Insights or Trends**"
 
+resume_coach_task:
+  description: >
+        "Analyze the user's current resume and provide tailored recommendations to optimize it for {job_title} applications. 
+        Focus on aligning the resume with the key skills, qualifications, and experiences identified in the job market research. 
+        Suggest specific improvements in formatting, content, and keywords to enhance ATS compatibility and recruiter appeal."
+  expected_output: >
+        "A detailed markdown report with the following sections:
+        1. **Resume Strengths**
+        2. **Areas for Improvement**
+        3. **Keyword Optimization Suggestions**
+        4. **Formatting & Structure Recommendations**
+        5. **Example Phrases or Bullet Points to Include**"
+
+interview_prep_task:
+  description: >
+        "Develop a comprehensive interview preparation guide for {job_title} candidates. 
+        Include common interview questions, key topics to study, and strategies for effective responses. 
+        Tailor the guide based on the job market research findings to ensure relevance and effectiveness. 
+        Using the updated résumé and job data, create a complete interview preparation guide 
+        including technical, behavioral, and scenario-based questions with example answers and tips."
+  expected_output: >
+        "A Markdown or PDF interview guide containing:
+         1. 10 to 15 realistic questions
+         2. Model answers
+         3. Behavioral and scenario prompts
+         4. Interview preparation tips and evaluation rubric"
