@@ -8,4 +8,5 @@ dependencies = [
     "crewai>=0.203.0",
     "crewai-tools>=0.76.0",
     "groq>=0.32.0",
+    "streamlit>=1.50.0",
 ]

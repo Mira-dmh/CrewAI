@@ -1,0 +1,40 @@
+{
+  "job_description": "A Machine Learning Engineer designs, develops, and deploys machine learning models and systems to solve complex problems. They work with large datasets, perform data preprocessing, select appropriate algorithms, and optimize models for production. Their role involves collaboration with data scientists and software engineers to implement scalable AI solutions.",
+  "hiring_trends": [
+    "Sustained high demand across tech, finance, healthcare, and automotive sectors",
+    "Growing emphasis on large language models and generative AI expertise",
+    "Increased hybrid/remote opportunities globally",
+    "Rising need for production-level MLOps and deployment skills",
+    "Employers valuing interdisciplinary experience including domain knowledge"
+  ],
+  "top_hiring_companies": [
+    "Google",
+    "Amazon",
+    "Microsoft",
+    "Meta",
+    "OpenAI",
+    "Apple",
+    "Nvidia",
+    "Tesla"
+  ],
+  "required_skills": [
+    "Python",
+    "TensorFlow",
+    "PyTorch",
+    "Machine Learning Algorithms",
+    "Data Preprocessing",
+    "Statistics",
+    "Mathematics",
+    "SQL",
+    "Docker",
+    "MLOps",
+    "Model Deployment",
+    "Communication Skills",
+    "Analytical Thinking"
+  ],
+  "average_salaries": [
+    "Entry: $110k",
+    "Mid: $150k",
+    "Senior: $200k+"
+  ]
+}
