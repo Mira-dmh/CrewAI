@@ -1,4 +1,4 @@
-research_task:
+ :
   description: >
         Research and analyze the current job market for {job_title}. 
         Collect verified data on open roles, hiring trends, key companies, average salaries, 
@@ -13,7 +13,7 @@ research_task:
         5. **Interview Topics / Skill Focus**
         6. **Citations or Source URLs**"
 
-linkedin_scraping_task:
+LinkedIn_Scraping_Task:
       description: >   
             "Generate targeted LinkedIn job search links for {job_title} positions in {location}. 
             Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
@@ -27,18 +27,6 @@ linkedin_scraping_task:
             - **Direct Job Posting URL**
             Additionally, provide the generated LinkedIn search URL used to find these postings."
 
-job_research_task:  
-  description: >
-        "Conduct comprehensive research on the job market for {job_title} roles. 
-        Identify top companies hiring for this position, key skills and qualifications required, 
-        average salary ranges, and common interview topics. Summarize findings in a clear and concise manner."
-  expected_output: >
-        "A structured markdown report with the following sections:
-        1. **Companies**
-        2. **In-Demand Skills & Qualifications**
-        3. **Average Salary Range**
-        4. **Common Interview Topics**
-        5. **Additional Insights or Trends**"
 
 resume_coach_task:
   description: >
