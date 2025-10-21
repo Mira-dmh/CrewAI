@@ -3,7 +3,7 @@ from crewai import LLM
 
 
 llm = LLM(
-    model="groq/llama-3.1-8b-instant"
+    model="gpt-4.1-mini"
 )
 
 

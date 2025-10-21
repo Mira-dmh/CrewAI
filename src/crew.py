@@ -24,12 +24,28 @@ class JobResearchCrew:
             tools=[SerperDevTool()],
             llm=self.llm 
         )
+    
+    @agent
+    def verification_specialist(self) -> Agent:
+        return Agent(
+            config=self.agents_config['verification_specialist'], # type: ignore[index]
+            tools=[SerperDevTool()],
+            llm=self.llm 
+        )
 
     @task
     def research_task(self) -> Task:
         return Task(
             config=self.tasks_config['research_task'], # type: ignore[index]
-            agent=self.lead_research_analyst()
+            agent=self.lead_research_analyst(),
+            output_file="src/outputs/lead_research_analyst/research_data.json"
+        )
+    
+    @task
+    def research_verification_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['research_verification_task'], # type: ignore[index]
+            agent=self.verification_specialist(),
         )
 
     @crew
@@ -37,6 +53,6 @@ class JobResearchCrew:
         return Crew(
             agents=self.agents, 
             tasks=self.tasks, 
-            process=Process.sequential,
+            process=Process.hierarchical,
             verbose=True,
         )
