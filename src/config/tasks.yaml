@@ -1,72 +1,58 @@
 research_task:
-  description: >
-    Research and analyze the current job market for {job_title}. 
-    Collect verified data on open roles, hiring trends, key companies, average salaries, 
-    and common interview themes. Identify what qualifications and skills are most valued 
-    and summarize the insights clearly for downstream agents.
-  expected_output: >
-    A structured JSON file with the following exact fields.
-    Each field should follow these formats:
-    - "job_description": A single string describing the role.
-    - "hiring_trends": A list of short string bullet points (not objects).
-    - "top_hiring_companies": A list of company names as strings.
-    - "required_skills": A list of skill names as strings.
-    - "average_salaries": A list of short salary descriptions as strings (not objects, no countries).
+      description: >
+            Research and analyze the current job market for {job_title}. 
+            Collect verified data on open roles, hiring trends, key companies, average salaries, 
+            and common interview themes. Identify what qualifications and skills are most valued 
+            and summarize the insights clearly for downstream agents.
+      expected_output: >
+            A structured JSON file with the following exact fields.
+            Each field should follow these formats:
+            - "job_description": A single string describing the role.
+            - "hiring_trends": A list of short string bullet points (not objects).
+            - "top_hiring_companies": A list of company names as strings.
+            - "required_skills": A list of skill names as strings.
+            - "average_salaries": A list of short salary descriptions as strings (not objects, no countries).
 
-    Example output:
-    {
-          "job_description": "A Machine Learning Engineer builds and deploys machine learning models.",
-          "hiring_trends": ["High demand across tech sectors", "Increasing focus on LLMs"],
-          "top_hiring_companies": ["Google", "Amazon", "OpenAI"],
-          "required_skills": ["Python", "TensorFlow", "Data Preprocessing"],
-          "average_salaries": ["Entry: $110k", "Mid: $150k", "Senior: $200k+"]
-    }
+            Example output:
+            {
+                  "job_description": "A Machine Learning Engineer builds and deploys machine learning models.",
+                  "hiring_trends": ["High demand across tech sectors", "Increasing focus on LLMs"],
+                  "top_hiring_companies": ["Google", "Amazon", "OpenAI"],
+                  "required_skills": ["Python", "TensorFlow", "Data Preprocessing"],
+                  "average_salaries": ["Entry: $110k", "Mid: $150k", "Senior: $200k+"]
+            }
 
 research_verification_task:
-  description: >
-    Use web searches to fact-check the content and verify the accuracy of the information.
-    Report any inconsistencies, missing fields, or likely false data.
-  expected_output: >
-    A short report of incorrect information or validation that the information is correct
-
+      description: >
+            Use web searches to fact-check the content and verify the accuracy of the information.
+            Report any inconsistencies, missing fields, or likely false data.
+      expected_output: >
+            A short report of incorrect information or validation that the informatiomn is correct
+      
 linkedin_scraping_task:
-  description: >   
-    Generate targeted LinkedIn job search links for {job_title} positions in {location}. 
-    Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
-    Collect direct URLs to relevant job postings and summarize the key details (company, title, location, date posted).
-  expected_output: >
-    A structured markdown list of job postings with the following details for each:
-    - **Job Title**
-    - **Company Name**
-    - **Location**
-    - **Date Posted**
-    - **Direct Job Posting URL**
-    Additionally, provide the generated LinkedIn search URL used to find these postings.
+      description: >   
+            "Generate targeted LinkedIn job search links for {job_title} positions in {location}. 
+            Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
+            Collect direct URLs to relevant job postings and summarize the key details (company, title, location, date posted)."
+      expected_output: >
+            "A structured markdown list of job postings with the following details for each:
+            - **Job Title**´
+            - **Company Name**
+            - **Location**
+            - **Date Posted**
+            - **Direct Job Posting URL**
+            Additionally, provide the generated LinkedIn search URL used to find these postings."
 
-
-resume_coach_task:
+job_research_task:  
   description: >
-        "Analyze the user's current resume and provide tailored recommendations to optimize it for {job_title} applications. 
-        Focus on aligning the resume with the key skills, qualifications, and experiences identified in the job market research. 
-        Suggest specific improvements in formatting, content, and keywords to enhance ATS compatibility and recruiter appeal."
+        "Conduct comprehensive research on the job market for {job_title} roles. 
+        Identify top companies hiring for this position, key skills and qualifications required, 
+        average salary ranges, and common interview topics. Summarize findings in a clear and concise manner."
   expected_output: >
-        "A detailed markdown report with the following sections:
-        1. **Resume Strengths**
-        2. **Areas for Improvement**
-        3. **Keyword Optimization Suggestions**
-        4. **Formatting & Structure Recommendations**
-        5. **Example Phrases or Bullet Points to Include**"
+        "A structured markdown report with the following sections:
+        1. **Companies**
+        2. **In-Demand Skills & Qualifications**
+        3. **Average Salary Range**
+        4. **Common Interview Topics**
+        5. **Additional Insights or Trends**"
 
-interview_prep_task:
-  description: >
-        "Develop a comprehensive interview preparation guide for {job_title} candidates. 
-        Include common interview questions, key topics to study, and strategies for effective responses. 
-        Tailor the guide based on the job market research findings to ensure relevance and effectiveness. 
-        Using the updated résumé and job data, create a complete interview preparation guide 
-        including technical, behavioral, and scenario-based questions with example answers and tips."
-  expected_output: >
-        "A Markdown or PDF interview guide containing:
-         1. 10 to 15 realistic questions
-         2. Model answers
-         3. Behavioral and scenario prompts
-         4. Interview preparation tips and evaluation rubric"
