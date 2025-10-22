@@ -1,3 +1,21 @@
+dashboard_input_processing_task:
+  description: >
+    Process user input from the dashboard to determine the type of request and extract key information.
+    Analyze whether the user wants:
+    1. General job market research for a specific position (route to lead_research_analyst)
+    2. Location-based job search for specific postings (route to LinkedIn_Scraper)
+    Extract job titles, locations, and any additional keywords from the user input.
+  expected_output: >
+    A structured JSON response with the following fields:
+    {
+      "request_type": "job_research" or "location_search",
+      "job_title": "extracted job title",
+      "location": "extracted location (if provided)",
+      "keywords": ["list", "of", "relevant", "keywords"],
+      "routing_recommendation": "lead_research_analyst" or "linkedin_scraper",
+      "processed_query": "cleaned and formatted query for the target agent"
+    }
+
 research_task:
       description: >
             Research and analyze the current job market for {job_title}. 
@@ -22,12 +40,26 @@ research_task:
                   "average_salaries": ["Entry: $110k", "Mid: $150k", "Senior: $200k+"]
             }
 
+content_generation_task:
+  description: >
+    Transform the research data from the Lead Research Analyst into user-friendly content for dashboard display.
+    Create compelling job descriptions, market insights summaries, and actionable recommendations.
+    Format the content to be engaging and easy to understand for job seekers.
+  expected_output: >
+    A structured markdown document with the following sections:
+    1. **Job Overview** - Engaging description of the role
+    2. **Market Insights** - Key trends and opportunities
+    3. **Top Companies** - Formatted list of hiring companies
+    4. **Skills in Demand** - Prioritized skill requirements
+    5. **Salary Expectations** - Clear salary range information
+    6. **Next Steps** - Actionable recommendations for job seekers
+
 research_verification_task:
-      description: >
-            Use web searches to fact-check the content and verify the accuracy of the information.
-            Report any inconsistencies, missing fields, or likely false data.
-      expected_output: >
-            A short report of incorrect information or validation that the informatiomn is correct
+  description: >
+    Use web searches to fact-check the content and verify the accuracy of the information.
+    Report any inconsistencies, missing fields, or likely false data.
+  expected_output: >
+    A short report of incorrect information or validation that the information is correct
       
 linkedin_scraping_task:
       description: >   
