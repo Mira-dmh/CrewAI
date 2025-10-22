@@ -16,11 +16,32 @@ class JobResearchCrew:
         self.agents: List[BaseAgent] = []
         self.tasks: List[Task] = []
     
-
+    @agent
+    def dashboard_input_catcher(self) -> Agent:
+        return Agent(
+            config=self.agents_config['dashboard_input_catcher'], # type: ignore[index]
+            llm=self.llm 
+        )
+    
     @agent
     def lead_research_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['lead_research_analyst'], # type: ignore[index]
+            tools=[SerperDevTool()],
+            llm=self.llm 
+        )
+    
+    @agent
+    def agent_content_editor(self) -> Agent:
+        return Agent(
+            config=self.agents_config['agent_content_editor'], # type: ignore[index]
+            llm=self.llm 
+        )
+    
+    @agent
+    def linkedin_scraper(self) -> Agent:
+        return Agent(
+            config=self.agents_config['LinkedIn_Scraper'], # type: ignore[index]
             tools=[SerperDevTool()],
             llm=self.llm 
         )
@@ -34,6 +55,14 @@ class JobResearchCrew:
         )
 
     @task
+    def dashboard_input_processing_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['dashboard_input_processing_task'], # type: ignore[index]
+            agent=self.dashboard_input_catcher(),
+            output_file="src/outputs/dashboard/user_input_analysis.json"
+        )
+    
+    @task
     def research_task(self) -> Task:
         return Task(
             config=self.tasks_config['research_task'], # type: ignore[index]
@@ -42,10 +71,29 @@ class JobResearchCrew:
         )
     
     @task
+    def content_generation_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['content_generation_task'], # type: ignore[index]
+            agent=self.agent_content_editor(),
+            context=[self.research_task()],
+            output_file="src/outputs/content/job_market_summary.md"
+        )
+    
+    @task
+    def linkedin_scraping_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['linkedin_scraping_task'], # type: ignore[index]
+            agent=self.linkedin_scraper(),
+            output_file="src/outputs/linkedin/job_postings.md"
+        )
+    
+    @task
     def research_verification_task(self) -> Task:
         return Task(
             config=self.tasks_config['research_verification_task'], # type: ignore[index]
             agent=self.verification_specialist(),
+            context=[self.research_task(), self.content_generation_task()],
+            output_file="src/outputs/verification/verification_report.md"
         )
 
     @crew
