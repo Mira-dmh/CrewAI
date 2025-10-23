@@ -1,9 +1,9 @@
 === Updated Resume Suggestions ===
-Added keywords: Machine Learning, Deep Learning, TensorFlow, Data Analysis
+Added keywords: TensorFlow, PyTorch, Machine Learning Algorithms, Data Preprocessing, Statistics, Mathematics, Docker, MLOps, Model Deployment, Communication Skills, Analytical Thinking
 
 Mona Zhuang
 Projects: Built a data dashboard in Python; used scikit-learn for regression.
 Skills: Python, SQL, Pandas, NumPy
 Experience: Research assistant; data cleaning; model evaluation.
 
-[Keywords injected for ATS]: Machine Learning, Deep Learning, TensorFlow, Data Analysis
+[Injected keywords for ATS optimization]: TensorFlow, PyTorch, Machine Learning Algorithms, Data Preprocessing, Statistics, Mathematics, Docker, MLOps, Model Deployment, Communication Skills, Analytical Thinking

@@ -393,6 +393,8 @@ A {job_title} plays a crucial role in modern organizations by leveraging technic
                     "lead_research_analyst", 
                     "agent_content_editor",
                     "linkedin_scraper",
+                    "resume_coach",
+                    "interview_coach",
                     "verification_specialist"
                 ]
                 for agent_name in mock_agents:
