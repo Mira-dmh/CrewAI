@@ -10,21 +10,32 @@ def contains(word: str, text: str) -> bool:
     """Check if a word is contained in a text (case-insensitive)."""
     return normalize(word) in normalize(text)
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-OUT_DIR  = Path(__file__).resolve().parents[1] / "outputs"
+BASE_DIR = Path(__file__).resolve().parents[1]
+DATA_DIR = BASE_DIR / "outputs" / "lead_research_analyst"   
+OUT_DIR  = BASE_DIR / "outputs"
 OUT_DIR.mkdir(exist_ok=True)
 
 def load_job_data():
-    with open(DATA_DIR / "sample_job_data.json", "r", encoding="utf-8") as f:
+    """Load job research results (from lead_research_analyst output)."""
+    file_path = DATA_DIR / "research_data.json"
+    if not file_path.exists():
+        raise FileNotFoundError(f"❌ Could not find research_data.json at {file_path}")
+    
+    with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 def load_resume_text():
-    with open(DATA_DIR / "user_resume.txt", "r", encoding="utf-8") as f:
+    """Load user resume text from /data/user_resume.txt"""
+    data_path = BASE_DIR / "data" / "user_resume.txt"
+    if not data_path.exists():
+        raise FileNotFoundError(f"❌ Could not find user_resume.txt at {data_path}")
+    
+    with open(data_path, "r", encoding="utf-8") as f:
         return f.read()
 
 def find_missing_skills(job_data, resume_text):
     missing = []
-    for skill in job_data.get("skills_required", []):
+    for skill in job_data.get("required_skills", []):
         if not contains(skill, resume_text):
             missing.append(skill)
     return missing
@@ -44,9 +55,16 @@ def write_updated_resume(resume_text, missing_skills):
         skill_line = "Added keywords: " + ", ".join(missing_skills) + "\n"
     else:
         skill_line = "No missing skill keywords detected.\n"
-    body = resume_text + "\n\n[Keywords injected for ATS]: " + ", ".join(missing_skills) if missing_skills else ""
-    with open(OUT_DIR / "resume_updated.txt", "w", encoding="utf-8") as f:
-        f.write(header + skill_line + "\n" + body)
+    updated_resume = (
+        header + skill_line + "\n" + resume_text +
+        ("\n\n[Injected keywords for ATS optimization]: " + ", ".join(missing_skills) if missing_skills else "")
+    )
+    
+    out_path = OUT_DIR / "resume_updated.txt"
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(updated_resume)
+    return out_path
+
 
 def run_resume_coach():
     job_data = load_job_data()
