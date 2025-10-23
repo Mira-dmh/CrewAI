@@ -75,16 +75,27 @@ linkedin_scraping_task:
             - **Direct Job Posting URL**
             Additionally, provide the generated LinkedIn search URL used to find these postings."
 
-job_research_task:  
+resume_coach_task:
   description: >
-        "Conduct comprehensive research on the job market for {job_title} roles. 
-        Identify top companies hiring for this position, key skills and qualifications required, 
-        average salary ranges, and common interview topics. Summarize findings in a clear and concise manner."
+    "Analyze the structured job data and the user's résumé to identify missing or weak skills, 
+    keyword gaps, and improvement opportunities. Generate clear recommendations and, if possible, 
+    produce an updated résumé file that aligns with the job description."
   expected_output: >
-        "A structured markdown report with the following sections:
-        1. **Companies**
-        2. **In-Demand Skills & Qualifications**
-        3. **Average Salary Range**
-        4. **Common Interview Topics**
-        5. **Additional Insights or Trends**"
+    "A structured report (Markdown or PDF) containing:
+     1. Missing or weak skills
+     2. Recommended résumé improvements
+     3. Updated résumé content or file path"
+
+
+interview_coach_task:
+  description: >
+    "Using the updated résumé and job description, create a full interview preparation guide. 
+    Include realistic technical, behavioral, and scenario-based questions, along with model answers, 
+    useful tips, and a simple evaluation rubric to help the user practice effectively."
+  expected_output: >
+    "A structured interview guide (Markdown or PDF) containing:
+     1. about 12 realistic questions
+     2. Model answers
+     3. Preparation tips
+     4. Scoring rubric or feedback criteria"
 
