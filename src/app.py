@@ -1,6 +1,6 @@
 """
-CrewAI Job Search Assistant - Multipage Streamlit Application
-Main entry point for the multipage app using st.Page and st.navigation
+CrewAI Job Search Assistant - AI-Powered Job Search Platform
+Main entry point for the multipage app with integrated CrewAI agents and tasks
 """
 
 import streamlit as st
