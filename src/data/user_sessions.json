@@ -1,0 +1,69 @@
+{
+  "sessions": [
+    {
+      "id": "session_001",
+      "timestamp": "2024-10-23T10:30:00",
+      "type": "job_search",
+      "title": "Data Scientist Job Search",
+      "details": "Searched for Data Scientist positions in San Francisco Bay Area",
+      "job_title": "Data Scientist",
+      "location": "San Francisco Bay Area",
+      "results_count": 15,
+      "duration_minutes": 12,
+      "status": "completed"
+    },
+    {
+      "id": "session_002",
+      "timestamp": "2024-10-23T09:45:00",
+      "type": "market_analysis",
+      "title": "AI/ML Market Analysis",
+      "details": "Market trend analysis for AI and Machine Learning roles",
+      "job_title": "Machine Learning Engineer",
+      "location": "Remote",
+      "results_count": 8,
+      "duration_minutes": 8,
+      "status": "completed"
+    },
+    {
+      "id": "session_003",
+      "timestamp": "2024-10-23T09:15:00",
+      "type": "resume_optimization",
+      "title": "Resume Optimization Session",
+      "details": "AI-powered resume review and enhancement suggestions",
+      "job_title": "Software Engineer",
+      "location": "New York",
+      "results_count": 1,
+      "duration_minutes": 25,
+      "status": "completed"
+    },
+    {
+      "id": "session_004",
+      "timestamp": "2024-10-22T16:20:00",
+      "type": "profile_enhancement",
+      "title": "LinkedIn Profile Enhancement",
+      "details": "LinkedIn profile optimization with keyword suggestions",
+      "job_title": "Product Manager",
+      "location": "Austin",
+      "results_count": 1,
+      "duration_minutes": 18,
+      "status": "completed"
+    },
+    {
+      "id": "session_005",
+      "timestamp": "2024-10-22T14:10:00",
+      "type": "salary_research",
+      "title": "Salary Negotiation Research",
+      "details": "Salary benchmarking and negotiation strategy research",
+      "job_title": "Senior Data Analyst",
+      "location": "Chicago",
+      "results_count": 12,
+      "duration_minutes": 15,
+      "status": "completed"
+    }
+  ],
+  "metadata": {
+    "last_updated": "2024-10-23T10:30:00",
+    "total_sessions": 5,
+    "version": "1.0"
+  }
+}
