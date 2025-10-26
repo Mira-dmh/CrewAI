@@ -1,20 +1,20 @@
 import streamlit as st
 import json
+import os
 
-# Load data from JSON
-DASHBOARD_FILE = "dashboard_data.json"
+def info_page():
+    """Job Market Research Dashboard"""
+    
+    # Load data from JSON
+    json_path = "src/outputs/lead_research_analyst/research_data.json"
+    with open(json_path, "r") as f:
+        data = json.load(f)
 
-def load_dashboard(file_path="src/outputs/lead_research_analyst/research_data.json"):
-    with open(file_path, "r") as f:
-        return json.load(f)
+    st.title("Job Market Research Dashboard")
 
-data = load_dashboard()
-
-st.title("Job Market Research Dashboard")
-
-# Create 2x3 grid
-col1, col2, col3 = st.columns(3)
-col4, col5, col6 = st.columns(3)
+    # Create 2x3 grid
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
 
 # 1. Job Market Overview
 with col1:
