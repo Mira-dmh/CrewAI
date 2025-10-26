@@ -5,7 +5,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
 @CrewBase
-class JobResearchCrew:
+class MainCrew:
     
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
@@ -149,6 +149,6 @@ class JobResearchCrew:
         return Crew(
             agents=self.agents, 
             tasks=self.tasks, 
-            process=Process.hierarchical,
+            process=Process.sequential,
             verbose=True,
         )

@@ -1,0 +1,133 @@
+research_task:
+  description: >
+    Research and analyze the current job market for {job_title}. 
+    Collect verified data on open roles, hiring trends, key companies, average salaries, 
+    and common interview themes. Identify what qualifications and skills are most valued 
+    and summarize the insights clearly for downstream agents.
+  expected_output: >
+    A structured JSON file following the example given.
+
+    Example output:
+    {
+      "job_title": "",
+      "last_updated": "",
+      "sources": [],
+
+      "overview": {
+        "summary": "",
+        "key_responsibilities": [],
+        "daily_tasks": [],
+        "work_environment": "",
+        "industries": []
+      },
+
+      "skills": {
+        "technical_skills": [],
+        "soft_skills": [],
+        "tools_and_technologies": [],
+        "certifications": []
+      },
+
+      "education_and_training": {
+        "minimum_education": "",
+        "common_degrees": [],
+        "recommended_courses": [],
+        "professional_certifications": []
+      },
+
+      "career_path": {
+        "entry_level_positions": [],
+        "mid_level_positions": [],
+        "senior_positions": [],
+        "advancement_opportunities": "",
+        "related_roles": []
+      },
+
+      "salary_and_outlook": {
+        "average_salary": {
+          "us": "",
+          "international": [],
+          "by_experience_level": {}
+        },
+        "job_outlook": {
+          "growth_rate": "",
+          "future_trends": ""
+        }
+      },
+
+      "employment_data": {
+        "top_employers": [],
+        "geographic_hotspots": [],
+        "remote_vs_in_person": ""
+      },
+
+      "tools_and_software": {
+        "common_tools": [],
+        "emerging_tools": [],
+        "software_categories": []
+      },
+
+      "interview_and_hiring": {
+        "common_interview_questions": [],
+        "assessment_types": [],
+        "recruitment_process": ""
+      },
+
+      "industry_trends": {
+        "emerging_technologies": [],
+        "market_demand_drivers": [],
+        "regulatory_factors": [],
+        "future_opportunities": []
+      },
+
+      "additional_resources": {
+        "professional_associations": [],
+        "online_communities": [],
+        "recommended_readings": [],
+        "training_platforms": []
+      },
+
+      "citations": [
+        {
+          "title": "",
+          "url": "",
+          "publisher": "",
+          "date_accessed": ""
+        }
+      ]
+    }
+
+content_generation_task:
+  description: >
+    Transform the research data from the Lead Research Analyst into user-friendly content for dashboard display.
+    Create compelling job descriptions, market insights summaries, and actionable recommendations.
+    Format the content to be engaging and easy to understand for job seekers.
+  expected_output: >
+    A structured JSON document with the following fields:
+    {
+      "job_overview": "Engaging description of the role as a string",
+      "market_insights": ["List of key trends and opportunities as strings"],
+      "top_companies": ["List of hiring company names as strings"],
+      "skills_in_demand": ["Prioritized list of skill requirements as strings"],
+      "salary_expectations": {
+        "entry_level": "Entry level salary range",
+        "mid_level": "Mid level salary range", 
+        "senior_level": "Senior level salary range"
+      },
+      "next_steps": ["List of actionable recommendations as strings"]
+    }
+
+research_verification_task:
+  description: >
+    Use web searches to fact-check the content and verify the accuracy of the information.
+    Report any inconsistencies, missing fields, or likely false data.
+  expected_output: >
+    A structured JSON report with the following fields:
+    {
+      "verification_status": "verified" or "issues_found",
+      "accuracy_score": "percentage or rating of data accuracy",
+      "verified_fields": ["list of fields that passed verification"],
+      "flagged_issues": ["list of specific issues or inconsistencies found"],
+      "corrections": ["list of suggested corrections or updates"],
+      "confidence_level": "high/medium/low confidence in the verification results"
+    }

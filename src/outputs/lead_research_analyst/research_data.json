@@ -1,40 +1,282 @@
 {
-  "job_description": "A Machine Learning Engineer designs, develops, and deploys machine learning models and systems to solve complex problems. They work with large datasets, perform data preprocessing, select appropriate algorithms, and optimize models for production. Their role involves collaboration with data scientists and software engineers to implement scalable AI solutions.",
-  "hiring_trends": [
-    "Sustained high demand across tech, finance, healthcare, and automotive sectors",
-    "Growing emphasis on large language models and generative AI expertise",
-    "Increased hybrid/remote opportunities globally",
-    "Rising need for production-level MLOps and deployment skills",
-    "Employers valuing interdisciplinary experience including domain knowledge"
+  "job_title": "Data Analyst",
+  "last_updated": "2024-10-01",
+  "sources": [
+    "https://365datascience.com/career-advice/the-data-analyst-job-market/",
+    "https://graduate.northeastern.edu/knowledge-hub/data-analyst-skills/",
+    "https://www.simplilearn.com/tutorials/data-analytics-tutorial/data-analyst-interview-questions",
+    "https://joinhandshake.com/blog/students/data-analyst-salary/",
+    "https://www.glassdoor.com/Salaries/data-analyst-salary-SRCH_KO0,12.htm"
   ],
-  "top_hiring_companies": [
-    "Google",
-    "Amazon",
-    "Microsoft",
-    "Meta",
-    "OpenAI",
-    "Apple",
-    "Nvidia",
-    "Tesla"
-  ],
-  "required_skills": [
-    "Python",
-    "TensorFlow",
-    "PyTorch",
-    "Machine Learning Algorithms",
-    "Data Preprocessing",
-    "Statistics",
-    "Mathematics",
-    "SQL",
-    "Docker",
-    "MLOps",
-    "Model Deployment",
-    "Communication Skills",
-    "Analytical Thinking"
-  ],
-  "average_salaries": [
-    "Entry: $110k",
-    "Mid: $150k",
-    "Senior: $200k+"
+
+  "overview": {
+    "summary": "Data Analysts collect, process, and perform statistical analyses on data to help organizations make informed decisions. They are responsible for interpreting data trends, creating reports, and providing actionable insights across various sectors including technology, finance, healthcare, and consulting. The role typically involves collaboration with business stakeholders and technical teams to understand data requirements and deliver meaningful solutions.",
+    "key_responsibilities": [
+      "Collecting and cleaning data from various sources",
+      "Analyzing datasets to identify trends and patterns",
+      "Creating reports and dashboards for decision-makers",
+      "Collaborating with cross-functional teams to understand business needs",
+      "Ensuring data accuracy and integrity"
+    ],
+    "daily_tasks": [
+      "Writing SQL queries and extracting data",
+      "Data cleaning and validation",
+      "Visualizing data using tools like Tableau or Power BI",
+      "Performing statistical analysis and hypothesis testing",
+      "Presenting findings to stakeholders"
+    ],
+    "work_environment": "Data Analysts typically work in office environments in diverse industries, with increasing opportunities for remote work. Work is often collaborative and deadline-driven.",
+    "industries": [
+      "Technology",
+      "Finance",
+      "Healthcare",
+      "Consulting",
+      "Retail",
+      "Manufacturing"
+    ]
+  },
+
+  "skills": {
+    "technical_skills": [
+      "SQL",
+      "Microsoft Excel (including Power Query)",
+      "Python",
+      "R",
+      "Data visualization (Tableau, Power BI)",
+      "Statistical analysis",
+      "Data cleaning and preprocessing"
+    ],
+    "soft_skills": [
+      "Critical thinking",
+      "Effective communication",
+      "Problem-solving",
+      "Collaboration",
+      "Attention to detail",
+      "Time management"
+    ],
+    "tools_and_technologies": [
+      "SQL databases (MySQL, PostgreSQL, SQL Server)",
+      "Excel",
+      "Tableau",
+      "Power BI",
+      "Python libraries (Pandas, NumPy, Matplotlib)",
+      "R packages",
+      "Cloud platforms (AWS, Azure, Google Cloud - beginner level)"
+    ],
+    "certifications": [
+      "Google Data Analytics Professional Certificate",
+      "Microsoft Certified: Data Analyst Associate",
+      "Tableau Desktop Specialist",
+      "Certified Analytics Professional (CAP)"
+    ]
+  },
+
+  "education_and_training": {
+    "minimum_education": "Bachelor's degree",
+    "common_degrees": [
+      "Bachelor's in Statistics",
+      "Bachelor's in Computer Science",
+      "Bachelor's in Mathematics",
+      "Bachelor's in Economics",
+      "Bachelor's in Data Science"
+    ],
+    "recommended_courses": [
+      "Statistics and Probability",
+      "Database Management Systems",
+      "Programming for Data Analysis (Python, R, SQL)",
+      "Data Visualization",
+      "Machine Learning Basics"
+    ],
+    "professional_certifications": [
+      "Google Data Analytics Professional Certificate",
+      "Microsoft Certified: Data Analyst Associate",
+      "Tableau Desktop Specialist",
+      "Certified Analytics Professional (CAP)"
+    ]
+  },
+
+  "career_path": {
+    "entry_level_positions": [
+      "Junior Data Analyst",
+      "Data Analyst Intern",
+      "Reporting Analyst"
+    ],
+    "mid_level_positions": [
+      "Data Analyst",
+      "Business Intelligence Analyst",
+      "Operations Analyst"
+    ],
+    "senior_positions": [
+      "Senior Data Analyst",
+      "Lead Data Analyst",
+      "Data Analytics Manager"
+    ],
+    "advancement_opportunities": "Data Analysts can advance to senior analyst roles, specialize in areas like business intelligence or data engineering, or move into management and data science roles.",
+    "related_roles": [
+      "Data Scientist",
+      "Business Intelligence Analyst",
+      "Data Engineer",
+      "Statistician",
+      "Quantitative Analyst"
+    ]
+  },
+
+  "salary_and_outlook": {
+    "average_salary": {
+      "us": "$90,600",
+      "international": [
+        {"country": "Philippines", "range": "₱38,000 - ₱48,000 per month"}
+      ],
+      "by_experience_level": {
+        "entry_level": "$56,000 - $70,000",
+        "mid_level": "$75,000 - $100,000",
+        "senior_level": "$100,000 - $149,000"
+      }
+    },
+    "job_outlook": {
+      "growth_rate": "About 34% growth projected over 2024-2034",
+      "future_trends": "Increasing adoption of AI, machine learning and cloud technologies will drive demand; though the market is competitive, data-driven decision-making remains essential to business."
+    }
+  },
+
+  "employment_data": {
+    "top_employers": [
+      "Tech companies (Google, Amazon, Microsoft)",
+      "Financial institutions (Goldman Sachs, JPMorgan Chase)",
+      "Healthcare organizations",
+      "Consulting firms (Deloitte, Accenture)",
+      "Retail corporations"
+    ],
+    "geographic_hotspots": [
+      "San Francisco Bay Area, CA",
+      "New York City, NY",
+      "Seattle, WA",
+      "Boston, MA",
+      "Chicago, IL"
+    ],
+    "remote_vs_in_person": "Hybrid and remote work options are increasingly common, varying by employer and industry."
+  },
+
+  "tools_and_software": {
+    "common_tools": [
+      "SQL databases",
+      "Microsoft Excel",
+      "Tableau",
+      "Power BI",
+      "Python and R programming environments"
+    ],
+    "emerging_tools": [
+      "Cloud analytics platforms (AWS Redshift, Google BigQuery)",
+      "Advanced AI-powered analytics software"
+    ],
+    "software_categories": [
+      "Data querying and management",
+      "Data visualization",
+      "Statistical analysis",
+      "Machine learning platforms",
+      "Cloud computing services"
+    ]
+  },
+
+  "interview_and_hiring": {
+    "common_interview_questions": [
+      "What is the difference between data mining and data profiling?",
+      "Explain how you would clean a messy dataset.",
+      "How do you identify duplicates in SQL?",
+      "Describe a challenging data analysis project and how you handled it.",
+      "What are the differences between WHERE and HAVING clauses in SQL?",
+      "How do you ensure data accuracy and integrity?",
+      "Describe how you explain complex data insights to non-technical stakeholders."
+    ],
+    "assessment_types": [
+      "SQL querying tests",
+      "Case studies and scenario-based questions",
+      "Technical questions on data visualization and tools",
+      "Behavioral interviews",
+      "Coding exercises in Python or R"
+    ],
+    "recruitment_process": "Typically involves an initial phone screening, followed by technical assessments including SQL and data problem-solving tests, and final rounds of interviews focusing on soft skills, behavioral fit, and communication."
+  },
+
+  "industry_trends": {
+    "emerging_technologies": [
+      "Artificial Intelligence and Machine Learning integration",
+      "Cloud data warehouses and analytics",
+      "Natural Language Processing (NLP)",
+      "Edge computing for data analysis"
+    ],
+    "market_demand_drivers": [
+      "Increasing data volumes across industries",
+      "Need for real-time insights",
+      "Digital transformation initiatives",
+      "Regulatory compliance and data governance"
+    ],
+    "regulatory_factors": [
+      "Data privacy laws such as GDPR and CCPA",
+      "Industry-specific compliance requirements"
+    ],
+    "future_opportunities": [
+      "Specialization in AI-based analytics",
+      "Data engineering crossover roles",
+      "Leadership roles in data governance",
+      "Expansion into data science"
+    ]
+  },
+
+  "additional_resources": {
+    "professional_associations": [
+      "International Institute of Business Analysis (IIBA)",
+      "Data Management Association (DAMA)",
+      "Association for Computing Machinery (ACM)"
+    ],
+    "online_communities": [
+      "r/dataanalysis on Reddit",
+      "Data Science Central",
+      "Kaggle forums"
+    ],
+    "recommended_readings": [
+      "Data Science for Business by Foster Provost and Tom Fawcett",
+      "Storytelling with Data by Cole Nussbaumer Knaflic",
+      "Python for Data Analysis by Wes McKinney"
+    ],
+    "training_platforms": [
+      "Coursera",
+      "DataCamp",
+      "edX",
+      "LinkedIn Learning"
+    ]
+  },
+
+  "citations": [
+    {
+      "title": "Data Analyst Job Market in 2024: Demands and Prospects",
+      "url": "https://365datascience.com/career-advice/the-data-analyst-job-market/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024-10-01"
+    },
+    {
+      "title": "7 Must-Have Skills for Data Analysts",
+      "url": "https://graduate.northeastern.edu/knowledge-hub/data-analyst-skills/",
+      "publisher": "Northeastern University",
+      "date_accessed": "2024-10-01"
+    },
+    {
+      "title": "65+ Data Analyst Interview Questions and Answers for 2025",
+      "url": "https://www.simplilearn.com/tutorials/data-analytics-tutorial/data-analyst-interview-questions",
+      "publisher": "Simplilearn",
+      "date_accessed": "2024-10-01"
+    },
+    {
+      "title": "Average Data Analyst Salaries by Levels, Cities, & Career Stages",
+      "url": "https://joinhandshake.com/blog/students/data-analyst-salary/",
+      "publisher": "Handshake",
+      "date_accessed": "2024-10-01"
+    },
+    {
+      "title": "Data Analyst Salaries in the US",
+      "url": "https://www.glassdoor.com/Salaries/data-analyst-salary-SRCH_KO0,12.htm",
+      "publisher": "Glassdoor",
+      "date_accessed": "2024-10-01"
+    }
   ]
 }
