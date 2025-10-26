@@ -1,3 +1,4 @@
+# Extract user intent and key details from dashboard input
 dashboard_input_processing_task:
   description: >
     Process user input from the dashboard to determine the type of request and extract key information.
@@ -16,7 +17,7 @@ dashboard_input_processing_task:
       "processed_query": "cleaned and formatted query for the target agent"
     }
 
-research_task:
+research_task: 
       description: >
             Research and analyze the current job market for {job_title}. 
             Collect verified data on open roles, hiring trends, key companies, average salaries, 
@@ -25,6 +26,7 @@ research_task:
       expected_output: >
             A structured JSON file with the following exact fields.
             Each field should follow these formats:
+            - "job_title": A single string representing the job title.
             - "job_description": A single string describing the role.
             - "hiring_trends": A list of short string bullet points (not objects).
             - "top_hiring_companies": A list of company names as strings.
@@ -33,6 +35,7 @@ research_task:
 
             Example output:
             {
+                  "job_title": "Machine Learning Engineer",
                   "job_description": "A Machine Learning Engineer builds and deploys machine learning models.",
                   "hiring_trends": ["High demand across tech sectors", "Increasing focus on LLMs"],
                   "top_hiring_companies": ["Google", "Amazon", "OpenAI"],
@@ -46,20 +49,34 @@ content_generation_task:
     Create compelling job descriptions, market insights summaries, and actionable recommendations.
     Format the content to be engaging and easy to understand for job seekers.
   expected_output: >
-    A structured markdown document with the following sections:
-    1. **Job Overview** - Engaging description of the role
-    2. **Market Insights** - Key trends and opportunities
-    3. **Top Companies** - Formatted list of hiring companies
-    4. **Skills in Demand** - Prioritized skill requirements
-    5. **Salary Expectations** - Clear salary range information
-    6. **Next Steps** - Actionable recommendations for job seekers
+    A structured JSON document with the following fields:
+    {
+      "job_overview": "Engaging description of the role as a string",
+      "market_insights": ["List of key trends and opportunities as strings"],
+      "top_companies": ["List of hiring company names as strings"],
+      "skills_in_demand": ["Prioritized list of skill requirements as strings"],
+      "salary_expectations": {
+        "entry_level": "Entry level salary range",
+        "mid_level": "Mid level salary range", 
+        "senior_level": "Senior level salary range"
+      },
+      "next_steps": ["List of actionable recommendations as strings"]
+    }
 
 research_verification_task:
   description: >
     Use web searches to fact-check the content and verify the accuracy of the information.
     Report any inconsistencies, missing fields, or likely false data.
   expected_output: >
-    A short report of incorrect information or validation that the information is correct
+    A structured JSON report with the following fields:
+    {
+      "verification_status": "verified" or "issues_found",
+      "accuracy_score": "percentage or rating of data accuracy",
+      "verified_fields": ["list of fields that passed verification"],
+      "flagged_issues": ["list of specific issues or inconsistencies found"],
+      "corrections": ["list of suggested corrections or updates"],
+      "confidence_level": "high/medium/low confidence in the verification results"
+    }
       
 linkedin_scraping_task:
       description: >   
@@ -67,13 +84,72 @@ linkedin_scraping_task:
             Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
             Collect direct URLs to relevant job postings and summarize the key details (company, title, location, date posted)."
       expected_output: >
-            "A structured markdown list of job postings with the following details for each:
-            - **Job Title**´
-            - **Company Name**
-            - **Location**
-            - **Date Posted**
-            - **Direct Job Posting URL**
-            Additionally, provide the generated LinkedIn search URL used to find these postings."
+            "A structured JSON document with the following fields:
+            {
+              "search_metadata": {
+                "job_title": "searched job title",
+                "location": "searched location",
+                "search_url": "generated LinkedIn search URL",
+                "search_date": "date when search was performed",
+                "total_results_found": "number of job postings found"
+              },
+              "job_postings": [
+                {
+                  "job_title": "exact job title from posting",
+                  "company_name": "company name",
+                  "location": "job location",
+                  "date_posted": "when the job was posted",
+                  "job_url": "direct URL to the job posting",
+                  "employment_type": "full-time/part-time/contract etc",
+                  "experience_level": "entry/mid/senior level if available"
+                }
+              ]
+            }"
+
+linkedin_market_trends_task:
+  description: >
+    Analyze LinkedIn market trends for {job_title} positions to extract comprehensive market intelligence.
+    Focus on job posting trends, salary data, skill demand analysis, hiring patterns, and geographic distribution.
+    Provide quantitative insights and market metrics to support data-driven career decisions.
+  expected_output: >
+    A structured JSON document with comprehensive market trends data:
+    {
+      "market_overview": {
+        "job_title": "analyzed position title",
+        "analysis_date": "date of analysis",
+        "market_health": "strong/moderate/weak market demand"
+      },
+      "job_posting_trends": {
+        "total_active_postings": "current number of open positions",
+        "weekly_posting_volume": "average new postings per week",
+        "growth_rate": "month-over-month growth percentage", 
+        "seasonal_patterns": ["list of seasonal hiring patterns"]
+      },
+      "salary_trends": {
+        "salary_ranges": {
+          "entry_level": {"min": 0, "max": 0, "average": 0},
+          "mid_level": {"min": 0, "max": 0, "average": 0},
+          "senior_level": {"min": 0, "max": 0, "average": 0}
+        },
+        "geographic_salary_variance": [
+          {"location": "city/region", "average_salary": 0, "variance_from_national": "percentage"}
+        ],
+        "salary_trend_direction": "increasing/stable/decreasing"
+      },
+      "skills_analysis": {
+        "top_demanded_skills": [
+          {"skill_name": "skill", "demand_frequency": "percentage", "salary_impact": "percentage"}
+        ],
+        "emerging_skills": ["list of newly trending skills"],
+        "skill_gaps": ["list of skills with high demand but low supply"]
+      },
+      "hiring_insights": {
+        "top_hiring_companies": ["list of companies actively hiring"],
+        "average_time_to_fill": "days to fill positions",
+        "competition_level": "high/medium/low",
+        "geographic_hotspots": ["cities/regions with highest demand"]
+      }
+    }
 
 resume_coach_task:
   description: >

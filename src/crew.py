@@ -39,10 +39,32 @@ class JobResearchCrew:
         )
     
     @agent
+    def linkedin_market_trends_analyst(self) -> Agent:
+        return Agent(
+            config=self.agents_config['linkedin_market_trends_analyst'], # type: ignore[index]
+            tools=[SerperDevTool()],
+            llm=self.llm 
+        )
+    
+    @agent
     def linkedin_scraper(self) -> Agent:
         return Agent(
             config=self.agents_config['LinkedIn_Scraper'], # type: ignore[index]
             tools=[SerperDevTool()],
+            llm=self.llm 
+        )
+    
+    @agent
+    def resume_coach(self) -> Agent:
+        return Agent(
+            config=self.agents_config['resume_coach'], # type: ignore[index]
+            llm=self.llm 
+        )
+    
+    @agent
+    def interview_coach(self) -> Agent:
+        return Agent(
+            config=self.agents_config['interview_coach'], # type: ignore[index]
             llm=self.llm 
         )
     
@@ -71,12 +93,20 @@ class JobResearchCrew:
         )
     
     @task
+    def linkedin_market_trends_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['linkedin_market_trends_task'], # type: ignore[index]
+            agent=self.linkedin_market_trends_analyst(),
+            output_file="src/outputs/linkedin/market_trends.json"
+        )
+    
+    @task
     def content_generation_task(self) -> Task:
         return Task(
             config=self.tasks_config['content_generation_task'], # type: ignore[index]
             agent=self.agent_content_editor(),
-            context=[self.research_task()],
-            output_file="src/outputs/content/job_market_summary.md"
+            context=[self.research_task(), self.linkedin_market_trends_task()],
+            output_file="src/outputs/content/job_market_summary.json"
         )
     
     @task
@@ -84,7 +114,25 @@ class JobResearchCrew:
         return Task(
             config=self.tasks_config['linkedin_scraping_task'], # type: ignore[index]
             agent=self.linkedin_scraper(),
-            output_file="src/outputs/linkedin/job_postings.md"
+            output_file="src/outputs/linkedin/job_postings.json"
+        )
+    
+    @task
+    def resume_coach_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['resume_coach_task'], # type: ignore[index]
+            agent=self.resume_coach(),
+            context=[self.research_task()],
+            output_file="src/outputs/coaching/resume_analysis.md"
+        )
+    
+    @task
+    def interview_coach_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['interview_coach_task'], # type: ignore[index]
+            agent=self.interview_coach(),
+            context=[self.research_task(), self.resume_coach_task()],
+            output_file="src/outputs/coaching/interview_guide.md"
         )
     
     @task
@@ -92,8 +140,8 @@ class JobResearchCrew:
         return Task(
             config=self.tasks_config['research_verification_task'], # type: ignore[index]
             agent=self.verification_specialist(),
-            context=[self.research_task(), self.content_generation_task()],
-            output_file="src/outputs/verification/verification_report.md"
+            context=[self.research_task(), self.content_generation_task(), self.linkedin_market_trends_task()],
+            output_file="src/outputs/verification/verification_report.json"
         )
 
     @crew
