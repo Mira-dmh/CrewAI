@@ -17,31 +17,104 @@ dashboard_input_processing_task:
       "processed_query": "cleaned and formatted query for the target agent"
     }
 
-research_task: 
-      description: >
-            Research and analyze the current job market for {job_title}. 
-            Collect verified data on open roles, hiring trends, key companies, average salaries, 
-            and common interview themes. Identify what qualifications and skills are most valued 
-            and summarize the insights clearly for downstream agents.
-      expected_output: >
-            A structured JSON file with the following exact fields.
-            Each field should follow these formats:
-            - "job_title": A single string representing the job title.
-            - "job_description": A single string describing the role.
-            - "hiring_trends": A list of short string bullet points (not objects).
-            - "top_hiring_companies": A list of company names as strings.
-            - "required_skills": A list of skill names as strings.
-            - "average_salaries": A list of short salary descriptions as strings (not objects, no countries).
+research_task:
+  description: >
+    Research and analyze the current job market for {job_title}.
+    Collect verified data on open roles, hiring trends, key companies, average salaries,
+    and common interview themes. Identify what qualifications and skills are most valued
+    and summarize the insights clearly for downstream agents.
+  expected_output: >
+    A structured JSON file following the example given.
 
-            Example output:
-            {
-                  "job_title": "Machine Learning Engineer",
-                  "job_description": "A Machine Learning Engineer builds and deploys machine learning models.",
-                  "hiring_trends": ["High demand across tech sectors", "Increasing focus on LLMs"],
-                  "top_hiring_companies": ["Google", "Amazon", "OpenAI"],
-                  "required_skills": ["Python", "TensorFlow", "Data Preprocessing"],
-                  "average_salaries": ["Entry: $110k", "Mid: $150k", "Senior: $200k+"]
-            }
+    Example output:
+    {
+      "job_title": "",
+      "last_updated": "",
+      "sources": [],
+
+      "overview": {
+        "summary": "",
+        "key_responsibilities": [],
+        "daily_tasks": [],
+        "work_environment": "",
+        "industries": []
+      },
+
+      "skills": {
+        "technical_skills": [],
+        "soft_skills": [],
+        "tools_and_technologies": [],
+        "certifications": []
+      },
+
+      "education_and_training": {
+        "minimum_education": "",
+        "common_degrees": [],
+        "recommended_courses": [],
+        "professional_certifications": []
+      },
+
+      "career_path": {
+        "entry_level_positions": [],
+        "mid_level_positions": [],
+        "senior_positions": [],
+        "advancement_opportunities": "",
+        "related_roles": []
+      },
+
+      "salary_and_outlook": {
+        "average_salary": {
+          "us": "",
+          "international": [],
+          "by_experience_level": {}
+        },
+        "job_outlook": {
+          "growth_rate": "",
+          "future_trends": ""
+        }
+      },
+
+      "employment_data": {
+        "top_employers": [],
+        "geographic_hotspots": [],
+        "remote_vs_in_person": ""
+      },
+
+      "tools_and_software": {
+        "common_tools": [],
+        "emerging_tools": [],
+        "software_categories": []
+      },
+
+      "interview_and_hiring": {
+        "common_interview_questions": [],
+        "assessment_types": [],
+        "recruitment_process": ""
+      },
+
+      "industry_trends": {
+        "emerging_technologies": [],
+        "market_demand_drivers": [],
+        "regulatory_factors": [],
+        "future_opportunities": []
+      },
+
+      "additional_resources": {
+        "professional_associations": [],
+        "online_communities": [],
+        "recommended_readings": [],
+        "training_platforms": []
+      },
+
+      "citations": [
+        {
+          "title": "",
+          "url": "",
+          "publisher": "",
+          "date_accessed": ""
+        }
+      ]
+    }
 
 content_generation_task:
   description: >
@@ -57,7 +130,7 @@ content_generation_task:
       "skills_in_demand": ["Prioritized list of skill requirements as strings"],
       "salary_expectations": {
         "entry_level": "Entry level salary range",
-        "mid_level": "Mid level salary range", 
+        "mid_level": "Mid level salary range",
         "senior_level": "Senior level salary range"
       },
       "next_steps": ["List of actionable recommendations as strings"]
@@ -77,34 +150,35 @@ research_verification_task:
       "corrections": ["list of suggested corrections or updates"],
       "confidence_level": "high/medium/low confidence in the verification results"
     }
-      
+
 linkedin_scraping_task:
-      description: >   
-            "Generate targeted LinkedIn job search links for {job_title} positions in {location}. 
-            Use LinkedIn's advanced search features to filter by job type, experience level, and date posted. 
-            Collect direct URLs to relevant job postings and summarize the key details (company, title, location, date posted)."
-      expected_output: >
-            "A structured JSON document with the following fields:
-            {
-              "search_metadata": {
-                "job_title": "searched job title",
-                "location": "searched location",
-                "search_url": "generated LinkedIn search URL",
-                "search_date": "date when search was performed",
-                "total_results_found": "number of job postings found"
-              },
-              "job_postings": [
-                {
-                  "job_title": "exact job title from posting",
-                  "company_name": "company name",
-                  "location": "job location",
-                  "date_posted": "when the job was posted",
-                  "job_url": "direct URL to the job posting",
-                  "employment_type": "full-time/part-time/contract etc",
-                  "experience_level": "entry/mid/senior level if available"
-                }
-              ]
-            }"
+  description: >
+    Generate targeted LinkedIn job search links for {job_title} positions in {location}.
+    Use LinkedIn's advanced search features to filter by job type, experience level, and date posted.
+    Collect direct URLs to relevant job postings and summarize the key details
+    (company, title, location, date posted).
+  expected_output: >
+    A structured JSON document with the following fields:
+    {
+      "search_metadata": {
+        "job_title": "searched job title",
+        "location": "searched location",
+        "search_url": "generated LinkedIn search URL",
+        "search_date": "date when search was performed",
+        "total_results_found": "number of job postings found"
+      },
+      "job_postings": [
+        {
+          "job_title": "exact job title from posting",
+          "company_name": "company name",
+          "location": "job location",
+          "date_posted": "when the job was posted",
+          "job_url": "direct URL to the job posting",
+          "employment_type": "full-time/part-time/contract etc",
+          "experience_level": "entry/mid/senior level if available"
+        }
+      ]
+    }
 
 linkedin_market_trends_task:
   description: >
@@ -122,7 +196,7 @@ linkedin_market_trends_task:
       "job_posting_trends": {
         "total_active_postings": "current number of open positions",
         "weekly_posting_volume": "average new postings per week",
-        "growth_rate": "month-over-month growth percentage", 
+        "growth_rate": "month-over-month growth percentage",
         "seasonal_patterns": ["list of seasonal hiring patterns"]
       },
       "salary_trends": {
@@ -153,25 +227,24 @@ linkedin_market_trends_task:
 
 resume_coach_task:
   description: >
-    "Analyze the structured job data and the user's résumé to identify missing or weak skills, 
-    keyword gaps, and improvement opportunities. Generate clear recommendations and, if possible, 
-    produce an updated résumé file that aligns with the job description."
+    Analyze the structured job data and the user's résumé to identify missing or weak skills,
+    keyword gaps, and improvement opportunities. Generate clear recommendations and, if possible,
+    produce an updated résumé file that aligns with the job description.
   expected_output: >
-    "A structured report (Markdown or PDF) containing:
-     1. Missing or weak skills
-     2. Recommended résumé improvements
-     3. Updated résumé content or file path"
-
+    A structured report (Markdown or PDF) containing:
+      1. Missing or weak skills
+      2. Recommended résumé improvements
+      3. Updated résumé content or file path
 
 interview_coach_task:
   description: >
-    "Using the updated résumé and job description, create a full interview preparation guide. 
-    Include realistic technical, behavioral, and scenario-based questions, along with model answers, 
-    useful tips, and a simple evaluation rubric to help the user practice effectively."
+    Using the updated résumé and job description, create a full interview preparation guide.
+    Include realistic technical, behavioral, and scenario-based questions,
+    along with model answers, useful tips, and a simple evaluation rubric
+    to help the user practice effectively.
   expected_output: >
-    "A structured interview guide (Markdown or PDF) containing:
-     1. about 12 realistic questions
-     2. Model answers
-     3. Preparation tips
-     4. Scoring rubric or feedback criteria"
-
+    A structured interview guide (Markdown or PDF) containing:
+      1. About 12 realistic questions
+      2. Model answers
+      3. Preparation tips
+      4. Scoring rubric or feedback criteria
