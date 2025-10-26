@@ -60,11 +60,8 @@ def home_page():
         
         st.markdown("<div style='margin: 1rem 0;'></div>", unsafe_allow_html=True)
         if st.button("🚀 Start Exploring", key="explore_jobs", use_container_width=True, type="primary"):
-            try:
-                st.switch_page("Info_Page")
-            except Exception as e:
-                st.error(f"Navigation error: {e}")
-                st.info("💡 Please use the sidebar navigation to access 'Info Page'")
+            st.query_params.page = "Info_Page"
+            st.rerun()
     
     with col2:
         st.markdown("""
@@ -94,11 +91,8 @@ def home_page():
         
         st.markdown("<div style='margin: 1rem 0;'></div>", unsafe_allow_html=True)
         if st.button("🔍 Find Jobs", key="specific_jobs", use_container_width=True, type="primary"):
-            try:
-                st.switch_page("Specific_Jobs")
-            except Exception as e:
-                st.error(f"Navigation error: {e}")
-                st.info("🎯 Please use the sidebar navigation to access 'Specific Jobs'")
+            st.query_params.page = "Specific_Jobs"
+            st.rerun()
     
     with col3:
         st.markdown("""
@@ -128,11 +122,8 @@ def home_page():
         
         st.markdown("<div style='margin: 1rem 0;'></div>", unsafe_allow_html=True)
         if st.button("📚 Get Prepared", key="resume_prep", use_container_width=True, type="primary"):
-            try:
-                st.switch_page("Resume_Prep")
-            except Exception as e:
-                st.error(f"Navigation error: {e}")
-                st.info("📝 Please use the sidebar navigation to access 'Resume Prep'")
+            st.query_params.page = "Resume_Prep"
+            st.rerun()
     
     # How to get started section
     st.markdown("---")
