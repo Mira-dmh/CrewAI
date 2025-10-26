@@ -1,0 +1,43 @@
+{
+  "job_overview": "As a Data Analyst, you play a critical role in transforming raw data into actionable insights that drive strategic decision-making across multiple industries such as technology, finance, healthcare, and consulting. Your daily work involves collecting, cleaning, and analyzing data sets, using advanced tools like SQL, Python, and visualization platforms (Tableau, Power BI) to identify trends and present findings clearly to stakeholders. Collaboration with technical teams and business leaders is key to understanding challenges and delivering impactful solutions. This dynamic and deadline-driven role offers opportunities for remote or hybrid work environments in both established and emerging sectors.",
+  "market_insights": [
+    "Data Analysts are in high demand due to increasing data volumes and the need for real-time, data-driven business insights.",
+    "Adoption of Artificial Intelligence, machine learning, and cloud analytics platforms (AWS, Azure, Google Cloud) is accelerating, expanding the scope of analytics roles.",
+    "Remote and hybrid work options are becoming standard, increasing accessibility to roles nationwide and globally.",
+    "Specializations in AI analytics, data engineering, and data governance provide growth pathways beyond traditional analysis.",
+    "Compliance with data privacy laws such as GDPR and CCPA shapes new responsibilities around data security and ethical use."
+  ],
+  "top_companies": [
+    "Google",
+    "Amazon",
+    "Microsoft",
+    "Goldman Sachs",
+    "JPMorgan Chase",
+    "Deloitte",
+    "Accenture"
+  ],
+  "skills_in_demand": [
+    "SQL querying and database management (MySQL, PostgreSQL, SQL Server)",
+    "Proficiency with data visualization tools (Tableau, Power BI)",
+    "Strong programming skills in Python (Pandas, NumPy, Matplotlib) and R",
+    "Data cleaning, preprocessing, and statistical analysis expertise",
+    "Critical thinking and problem-solving to interpret complex data",
+    "Effective communication for presenting insights to business stakeholders",
+    "Familiarity with cloud analytics and beginner-level cloud platforms (AWS, Azure, Google Cloud)"
+  ],
+  "salary_expectations": {
+    "entry_level": "$56,000 - $70,000",
+    "mid_level": "$75,000 - $100,000",
+    "senior_level": "$100,000 - $149,000"
+  },
+  "next_steps": [
+    "Pursue a bachelor's degree in Statistics, Computer Science, Mathematics, Economics, or Data Science to build foundational knowledge.",
+    "Develop core technical skills: master SQL, Excel (with Power Query), Python or R programming, and data visualization tools like Tableau or Power BI.",
+    "Obtain professional certifications such as Google Data Analytics Professional Certificate or Microsoft Certified: Data Analyst Associate to validate your expertise.",
+    "Build a portfolio by working on datasets, creating dashboards, and solving real-world data problems to prepare for technical interviews.",
+    "Practice common interview questions focusing on data querying, cleaning, analysis, and communication skills.",
+    "Stay updated on emerging technologies like AI integration, cloud data warehouses, and NLP to remain competitive in the evolving job market.",
+    "Network with professional associations (IIBA, DAMA, ACM) and join active online communities (r/dataanalysis, Kaggle) for learning and career opportunities.",
+    "Consider specialization routes in business intelligence, data engineering, or management to advance your career."
+  ]
+}
