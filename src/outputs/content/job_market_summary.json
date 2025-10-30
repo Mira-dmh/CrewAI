@@ -1,43 +1,45 @@
 {
-  "job_overview": "As a Data Analyst, you play a critical role in transforming raw data into actionable insights that drive strategic decision-making across multiple industries such as technology, finance, healthcare, and consulting. Your daily work involves collecting, cleaning, and analyzing data sets, using advanced tools like SQL, Python, and visualization platforms (Tableau, Power BI) to identify trends and present findings clearly to stakeholders. Collaboration with technical teams and business leaders is key to understanding challenges and delivering impactful solutions. This dynamic and deadline-driven role offers opportunities for remote or hybrid work environments in both established and emerging sectors.",
+  "job_overview": "A Data Scientist applies advanced analytical techniques and machine learning models to extract meaningful insights from complex datasets, driving strategic business decisions. This role involves data cleaning, exploratory data analysis, predictive modeling, and communicating findings to stakeholders, requiring a blend of technical expertise and domain knowledge.",
   "market_insights": [
-    "Data Analysts are in high demand due to increasing data volumes and the need for real-time, data-driven business insights.",
-    "Adoption of Artificial Intelligence, machine learning, and cloud analytics platforms (AWS, Azure, Google Cloud) is accelerating, expanding the scope of analytics roles.",
-    "Remote and hybrid work options are becoming standard, increasing accessibility to roles nationwide and globally.",
-    "Specializations in AI analytics, data engineering, and data governance provide growth pathways beyond traditional analysis.",
-    "Compliance with data privacy laws such as GDPR and CCPA shapes new responsibilities around data security and ethical use."
+    "Demand for Data Scientists continues to surge across industries such as finance, healthcare, and technology.",
+    "Companies are increasingly seeking candidates proficient in AI and deep learning frameworks.",
+    "Remote and hybrid work options are becoming standard, expanding opportunities geographically.",
+    "There is a growing emphasis on ethical AI practices and interpretable machine learning models.",
+    "Cross-industry skills such as domain expertise and communication are highly valued in addition to technical proficiency."
   ],
-  "top_companies": [
+  "top_hiring_companies": [
     "Google",
     "Amazon",
     "Microsoft",
-    "Goldman Sachs",
-    "JPMorgan Chase",
-    "Deloitte",
-    "Accenture"
+    "Facebook (Meta)",
+    "IBM",
+    "NVIDIA",
+    "Accenture",
+    "Deloitte"
   ],
   "skills_in_demand": [
-    "SQL querying and database management (MySQL, PostgreSQL, SQL Server)",
-    "Proficiency with data visualization tools (Tableau, Power BI)",
-    "Strong programming skills in Python (Pandas, NumPy, Matplotlib) and R",
-    "Data cleaning, preprocessing, and statistical analysis expertise",
-    "Critical thinking and problem-solving to interpret complex data",
-    "Effective communication for presenting insights to business stakeholders",
-    "Familiarity with cloud analytics and beginner-level cloud platforms (AWS, Azure, Google Cloud)"
+    "Proficiency in Python and R programming",
+    "Experience with machine learning frameworks like TensorFlow and PyTorch",
+    "Strong understanding of statistics and probability",
+    "Expertise in data pre-processing and cleaning",
+    "Ability to build and deploy predictive models",
+    "Knowledge of SQL and NoSQL databases",
+    "Familiarity with cloud platforms like AWS, Azure, or Google Cloud",
+    "Good communication and data visualization skills",
+    "Experience with big data tools such as Spark and Hadoop"
   ],
-  "salary_expectations": {
-    "entry_level": "$56,000 - $70,000",
-    "mid_level": "$75,000 - $100,000",
-    "senior_level": "$100,000 - $149,000"
-  },
+  "salary_expectations": [
+    "Entry Level: $70,000 - $90,000 per year",
+    "Mid Level: $100,000 - $130,000 per year",
+    "Senior Level: $140,000 - $180,000+ per year"
+  ],
   "next_steps": [
-    "Pursue a bachelor's degree in Statistics, Computer Science, Mathematics, Economics, or Data Science to build foundational knowledge.",
-    "Develop core technical skills: master SQL, Excel (with Power Query), Python or R programming, and data visualization tools like Tableau or Power BI.",
-    "Obtain professional certifications such as Google Data Analytics Professional Certificate or Microsoft Certified: Data Analyst Associate to validate your expertise.",
-    "Build a portfolio by working on datasets, creating dashboards, and solving real-world data problems to prepare for technical interviews.",
-    "Practice common interview questions focusing on data querying, cleaning, analysis, and communication skills.",
-    "Stay updated on emerging technologies like AI integration, cloud data warehouses, and NLP to remain competitive in the evolving job market.",
-    "Network with professional associations (IIBA, DAMA, ACM) and join active online communities (r/dataanalysis, Kaggle) for learning and career opportunities.",
-    "Consider specialization routes in business intelligence, data engineering, or management to advance your career."
+    "Build a strong foundation in statistics, programming, and machine learning through formal education or bootcamps.",
+    "Gain hands-on experience by working on real datasets and developing machine learning projects.",
+    "Develop proficiency in popular data science tools and cloud platforms.",
+    "Focus on improving communication skills to effectively present insights to non-technical stakeholders.",
+    "Stay updated with emerging trends, especially in AI ethics and model interpretability.",
+    "Network with professionals in the field via online communities, conferences, and meetups.",
+    "Tailor your resume and portfolio to highlight relevant projects and skills for data science roles."
   ]
 }
