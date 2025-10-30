@@ -1,87 +1,71 @@
 import streamlit as st
 import json
-import os
-from src.research import JobResearchCrew, llm
+from Crew.research_crew import JobResearchCrew
 from crewai import LLM
+
+llm = LLM(model="gpt-4.1-mini")
+
+def run(job_title):
+    """Run the CrewAI pipeline with the given job title"""
+    crew = JobResearchCrew(llm=llm).crew()
+    result = crew.kickoff(inputs={"job_title": job_title})
+    return result
+
 
 def info_page():
     """Job Market Research Dashboard with AI-Powered Research"""
     
-    st.title("💡 Job Market Research Dashboard")
-    st.markdown("*Explore job markets and generate new research with AI agents*")
-    
-    # Add AI research section at the top
-    st.markdown("## 🤖 Generate New Research")
-    
-    with st.form("research_form"):
-        col1, col2 = st.columns([3, 1])
-        
-        with col1:
-            research_job_title = st.text_input(
-                "Job Title to Research:",
-                placeholder="e.g., Data Scientist, Software Engineer, Product Manager",
-                help="Enter any job title to generate comprehensive market research"
-            )
-        
-        with col2:
-            st.markdown("<br>", unsafe_allow_html=True)  # Spacing
-            research_button = st.form_submit_button("🔍 Research Job Market", use_container_width=True)
-        
-        if research_button and research_job_title:
-            generate_new_research(research_job_title)
-        elif research_button and not research_job_title:
-            st.error("❌ Please enter a job title to research!")
-    
-    st.markdown("---")
-    
-    # Load data from JSON
-    json_path = "src/outputs/lead_research_analyst/research_data.json"
-    with open(json_path, "r") as f:
-        data = json.load(f)
-
     st.title("Job Market Research Dashboard")
-
-    # Create 2x3 grid
-    col1, col2, col3 = st.columns(3)
-    col4, col5, col6 = st.columns(3)
-
-# 1. Job Market Overview
-with col1:
-    st.header("Job Description")
-    st.write(data.get("job_description", "No data available."))
-
-# 2. Top Hiring Companies
-with col2:
-    st.header("Market Trends")
-    if data["hiring_trends"]:
-        for trend in data["hiring_trends"]:
-            st.markdown(f"- {trend}")
-    else:
-        st.write("No data available.")
-
-# 3. In-Demand Skills & Tools
-with col3:
-    st.header("Top Hiring Companies")
-    if data["top_hiring_companies"]:
-        for company in data["top_hiring_companies"]:
-            st.markdown(f"- {company}")
-    else:
-        st.write("No data available.")
-
-# 4. Salary Range & Locations
-with col4:
-    st.header("Required Skills")
-    if data["required_skills"]:
-        for skill in data["required_skills"]:
-            st.markdown(f"- {skill}")
-    else:
-        st.write("No data available.")
-
-# 5. Interview Topics / Skill Focus
-with col5:
-    st.header("Placeholder")
     
+    job_title = st.text_input("Enter a job title or description:", "")
+    run_completed = False
+    
+    if st.button("Run Research Crew"):
+        st.write("⏳ Running the crew, please wait...")
+        try:
+            result = run(job_title)
+            st.success("✅ Crew finished running!")
+            run_completed = True
+        except Exception as e:
+            st.error(f"Error running crew: {e}")
 
-# 6. Citations or Source URLs
-with col6:
-    st.header("Placeholder")
+    if run_completed:
+        json_path = "src/outputs/content/job_market_summary.json"
+        try:
+            with open(json_path, "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            st.warning("No research results found yet.")
+            return
+
+        col1, col2, col3 = st.columns(3)
+        col4, col5, col6 = st.columns(3)
+
+        with col1:
+            st.header("Job Description")
+            st.write(data.get("job_overview", "No data available."))
+
+        with col2:
+            st.header("Market Trends")
+            for trend in data.get("market_insights", []):
+                st.markdown(f"- {trend}")
+
+        with col3:
+            st.header("Top Hiring Companies")
+            for company in data.get("top_hiring_companies", []):
+                st.markdown(f"- {company}")
+
+        with col4:
+            st.header("Required Skills")
+            for skill in data.get("skills_in_demand", []):
+                st.markdown(f"- {skill}")
+
+        with col5:
+            st.header("Expected Salary")
+            for salary in data.get("salary_expectations", []):
+                st.markdown(f"- {salary}")
+
+        with col6:
+            st.header("Next Steps")
+            for step in data.get("next_steps", []):
+                st.markdown(f"- {step}")
