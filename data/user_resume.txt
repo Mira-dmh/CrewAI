@@ -1,25 +1,3 @@
-=== AI-Enhanced Resume Draft ===
-
-·TARGET ROLE:
-
-
-·Top Employers Hiring for This Role:
-
-
-·Key Skills in Demand:
-
-
-·Salary Benchmark:
-
-
-·Suggested Enhancements:
-- All key skills found.
-- Strengthened project and achievement descriptions using measurable impact verbs.
-- Ensured alignment with job requirements and AI/ML trends.
-- Added more technical depth where relevant (e.g., MLOps, model deployment).
-
-·Enhanced Resume Content:
-
 Mona Zhuang
 Email: mona.zhuang@example.com
 Location: Philadelphia, PA
@@ -65,9 +43,3 @@ Arcadia University — B.S. in Computer Science & Mathematics (Expected 2026)
 🤝 ACTIVITIES
 - Arcadia AI Club Member  
 - Volunteer: STEM Outreach for High School Students
-
-### Actionable Tips:
-- Use quantified achievements (e.g., 'increased efficiency by 20%').
-- Start bullet points with strong verbs: Designed, Implemented, Optimized, Deployed.
-- Highlight Python frameworks, teamwork, and project ownership.
-- Mention tools like TensorFlow, PyTorch, Docker, or MLOps pipelines.
