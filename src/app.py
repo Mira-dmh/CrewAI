@@ -49,12 +49,7 @@ with st.sidebar:
         st.rerun()
     
     # Services section
-    st.markdown("### Services")
-    info_button_type = "primary" if current_page == "Info_Page" else "secondary"
-    if st.button("💡 Info Page", key="nav_info", use_container_width=True, type=info_button_type):
-        st.query_params.page = "Info_Page"
-        st.rerun()
-    
+    st.markdown("### Services")   
     job_search_button_type = "primary" if current_page == "job_search" else "secondary"
     if st.button("🔍 Job Search Assistant", key="nav_job_search", use_container_width=True, type=job_search_button_type):
         st.query_params.page = "job_search"

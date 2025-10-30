@@ -1,3 +1,4 @@
+# Task definitions written with help from ChatGPT
 research_task:
   description: >
     Research and analyze the current job market for {job_title}. 
@@ -107,27 +108,9 @@ content_generation_task:
     {
       "job_overview": "Engaging description of the role as a string",
       "market_insights": ["List of key trends and opportunities as strings"],
-      "top_companies": ["List of hiring company names as strings"],
+      "top_hiring_companies": ["List of hiring company names as strings"],
       "skills_in_demand": ["Prioritized list of skill requirements as strings"],
-      "salary_expectations": {
-        "entry_level": "Entry level salary range",
-        "mid_level": "Mid level salary range", 
-        "senior_level": "Senior level salary range"
-      },
+      "salary_expectations": ["List of expected salaries for entry level, mid level and high level of experience as strings"]
       "next_steps": ["List of actionable recommendations as strings"]
     }
 
-research_verification_task:
-  description: >
-    Use web searches to fact-check the content and verify the accuracy of the information.
-    Report any inconsistencies, missing fields, or likely false data.
-  expected_output: >
-    A structured JSON report with the following fields:
-    {
-      "verification_status": "verified" or "issues_found",
-      "accuracy_score": "percentage or rating of data accuracy",
-      "verified_fields": ["list of fields that passed verification"],
-      "flagged_issues": ["list of specific issues or inconsistencies found"],
-      "corrections": ["list of suggested corrections or updates"],
-      "confidence_level": "high/medium/low confidence in the verification results"
-    }
