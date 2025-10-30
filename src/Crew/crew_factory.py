@@ -3,15 +3,8 @@ Crew Factory - Utility for creating and managing different CrewAI instances
 """
 
 from crewai import LLM
-import sys
-import os
 from dotenv import load_dotenv
-
-# Add parent directory to path for imports
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
-from crew import MainCrew
-from .linkedin_search_crew import LinkedInSearchCrew
+import os
 
 load_dotenv()
 
@@ -31,7 +24,8 @@ class CrewFactory:
         """Create and return a MainCrew instance for general job research"""
         if llm is None:
             llm = CrewFactory.create_llm()
-        
+        # Lazy import to avoid import-time path issues
+        from crew import MainCrew
         return MainCrew(llm=llm)
     
     @staticmethod
@@ -39,7 +33,8 @@ class CrewFactory:
         """Create and return a LinkedInSearchCrew instance for LinkedIn-specific searches"""
         if llm is None:
             llm = CrewFactory.create_llm()
-        
+        # Lazy import to avoid circular imports
+        from .linkedin_search_crew import LinkedInSearchCrew
         return LinkedInSearchCrew(llm=llm)
     
     @staticmethod
