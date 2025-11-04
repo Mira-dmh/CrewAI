@@ -1,178 +1,148 @@
 {
-  "job_title": "Data Scientist",
-  "last_updated": "2024-06",
+  "job_title": "Data Scientist and Data Analyst",
+  "last_updated": "2024-06-01",
   "sources": [
-    {
-      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
-      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "Data Scientists : Occupational Outlook Handbook",
-      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
-      "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "WiDS 2024 Data Science & AI Professionals Salary Report",
-      "url": "https://www.widsworldwide.org/WiDS_2024_Data_Science_AI_Professionals_Salary_Report.pdf",
-      "publisher": "WiDS Worldwide",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "The Interview Query 2024 Data Science Report",
-      "url": "https://www.interviewquery.com/p/the-2024-data-science-report",
-      "publisher": "Interview Query",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "Data Scientist Job Description and Salary - Dataquest",
-      "url": "https://www.dataquest.io/blog/data-scientist-salary-and-job-description/",
-      "publisher": "Dataquest",
-      "date_accessed": "2024-06"
-    }
+    "https://365datascience.com/career-advice/data-scientist-job-market/",
+    "https://365datascience.com/career-advice/the-data-analyst-job-market/",
+    "https://www.bls.gov/ooh/math/data-scientists.htm",
+    "https://www.dataquest.io/blog/data-science-jobs-that-are-in-demand/",
+    "https://www.coursera.org/articles/what-does-a-data-analyst-do-a-career-guide",
+    "https://www.dice.com/career-advice/data-analyst"
   ],
 
   "overview": {
-    "summary": "Data Scientists analyze complex data sets to discover insights, develop predictive models, and support data-driven decision-making. The role combines statistical analysis, machine learning, and business understanding to address organizational challenges. Demand for data scientists remains robust, with significant growth projected driven by digital transformation and AI adoption.",
+    "summary": "Data Scientists and Data Analysts transform raw data into actionable insights that drive business decisions. Data Scientists focus more on complex data modeling, machine learning, and predictive analytics, while Data Analysts primarily perform data cleaning, visualization, and reporting. Both roles are critical in sectors ranging from finance, healthcare, technology, retail to government.",
     "key_responsibilities": [
-      "Collect and clean structured and unstructured data",
-      "Perform exploratory data analysis to identify trends and patterns",
-      "Develop and validate predictive machine learning models",
-      "Communicate findings and insights to stakeholders",
-      "Collaborate with engineering and business teams",
-      "Implement data-driven strategies to improve business outcomes"
+      "Design and implement data models and algorithms",
+      "Analyze structured and unstructured data to identify trends",
+      "Prepare and clean data for analysis",
+      "Generate reports and dashboards to communicate findings",
+      "Collaborate with stakeholders to understand business needs"
     ],
     "daily_tasks": [
-      "Data acquisition and preprocessing",
-      "Feature engineering and model development",
-      "Running data experiments and testing hypotheses",
-      "Creating visualizations and reports",
-      "Optimizing models for performance",
-      "Staying updated on new algorithms and techniques"
+      "Data cleaning and preprocessing",
+      "Running statistical analyses",
+      "Developing machine learning models (Data Scientists)",
+      "Visualizing data with tools like Tableau or Power BI",
+      "Communicating results to technical and non-technical teams"
     ],
-    "work_environment": "Primarily office-based or remote work with cross-functional teams; often involves collaboration with data engineers, analysts, and domain experts. Work is project-driven with Agile methodologies common.",
+    "work_environment": "Data roles are typically office-based or remote within corporate, tech, consulting firms or government agencies. They often involve teamwork and cross-functional collaboration.",
     "industries": [
       "Technology",
-      "Finance and Banking",
-      "Healthcare and Biopharma",
+      "Finance",
+      "Healthcare",
       "Retail and E-commerce",
-      "Manufacturing",
-      "Telecommunications",
-      "Government and Public Sector"
+      "Government",
+      "Consulting"
     ]
   },
 
   "skills": {
     "technical_skills": [
-      "Python and R programming",
-      "Machine Learning algorithms",
-      "Statistical analysis and hypothesis testing",
-      "Data wrangling and ETL processes",
-      "SQL and NoSQL databases",
-      "Data visualization (Tableau, Power BI, Matplotlib, Seaborn)",
-      "Big Data technologies (Spark, Hadoop)",
-      "Cloud platforms (AWS, GCP, Azure)",
-      "Natural Language Processing (NLP)",
-      "Computer Vision techniques"
+      "Statistics and Probability",
+      "Machine Learning and AI",
+      "Data Wrangling",
+      "Programming in Python, R, SQL",
+      "Data Visualization",
+      "Big Data Technologies (Hadoop, Spark)"
     ],
     "soft_skills": [
-      "Analytical thinking",
-      "Communication and storytelling with data",
-      "Collaboration and teamwork",
-      "Problem-solving mindset",
-      "Adaptability to new tools and concepts",
-      "Project management"
+      "Critical Thinking",
+      "Communication",
+      "Problem-Solving",
+      "Collaboration",
+      "Business Acumen"
     ],
     "tools_and_technologies": [
+      "Python",
+      "R",
+      "SQL",
+      "Tableau",
+      "Power BI",
       "Jupyter Notebooks",
-      "TensorFlow, PyTorch",
-      "Git version control",
-      "Docker and Kubernetes",
-      "Apache Airflow",
-      "Excel and advanced spreadsheet tools"
+      "Excel",
+      "Hadoop",
+      "Spark",
+      "AWS/GCP/Azure Cloud Services"
     ],
     "certifications": [
-      "Certified Data Scientist (DASCA or equivalent)",
-      "Google Professional Data Engineer",
-      "AWS Certified Machine Learning Specialty",
-      "Microsoft Certified: Azure Data Scientist Associate",
-      "SAS Certified Data Scientist"
+      "Certified Data Scientist (CDS)",
+      "Microsoft Certified: Data Analyst Associate",
+      "Google Data Analytics Professional Certificate",
+      "AWS Certified Data Analytics"
     ]
   },
 
   "education_and_training": {
-    "minimum_education": "Bachelor's degree",
+    "minimum_education": "Bachelor’s degree",
     "common_degrees": [
       "Computer Science",
       "Statistics",
       "Mathematics",
+      "Information Technology",
       "Data Science",
-      "Engineering",
-      "Physics"
+      "Economics"
     ],
     "recommended_courses": [
       "Machine Learning",
-      "Probability and Statistics",
-      "Data Structures and Algorithms",
+      "Data Mining",
+      "Statistical Modeling",
       "Big Data Analytics",
-      "Artificial Intelligence",
       "Data Visualization"
     ],
     "professional_certifications": [
       "Certified Data Scientist",
-      "Google Professional Data Engineer",
-      "AWS Machine Learning Specialty",
-      "Microsoft Azure Data Scientist Associate"
+      "Microsoft Data Analyst Certification",
+      "Google Data Analytics Certification",
+      "AWS Certified Data Analytics"
     ]
   },
 
   "career_path": {
     "entry_level_positions": [
-      "Junior Data Scientist",
       "Data Analyst",
-      "Machine Learning Intern"
+      "Junior Data Scientist",
+      "Business Intelligence Analyst"
     ],
     "mid_level_positions": [
       "Data Scientist",
-      "Machine Learning Engineer",
-      "Business Intelligence Analyst"
+      "Data Engineer",
+      "Machine Learning Engineer"
     ],
     "senior_positions": [
       "Senior Data Scientist",
       "Lead Data Scientist",
-      "Data Science Manager",
-      "AI Specialist"
+      "Data Science Manager"
     ],
-    "advancement_opportunities": "With experience, professionals can move into leadership roles such as Data Science Manager, Director of Analytics, or Chief Data Officer. Advancement often involves a blend of technical expertise and strategic business acumen.",
+    "advancement_opportunities": "Career progression may lead to senior technical roles, management of data teams, or transitioning into specialized areas like AI engineering or data architecture.",
     "related_roles": [
       "Data Engineer",
       "Machine Learning Engineer",
-      "AI Research Scientist",
-      "Business Analyst",
+      "Business Intelligence Analyst",
       "Statistician"
     ]
   },
 
   "salary_and_outlook": {
     "average_salary": {
-      "us": "$118,000 per year",
+      "us": {
+        "data_scientist": "$112,590",
+        "data_analyst": "$90,628"
+      },
       "international": [
-        {"country": "United Kingdom", "salary": "£55,000 per year"},
-        {"country": "Canada", "salary": "C$90,000 per year"},
-        {"country": "Germany", "salary": "€60,000 per year"},
-        {"country": "India", "salary": "₹1,200,000 per year"}
+        {"country": "Canada", "average_salary": "CAD 80,000"},
+        {"country": "UK", "average_salary": "£50,000"},
+        {"country": "Germany", "average_salary": "€60,000"}
       ],
       "by_experience_level": {
-        "entry_level": "$85,000",
-        "mid_level": "$115,000",
-        "senior_level": "$150,000+"
+        "entry_level": "$70,000",
+        "mid_level": "$100,000",
+        "senior_level": "$140,000+"
       }
     },
     "job_outlook": {
-      "growth_rate": "34% projected growth from 2024 to 2034 (U.S. BLS)",
-      "future_trends": "Increasing specialization in NLP, computer vision, and AI engineering; greater automation of routine tasks; rising integration of AI and machine learning into business processes; emphasis on ethical AI and data privacy."
+      "growth_rate": "Projected 34-35% growth from 2024 to 2032 (per BLS)",
+      "future_trends": "Increasing demand for machine learning, natural language processing, AI integration, and big data handling skills. Greater emphasis on business acumen and communication."
     }
   },
 
@@ -183,119 +153,113 @@
       "Facebook (Meta)",
       "Microsoft",
       "IBM",
-      "Apple",
-      "Financial institutions (JPMorgan, Goldman Sachs)",
-      "Pharmaceutical companies (Pfizer, Novartis)"
+      "Accenture",
+      "Deloitte"
     ],
     "geographic_hotspots": [
-      "San Francisco Bay Area",
-      "New York City",
-      "Seattle",
-      "Boston",
-      "London",
-      "Toronto",
-      "Bangalore",
-      "Berlin"
+      "San Francisco Bay Area, USA",
+      "New York City, USA",
+      "Seattle, USA",
+      "Toronto, Canada",
+      "London, UK",
+      "Berlin, Germany"
     ],
-    "remote_vs_in_person": "Hybrid models are increasingly common with many companies offering remote work options while emphasizing some in-person collaboration."
+    "remote_vs_in_person": "High adoption of remote/hybrid work models especially post-pandemic. Many companies offer remote opportunities but some roles require onsite presence for collaboration."
   },
 
   "tools_and_software": {
     "common_tools": [
-      "Python (Pandas, scikit-learn)",
+      "Python",
       "R",
       "SQL",
-      "Jupyter Notebook",
       "Tableau",
-      "Power BI"
+      "Power BI",
+      "Jupyter Notebooks"
     ],
     "emerging_tools": [
-      "Low-code AI platforms",
-      "Prompt engineering tools",
-      "AutoML frameworks",
-      "Cloud-native machine learning services"
+      "Databricks",
+      "Apache Spark",
+      "Snowflake",
+      "AI tools like GPT integration for analytics"
     ],
     "software_categories": [
-      "Statistical analysis software",
-      "Machine learning frameworks",
-      "Data visualization tools",
-      "Big data processing",
-      "Cloud computing platforms"
+      "Data Analysis",
+      "Data Visualization",
+      "Big Data Processing",
+      "Machine Learning Frameworks",
+      "Cloud Data Platforms"
     ]
   },
 
   "interview_and_hiring": {
     "common_interview_questions": [
-      "Explain a machine learning project you worked on",
-      "How do you handle missing data?",
-      "Describe differences between supervised and unsupervised learning",
-      "Explain a difficult data problem you solved",
-      "Coding challenges in Python or SQL",
-      "Design a predictive model for a business problem",
-      "Behavioral questions about teamwork and problem solving"
+      "Explain a data project you worked on and your role.",
+      "How do you handle missing or corrupted data?",
+      "Describe your experience with SQL and data querying.",
+      "Explain a machine learning algorithm you've used.",
+      "How do you communicate technical results to non-technical stakeholders?",
+      "Problem-solving exercises involving data sets or coding."
     ],
     "assessment_types": [
       "Technical coding tests (Python, SQL)",
-      "Case studies and business problem exercises",
-      "Machine learning model design and evaluation",
+      "Case studies and data challenges",
       "Behavioral interviews",
-      "System design discussions"
+      "System design related to data pipelines",
+      "Statistical analysis questions"
     ],
-    "recruitment_process": "Typically involves resume screening, one or more technical interviews including coding exercises and machine learning problem solving, followed by behavioral interviews. Some companies include take-home assignments or case studies."
+    "recruitment_process": "Typically involves resume screening, technical assessments (coding and case studies), multiple rounds of interviews including technical and behavioral, and sometimes a final presentation or project."
   },
 
   "industry_trends": {
     "emerging_technologies": [
-      "Artificial Intelligence and Deep Learning",
       "Natural Language Processing",
       "Automated Machine Learning (AutoML)",
+      "Explainable AI",
       "Edge AI",
-      "Explainable AI (XAI)"
+      "Data Mesh architecture"
     ],
     "market_demand_drivers": [
-      "Increased emphasis on data-driven decision making",
-      "Growth in AI adoption across industries",
-      "Proliferation of big data",
-      "Demand for personalized customer experiences",
-      "Need for automation of analytical tasks"
+      "Digital transformation push",
+      "Increased data generation from IoT and social media",
+      "Competitive advantage through data-driven decision making",
+      "Regulatory requirements for data privacy"
     ],
     "regulatory_factors": [
-      "Data privacy laws (GDPR, CCPA)",
-      "Ethical AI guidelines",
-      "Industry-specific compliance (healthcare, finance)"
+      "GDPR",
+      "CCPA",
+      "Data privacy and security regulations affecting data handling"
     ],
     "future_opportunities": [
-      "Specialization in AI ethics and bias mitigation",
-      "Growth in AI engineering roles",
-      "Expansion of data science in emerging markets",
-      "Integration of AI with Internet of Things (IoT)"
+      "AI-enhanced analytics roles",
+      "Data ethics and governance specialists",
+      "Specialized ML engineer roles",
+      "Cross-industry data consultancy"
     ]
   },
 
   "additional_resources": {
     "professional_associations": [
-      "INFORMS",
-      "IEEE Computational Intelligence Society",
-      "Association for Computing Machinery (ACM)",
-      "Data Science Association"
+      "American Statistical Association (ASA)",
+      "Data Science Association",
+      "Association for Computing Machinery (ACM) SIGKDD"
     ],
     "online_communities": [
       "Kaggle",
-      "Data Science Central",
-      "r/datascience (Reddit)",
-      "Towards Data Science (Medium)"
+      "Reddit r/datascience",
+      "Stack Overflow",
+      "LinkedIn Data Science groups"
     ],
     "recommended_readings": [
-      "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow by Aurélien Géron",
-      "The Elements of Statistical Learning by Hastie, Tibshirani, and Friedman",
-      "Data Science for Business by Foster Provost and Tom Fawcett"
+      "“Data Science for Business” by Foster Provost and Tom Fawcett",
+      "“Python for Data Analysis” by Wes McKinney",
+      "“The Elements of Statistical Learning” by Hastie, Tibshirani, and Friedman"
     ],
     "training_platforms": [
       "Coursera",
-      "edX",
       "Udacity",
       "DataCamp",
-      "Kaggle Learn"
+      "edX",
+      "365 Data Science"
     ]
   },
 
@@ -304,31 +268,37 @@
       "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
       "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
       "publisher": "365 Data Science",
-      "date_accessed": "2024-06"
+      "date_accessed": "2024-06-01"
+    },
+    {
+      "title": "Data Analyst Job Market in 2024: Demands and Prospects",
+      "url": "https://365datascience.com/career-advice/the-data-analyst-job-market/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024-06-01"
     },
     {
       "title": "Data Scientists : Occupational Outlook Handbook",
       "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
       "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "2024-06"
+      "date_accessed": "2024-06-01"
     },
     {
-      "title": "WiDS 2024 Data Science & AI Professionals Salary Report",
-      "url": "https://www.widsworldwide.org/WiDS_2024_Data_Science_AI_Professionals_Salary_Report.pdf",
-      "publisher": "WiDS Worldwide",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "The Interview Query 2024 Data Science Report",
-      "url": "https://www.interviewquery.com/p/the-2024-data-science-report",
-      "publisher": "Interview Query",
-      "date_accessed": "2024-06"
-    },
-    {
-      "title": "Data Scientist Job Description and Salary - Dataquest",
-      "url": "https://www.dataquest.io/blog/data-scientist-salary-and-job-description/",
+      "title": "10 Data Science Jobs That Are in Demand",
+      "url": "https://www.dataquest.io/blog/data-science-jobs-that-are-in-demand/",
       "publisher": "Dataquest",
-      "date_accessed": "2024-06"
+      "date_accessed": "2024-06-01"
+    },
+    {
+      "title": "What Does a Data Analyst Do? Your 2025 Career Guide",
+      "url": "https://www.coursera.org/articles/what-does-a-data-analyst-do-a-career-guide",
+      "publisher": "Coursera",
+      "date_accessed": "2024-06-01"
+    },
+    {
+      "title": "2024 Guide: Mastering the Data Analyst Career",
+      "url": "https://www.dice.com/career-advice/data-analyst",
+      "publisher": "Dice",
+      "date_accessed": "2024-06-01"
     }
   ]
 }
