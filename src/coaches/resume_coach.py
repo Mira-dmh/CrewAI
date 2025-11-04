@@ -1,101 +1,104 @@
+
+"""
+Resume Coach - AI-powered resume improvement assistant
+Analyzes resume content, identifies missing skills, and rewrites the resume.
+"""
+
 import json
-from pathlib import Path
+import os
 import re
+from pathlib import Path
+from crewai import LLM
+from dotenv import load_dotenv
 
-def normalize(text: str) -> str:
-    """Clean and standardize text"""
-    return re.sub(r"\s+", " ", text.strip().lower())
-
-def contains(word: str, text: str) -> bool:
-    """Check if a word is in text (case-insensitive)."""
-    return normalize(word) in normalize(text)
+# Load API keys
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = BASE_DIR / "outputs" / "lead_research_analyst"
 OUT_DIR = BASE_DIR / "outputs"
 OUT_DIR.mkdir(exist_ok=True)
 
+def normalize(text: str) -> str:
+    """Clean and standardize text."""
+    return re.sub(r"\s+", " ", text.strip()).lower()
+
+def contains(word: str, text: str) -> bool:
+    """Check if a word is contained in text (case-insensitive)."""
+    return normalize(word) in normalize(text)
+
 def load_job_data():
-    """Load analyzed job research data."""
+    """Load job research results."""
     path = DATA_DIR / "research_data.json"
+    if not path.exists():
+        raise FileNotFoundError(f"❌ research_data.json not found at {path}")
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def load_resume_text():
-    """Load user's resume (plain text)."""
-    resume_path = BASE_DIR / "data" / "user_resume.txt"
-    with open(resume_path, "r", encoding="utf-8") as f:
+def load_resume_text(uploaded_resume_path=None):
+    """Load user resume text."""
+    data_path = uploaded_resume_path or (BASE_DIR / "data" / "user_resume.txt")
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"❌ Resume not found at {data_path}")
+    with open(data_path, "r", encoding="utf-8") as f:
         return f.read()
 
 def find_missing_skills(job_data, resume_text):
-    missing = []
-    for skill in job_data.get("required_skills", []):
-        if not contains(skill, resume_text):
-            missing.append(skill)
-    return missing
+    """Find skills in job description that are missing in resume."""
+    return [s for s in job_data.get("required_skills", []) if not contains(s, resume_text)]
 
-def enhance_resume(resume_text, job_data, missing_skills):
-    """Rebuild a stronger resume version."""
-    header = "=== AI-Enhanced Resume Draft ===\n\n"
-    jd = job_data.get("job_description", "")
-    companies = ", ".join(job_data.get("top_hiring_companies", []))
+def build_improvement_prompt(job_data, resume_text, missing_skills):
+    """Build LLM prompt for resume rewrite."""
+    job_title = job_data.get("job_title", "the target role")
+    job_description = job_data.get("job_description", "")
     skills = ", ".join(job_data.get("required_skills", []))
-    salary = ", ".join(job_data.get("average_salaries", []))
 
-    improvements = [
-        f"Added missing or underrepresented skills: {', '.join(missing_skills)}." if missing_skills else "All key skills found.",
-        "Strengthened project and achievement descriptions using measurable impact verbs.",
-        "Ensured alignment with job requirements and AI/ML trends.",
-        "Added more technical depth where relevant (e.g., MLOps, model deployment).",
-    ]
+    return f"""
+You are an expert resume editor. The user is applying for **{job_title}**.
 
-    # Rebuild main sections
-    enhanced = (
-        f"{header}"
-        f"·TARGET ROLE:\n{jd}\n\n"
-        f"·Top Employers Hiring for This Role:\n{companies}\n\n"
-        f"·Key Skills in Demand:\n{skills}\n\n"
-        f"·Salary Benchmark:\n{salary}\n\n"
-        f"·Suggested Enhancements:\n- " + "\n- ".join(improvements) + "\n\n"
-        f"·Enhanced Resume Content:\n\n"
-        f"{resume_text}\n\n"
-    )
+Here is their current resume:
+---
+{resume_text}
+---
 
-    # Add new section: AI recommendations
-    if missing_skills:
-        enhanced += "### New Suggested Skill Section:\n"
-        enhanced += "\n".join([f"- {skill}" for skill in missing_skills]) + "\n\n"
+Job Description:
+{job_description}
 
-    enhanced += "### Actionable Tips:\n"
-    enhanced += (
-        "- Use quantified achievements (e.g., 'increased efficiency by 20%').\n"
-        "- Start bullet points with strong verbs: Designed, Implemented, Optimized, Deployed.\n"
-        "- Highlight Python frameworks, teamwork, and project ownership.\n"
-        "- Mention tools like TensorFlow, PyTorch, Docker, or MLOps pipelines.\n"
-    )
+Key required skills: {skills}
+Missing skills: {', '.join(missing_skills) if missing_skills else 'None'}
 
-    return enhanced
+Rewrite the resume to:
+1. Add missing but relevant skills.
+2. Quantify achievements (numbers, metrics).
+3. Improve clarity and professional tone.
+4. Keep it honest—no fabricated experience.
+5. Return the improved resume in clean markdown format.
+"""
 
-
-def write_updated_resume(content: str):
-    """Save enhanced resume text."""
+def write_updated_resume(text):
+    """Save the improved resume to file."""
     out_path = OUT_DIR / "resume_updated.txt"
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(content)
+        f.write(text)
     return out_path
 
-def run_resume_coach(resume_path=None):
+def run_resume_coach(uploaded_resume_path=None):
+    """Main entrypoint: run the resume improvement pipeline."""
     job_data = load_job_data()
-    resume_text = load_resume_text() if resume_path is None else Path(resume_path).read_text(encoding="utf-8")
-
+    resume_text = load_resume_text(uploaded_resume_path)
     missing_skills = find_missing_skills(job_data, resume_text)
-    enhanced_resume = enhance_resume(resume_text, job_data, missing_skills)
-    updated_path = write_updated_resume(enhanced_resume)
 
+    prompt = build_improvement_prompt(job_data, resume_text, missing_skills)
+
+    llm = LLM(model="gpt-4o-mini", temperature=0.7)
+    print("🤖 Improving resume with AI...")
+    improved_resume = llm.call(prompt)
+
+    path = write_updated_resume(improved_resume)
     return {
         "missing_skills": missing_skills,
-        "updated_resume_path": str(updated_path),
-        "improvement_summary": f"Enhanced resume generated with {len(missing_skills)} missing skills identified."
+        "updated_resume_path": str(path),
+        "preview": improved_resume[:700] + "..."
     }
 
 if __name__ == "__main__":
