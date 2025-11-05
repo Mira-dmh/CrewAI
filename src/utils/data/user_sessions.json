@@ -1,0 +1,57 @@
+{
+  "sessions": [
+    {
+      "id": "session_4e6c7652",
+      "timestamp": "2025-11-04T13:35:08.746699",
+      "type": "navigation",
+      "title": "Settings Visited",
+      "details": "User visited Settings page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_da1523ff",
+      "timestamp": "2025-11-04T13:35:05.936388",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_0c72c1cf",
+      "timestamp": "2025-11-02T21:04:40.842916",
+      "type": "navigation",
+      "title": "Settings Visited",
+      "details": "User visited Settings page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_e17c78b4",
+      "timestamp": "2025-11-02T21:04:35.910643",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    }
+  ],
+  "metadata": {
+    "last_updated": "2025-11-04T13:35:08.746863",
+    "total_sessions": 4,
+    "version": "1.0"
+  }
+}

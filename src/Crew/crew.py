@@ -7,8 +7,8 @@ from typing import List
 @CrewBase
 class MainCrew:
     
-    agents_config = 'config/agents.yaml'
-    tasks_config = 'config/tasks.yaml'
+    agents_config = '../config/agents.yaml'
+    tasks_config = '../config/tasks.yaml'
     
     
     def __init__(self, llm):

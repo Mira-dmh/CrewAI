@@ -1,0 +1,142 @@
+# LinkedIn Specific Tasks Configuration
+# These tasks are specifically designed for LinkedIn job search and market analysis
+
+dashboard_input_processing_task:
+  description: >
+    Process user input from the dashboard to determine the type of request and extract key information.
+    Analyze whether the user wants:
+    1. General job market research for a specific position (route to lead_research_analyst)
+    2. Location-based job search for specific postings (route to LinkedIn_Scraper)
+    Extract job titles, locations, and any additional keywords from the user input.
+  expected_output: >
+    A structured JSON response with the following fields:
+    {
+      "request_type": "job_research" or "location_search",
+      "job_title": "extracted job title",
+      "location": "extracted location (if provided)",
+      "keywords": ["list", "of", "relevant", "keywords"],
+      "routing_recommendation": "lead_research_analyst" or "linkedin_scraper",
+      "processed_query": "cleaned and formatted query for the target agent"
+    }
+
+linkedin_scraping_task:
+  description: >
+    Generate targeted LinkedIn job search links for {job_title} positions in {location}.
+    Use LinkedIn's advanced search features to filter by job type, experience level, and date posted.
+    Collect direct URLs to relevant job postings and summarize the key details
+    (company, title, location, date posted).
+    IMPORTANT: Clearly distinguish between original post dates and repost dates:
+    - "Posted X days/weeks ago" = original posting time
+    - "Reposted X days/weeks ago" = the job was reposted, NOT the original date
+    - If a job shows "Reposted", try to identify when it was originally posted
+    - Always include both dates if available (original_post_date and repost_date)
+  expected_output: >
+    A structured JSON document with the following fields:
+    {
+      "search_metadata": {
+        "job_title": "searched job title",
+        "location": "searched location",
+        "search_url": "generated LinkedIn search URL",
+        "search_date": "date when search was performed",
+        "total_results_found": "number of job postings found"
+      },
+      "job_postings": [
+        {
+          "job_title": "exact job title from posting",
+          "company_name": "company name",
+          "location": "job location",
+          "date_posted": "when the job was originally posted (not repost date)",
+          "repost_date": "if the job was reposted, when it was reposted",
+          "is_repost": true or false,
+          "date_info_raw": "the exact date string from LinkedIn",
+          "job_url": "direct URL to the job posting",
+          "employment_type": "full-time/part-time/contract etc",
+          "experience_level": "entry/mid/senior level if available"
+        }
+      ]
+    }
+
+linkedin_market_trends_task:
+  description: >
+    Analyze LinkedIn market trends for {job_title} positions to extract comprehensive market intelligence.
+    Focus on job posting trends, salary data, skill demand analysis, hiring patterns, and geographic distribution.
+    Provide quantitative insights and market metrics to support data-driven career decisions.
+  expected_output: >
+    A structured JSON document with comprehensive market trends data:
+    {
+      "market_overview": {
+        "job_title": "analyzed position title",
+        "analysis_date": "date of analysis",
+        "market_health": "strong/moderate/weak market demand"
+      },
+      "job_posting_trends": {
+        "total_active_postings": "current number of open positions",
+        "weekly_posting_volume": "average new postings per week",
+        "growth_rate": "month-over-month growth percentage",
+        "seasonal_patterns": ["list of seasonal hiring patterns"]
+      },
+      "salary_trends": {
+        "salary_ranges": {
+          "entry_level": {"min": 0, "max": 0, "average": 0},
+          "mid_level": {"min": 0, "max": 0, "average": 0},
+          "senior_level": {"min": 0, "max": 0, "average": 0}
+        },
+        "geographic_salary_variance": [
+          {"location": "city/region", "average_salary": 0, "variance_from_national": "percentage"}
+        ],
+        "salary_trend_direction": "increasing/stable/decreasing"
+      },
+      "skills_analysis": {
+        "top_demanded_skills": [
+          {"skill_name": "skill", "demand_frequency": "percentage", "salary_impact": "percentage"}
+        ],
+        "emerging_skills": ["list of newly trending skills"],
+        "skill_gaps": ["list of skills with high demand but low supply"]
+      },
+      "hiring_insights": {
+        "top_hiring_companies": ["list of companies actively hiring"],
+        "average_time_to_fill": "days to fill positions",
+        "competition_level": "high/medium/low",
+        "geographic_hotspots": ["cities/regions with highest demand"]
+      }
+    }
+
+research_verification_task:
+  description: >
+    Use web searches to fact-check the content and verify the accuracy of the information.
+    Pay special attention to date validation:
+    - Dates like "Reposted 1 week ago" indicate the job was RE-POSTED, not originally posted
+    - Dates like "Posted 2 days ago" indicate original posting time
+    - For reposted jobs, try to find the original posting date if possible
+    - Flag any date inconsistencies or impossible dates
+    Report any inconsistencies, missing fields, or likely false data.
+  expected_output: >
+    A structured JSON report with the following fields:
+    {
+      "verification_status": "verified" or "issues_found",
+      "accuracy_score": "percentage or rating of data accuracy",
+      "verified_fields": ["list of fields that passed verification"],
+      "flagged_issues": [
+        {
+          "issue_type": "date_inconsistency" or "missing_field" or "suspicious_data",
+          "field_name": "name of the problematic field",
+          "current_value": "current value that needs review",
+          "issue_description": "detailed explanation of the issue",
+          "suggested_correction": "recommended fix if applicable"
+        }
+      ],
+      "date_validation": {
+        "original_vs_repost": [
+          {
+            "job_title": "job title",
+            "company": "company name",
+            "date_info": "date string from posting",
+            "is_repost": true or false,
+            "original_post_date": "original date if available",
+            "note": "explanation or clarification"
+          }
+        ]
+      },
+      "corrections": ["list of suggested corrections or updates"],
+      "confidence_level": "high/medium/low confidence in the verification results"
+    }

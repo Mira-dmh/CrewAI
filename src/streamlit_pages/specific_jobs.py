@@ -1,5 +1,6 @@
 """
-Specific Jobs Page - Targeted Job Search Functionality with CrewAI Integration
+Specific Jobs Page - LinkedIn Job Search with AI-Powered Analysis
+Streamlined and organized interface for targeted job discovery
 """
 
 import streamlit as st
@@ -8,588 +9,983 @@ import os
 import json
 from datetime import datetime
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Load environment variables
-load_dotenv()
+env_path = Path(__file__).parent.parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # Import CrewAI components
 try:
     from crewai import LLM
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    from crew import MainCrew
     from Crew.linkedin_search_crew import LinkedInSearchCrew
     CREWAI_AVAILABLE = True
-except ImportError:
+    IMPORT_ERROR = None
+except (ImportError, Exception) as e:
     CREWAI_AVAILABLE = False
+    IMPORT_ERROR = str(e)
+
+
+# ============================================================================
+# MAIN PAGE
+# ============================================================================
 
 def specific_jobs_page():
-    """Targeted job search functionality"""
-    st.markdown("## 🎯 Specific Jobs Search")
+    """Main entry point for the specific jobs search page"""
     
-    st.markdown("### Find Targeted Job Listings")
-    st.markdown("This page will help you search for specific job positions based on your criteria.")
+    # Page Header
+    st.markdown("# 🎯 LinkedIn Job Search")
+    st.markdown("*AI-powered job discovery with real-time market analysis*")
+    st.markdown("---")
     
-    # Job search form
-    with st.form("job_search_form"):
-        st.markdown("**Search Parameters:**")
+    # Check system readiness
+    system_ready, error_msg = check_system_status()
+    
+    if not system_ready:
+        display_system_error(error_msg)
+        return
+    
+    # Main tabs for organized content
+    tab1, tab2 = st.tabs([
+        "🎯 Advanced Search",
+        "📚 Search History"
+    ])
+    
+    with tab1:
+        render_advanced_search()
+    
+    with tab2:
+        render_search_history()
+    
+    # Footer
+    render_page_footer()
+
+
+# ============================================================================
+# SYSTEM STATUS
+# ============================================================================
+
+def check_system_status():
+    """Check if all required components are available"""
+    if not CREWAI_AVAILABLE:
+        return False, f"CrewAI not available: {IMPORT_ERROR}"
+    
+    if not os.getenv("OPENAI_API_KEY"):
+        return False, "OpenAI API key not configured"
+    
+    return True, None
+
+
+def display_system_error(error_msg):
+    """Display system configuration errors with setup instructions"""
+    st.error("⚠️ **System Configuration Required**")
+    st.error(error_msg)
+    
+    with st.expander("🔧 Setup Instructions", expanded=True):
+        if "CrewAI" in error_msg:
+            st.markdown("""
+            ### Install CrewAI Dependencies
+            ```bash
+            pip install crewai crewai-tools
+            ```
+            """)
+        
+        if "API key" in error_msg:
+            st.markdown("""
+            ### Configure OpenAI API Key
+            1. Create a `.env` file in the project root
+            2. Add your API key:
+            ```
+            OPENAI_API_KEY=sk-your-key-here
+            SERPER_API_KEY=your-serper-key-here
+            ```
+            3. Restart the application
+            """)
+    
+    # Diagnostic info
+    with st.expander("🔍 Diagnostic Information"):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**CrewAI Status:**")
+            st.markdown(f"- Available: {'✅' if CREWAI_AVAILABLE else '❌'}")
+            if IMPORT_ERROR:
+                st.code(IMPORT_ERROR, language="text")
+        
+        with col2:
+            st.markdown("**Environment Variables:**")
+            st.markdown(f"- OPENAI_API_KEY: {'✅ Set' if os.getenv('OPENAI_API_KEY') else '❌ Not set'}")
+            st.markdown(f"- SERPER_API_KEY: {'✅ Set' if os.getenv('SERPER_API_KEY') else '⚠️ Optional'}")
+
+
+# ============================================================================
+# ADVANCED SEARCH TAB
+# ============================================================================
+
+def render_advanced_search():
+    """Render the advanced search form with all filters"""
+    st.markdown("### 🎯 Advanced Search Options")
+    st.markdown("*Use detailed filters for precise job discovery*")
+    st.markdown("")
+    
+    with st.form("advanced_search_form"):
+        # Basic info section
+        st.markdown("#### 📋 Basic Information")
         col1, col2 = st.columns(2)
         
         with col1:
-            job_title = st.text_input("Job Title/Position", placeholder="e.g., Software Engineer, Data Scientist")
-            location = st.text_input("Location", placeholder="e.g., San Francisco, Remote")
+            job_title = st.text_input(
+                "Job Title *",
+                placeholder="e.g., Machine Learning Engineer"
+            )
+            company = st.text_input(
+                "Company (Optional)",
+                placeholder="e.g., Google, Microsoft"
+            )
         
         with col2:
-            company = st.text_input("Company (optional)", placeholder="e.g., Google, Microsoft")
-            experience = st.selectbox("Experience Level", ["Any", "Entry Level", "Mid Level", "Senior Level", "Executive"])
+            location = st.text_input(
+                "Location",
+                placeholder="e.g., New York, Remote"
+            )
+            experience = st.selectbox(
+                "Experience Level",
+                ["Any", "Entry Level", "Mid Level", "Senior Level", "Executive"]
+            )
         
-        # Additional filters
-        st.markdown("**Additional Filters:**")
-        col3, col4 = st.columns(2)
+        # Filters section
+        st.markdown("---")
+        st.markdown("#### 🔧 Additional Filters")
+        col3, col4, col5 = st.columns(3)
         
         with col3:
-            job_type = st.selectbox("Job Type", ["Any", "Full-time", "Part-time", "Contract", "Freelance"])
-            salary_range = st.selectbox("Salary Range", ["Any", "$50k-$75k", "$75k-$100k", "$100k-$150k", "$150k+"])
+            job_type = st.selectbox(
+                "Job Type",
+                ["Any", "Full-time", "Part-time", "Contract", "Freelance"]
+            )
         
         with col4:
-            remote_option = st.selectbox("Remote Work", ["Any", "Remote", "Hybrid", "On-site"])
-            industry = st.selectbox("Industry", ["Any", "Technology", "Finance", "Healthcare", "Marketing", "Education"])
+            remote_option = st.selectbox(
+                "Remote Work",
+                ["Any", "Remote", "Hybrid", "On-site"]
+            )
         
-        submit = st.form_submit_button("🔍 Search Jobs", use_container_width=True)
+        with col5:
+            industry = st.selectbox(
+                "Industry",
+                ["Any", "Technology", "Finance", "Healthcare", "Marketing", "Education"]
+            )
         
-        if submit:
+        # Submit button
+        st.markdown("---")
+        submitted = st.form_submit_button(
+            "🔍 Search with Filters",
+            use_container_width=True,
+            type="primary"
+        )
+        
+        if submitted:
             if not job_title:
-                st.error("❌ Please enter a job title to search!")
-                return
-            
-            # Show search summary
-            search_summary = []
-            if job_title:
-                search_summary.append(f"**Position**: {job_title}")
-            if location:
-                search_summary.append(f"**Location**: {location}")
-            if company:
-                search_summary.append(f"**Company**: {company}")
-            if experience != "Any":
-                search_summary.append(f"**Experience**: {experience}")
-            if job_type != "Any":
-                search_summary.append(f"**Type**: {job_type}")
-            if remote_option != "Any":
-                search_summary.append(f"**Remote**: {remote_option}")
-            
-            if search_summary:
-                st.markdown("**Your search criteria:**")
-                for item in search_summary:
-                    st.markdown(f"- {item}")
+                st.error("❌ Job title is required")
+            else:
+                # Build search params
+                search_params = {
+                    "company": company,
+                    "experience_level": experience,
+                    "job_type": job_type,
+                    "remote_option": remote_option,
+                    "industry": industry
+                }
+                
+                # Show search summary
                 st.markdown("---")
-            
-            # Process search with CrewAI
-            if CREWAI_AVAILABLE and os.getenv("OPENAI_API_KEY"):
-                process_search_with_crewai(job_title, location, company, experience, job_type, remote_option, industry, salary_range)
-            else:
-                st.warning("⚠️ CrewAI is not available or OpenAI API key is not set.")
-                st.info("💡 To enable AI-powered search: Set your OpenAI API key in the .env file")
-                display_mock_search_results(job_title, location)
-    
-    # JSON Results Management Section
-    st.markdown("---")
-    st.markdown("### 💾 Search Results Management")
-    
-    if CREWAI_AVAILABLE:
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("#### 📁 Latest Search Results")
-            if st.button("🔄 Load Latest JSON Results", use_container_width=True):
-                load_and_display_json_results()
+                st.markdown("#### 📊 Your Search Criteria:")
+                display_search_summary(job_title, location, search_params)
                 
-            latest_results = LinkedInSearchCrew.load_latest_search_results()
-            if latest_results:
-                metadata = latest_results.get("search_metadata", {})
-                st.success(f"✅ Last search: {metadata.get('job_title', 'N/A')}")
-                st.markdown(f"📅 {metadata.get('search_timestamp', 'N/A')}")
-            else:
-                st.info("No saved results yet")
-        
-        with col2:
-            st.markdown("#### � Search History")
-            if st.button("📋 View All Searches", use_container_width=True):
-                display_all_search_history()
-                
-            all_results = LinkedInSearchCrew.get_all_search_results()
-            st.info(f"📊 Total searches: {len(all_results)}")
-            
-            if all_results:
-                # Show quick preview of recent searches
-                st.markdown("**Recent searches:**")
-                for file_path in all_results[:3]:  # Show last 3
-                    try:
-                        results = LinkedInSearchCrew.load_search_results_by_file(file_path)
-                        if results:
-                            metadata = results.get("search_metadata", {})
-                            job_title = metadata.get("job_title", "Unknown")
-                            st.markdown(f"• {job_title}")
-                    except:
-                        continue
-    else:
-        st.warning("⚠️ CrewAI not available - Enable to use JSON results management")
+                # Execute search
+                st.markdown("---")
+                execute_linkedin_search(job_title, location, search_params)
+
+
+# ============================================================================
+# SEARCH HISTORY TAB
+# ============================================================================
+
+def render_search_history():
+    """Render the search history interface"""
+    st.markdown("### 📚 Your Search History")
+    st.markdown("*View and reload previous LinkedIn searches*")
+    st.markdown("")
     
-    # Additional features section  
-    st.markdown("---")
-    st.markdown("### 🛠️ Advanced Features")
+    # Get all search results
+    all_results = LinkedInSearchCrew.get_all_search_results()
     
+    if not all_results:
+        st.info("📝 No search history yet. Run a search to get started!")
+        return
+    
+    # Display metrics
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("#### 🎯 Smart Matching")
-        st.markdown("- AI-powered job recommendations")
-        st.markdown("- Skills-based matching")
-        st.markdown("- Company culture fit")
+        st.metric("📊 Total Searches", len(all_results))
     
     with col2:
-        st.markdown("#### 📊 Market Insights")  
-        st.markdown("- Salary benchmarking")
-        st.markdown("- Industry trends")
-        st.markdown("- Competition analysis")
+        latest = LinkedInSearchCrew.load_latest_search_results()
+        if latest:
+            metadata = latest.get("search_metadata", {})
+            st.metric("🔍 Latest Search", metadata.get("job_title", "N/A"))
     
     with col3:
-        st.markdown("#### 🚀 JSON Integration")
-        st.markdown("- Auto-save search results")
-        st.markdown("- Load previous searches")
-        st.markdown("- Export/Import capability")
+        if st.button("🔄 Refresh History", use_container_width=True):
+            st.rerun()
     
-    # Quick Test Section
+    # Display search history
     st.markdown("---")
-    st.markdown("### 🧪 Quick Test: LinkedIn Search Workflow")
+    st.markdown("#### 📋 Recent Searches")
     
-    if CREWAI_AVAILABLE and os.getenv("OPENAI_API_KEY"):
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            test_job = st.text_input("Test Job Title", value="Software Engineer", key="test_job")
-            test_location = st.text_input("Test Location", value="San Francisco", key="test_location")
-        
-        with col2:
-            if st.button("🚀 Run Quick Test", use_container_width=True):
-                st.markdown("### 🔄 Testing Complete Workflow:")
-                
-                # Step 1: Capture input
-                st.markdown("**Step 1**: ✅ Captured user input")
-                st.json({"job_title": test_job, "location": test_location})
-                
-                # Step 2: Execute search 
-                with st.spinner("**Step 2**: 🤖 Executing LinkedIn search..."):
-                    try:
-                        llm = LLM(model="gpt-4o-mini", temperature=0.7)
-                        linkedin_crew = LinkedInSearchCrew(llm=llm)
-                        result = linkedin_crew.search_jobs(test_job, test_location)
-                        st.success("**Step 2**: ✅ LinkedIn search completed")
-                    except Exception as e:
-                        st.error(f"**Step 2**: ❌ Search failed: {e}")
-                        result = None
-                
-                # Step 3: Check JSON save
-                if result:
-                    st.markdown("**Step 3**: 💾 Checking JSON file save...")
-                    latest = LinkedInSearchCrew.load_latest_search_results()
-                    if latest:
-                        st.success("**Step 3**: ✅ JSON file saved successfully")
-                        
-                        # Step 4: Display results
-                        st.markdown("**Step 4**: 📊 Displaying results from JSON:")
-                        metadata = latest.get("search_metadata", {})
-                        st.json({
-                            "job_title": metadata.get("job_title"),
-                            "location": metadata.get("location"), 
-                            "timestamp": metadata.get("search_timestamp"),
-                            "output_preview": str(latest.get("crew_output", ""))[:200] + "..."
-                        })
-                        st.success("**Workflow Complete**: ✅ All steps successful!")
-                    else:
-                        st.error("**Step 3**: ❌ JSON file save failed")
-                        
-            st.info("💡 This tests the complete capture → search → save → load workflow")
-    else:
-        st.warning("⚠️ Set up OpenAI API key to test the LinkedIn search workflow")
-    
-    st.markdown("---")
-    st.info("💡 **Pro Tip**: All search results are automatically saved as JSON files for easy access and processing!")
+    for i, file_path in enumerate(all_results[:10], 1):
+        results = LinkedInSearchCrew.load_search_results_by_file(file_path)
+        if results:
+            display_search_history_item(i, file_path, results)
 
 
-def process_search_with_crewai(job_title, location, company, experience, job_type, remote_option, industry, salary_range):
-    """Process job search using specialized LinkedIn CrewAI agents and tasks"""
+def display_search_history_item(index, file_path, results):
+    """Display a single search history item"""
+    metadata = results.get("search_metadata", {})
+    job_title = metadata.get("job_title", "Unknown")
+    location = metadata.get("location", "Any")
+    timestamp = metadata.get("search_timestamp", "")
     
     try:
-        # Initialize LLM
-        llm = LLM(model="gpt-4o-mini", temperature=0.7)
+        dt = datetime.fromisoformat(timestamp)
+        display_time = dt.strftime("%Y-%m-%d %H:%M")
+    except:
+        display_time = "Unknown time"
+    
+    with st.expander(f"**{index}.** {job_title} | {display_time}"):
+        col1, col2 = st.columns([2, 1])
         
-        # Always use specialized LinkedIn search crew for comprehensive search
+        with col1:
+            st.markdown(f"**📋 Position:** {job_title}")
+            st.markdown(f"**📍 Location:** {location}")
+            st.markdown(f"**⏰ Time:** {display_time}")
+        
+        with col2:
+            filename = os.path.basename(file_path)
+            st.markdown(f"**📄 File:** `{filename}`")
+            
+            if st.button(f"📂 Load Results", key=f"view_{index}", use_container_width=True):
+                st.markdown("---")
+                crew_output = results.get("crew_output", "No data available")
+                output_str = str(crew_output)
+                st.markdown("### 📊 Search Results:")
+                if len(output_str) > 1000:
+                    st.text(output_str[:1000] + "...")
+                    with st.expander("View Full Output"):
+                        st.text(output_str)
+                else:
+                    st.text(output_str)
+
+
+# ============================================================================
+# SEARCH EXECUTION
+# ============================================================================
+
+def execute_linkedin_search(job_title, location="", search_params=None):
+    """Execute the LinkedIn search with AI agents"""
+    
+    st.markdown("### 🤖 AI Search in Progress")
+    st.markdown("")
+    
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+    
+    try:
+        # Initialize
+        status_text.text("🔧 Initializing AI agents...")
+        progress_bar.progress(20)
+        
+        llm = LLM(model="gpt-4o-mini", temperature=0.7)
         linkedin_crew = LinkedInSearchCrew(llm=llm)
         
-        # Prepare search parameters
-        search_params = {
-            "company": company or "",
-            "experience_level": experience,
-            "job_type": job_type,
-            "remote_option": remote_option,
-            "industry": industry,
-            "salary_range": salary_range
-        }
+        # Start search
+        status_text.text(f"🌐 Searching LinkedIn for '{job_title}'...")
+        progress_bar.progress(40)
         
-        with st.spinner("🤖 LinkedIn AI agents are navigating to LinkedIn and performing your search..."):
-            
-            # Show search progress
-            progress_bar = st.progress(0)
-            status_text = st.empty()
-            
-            status_text.text("🔍 Capturing search input...")
-            progress_bar.progress(25)
-            
-            status_text.text(f"🌐 Navigating to LinkedIn for {job_title} search...")
-            progress_bar.progress(50)
-            
-            st.info(f"🎯 Searching LinkedIn for {job_title}" + (f" in {location}" if location else ""))
-            
-            status_text.text("📊 Analyzing search results...")
-            progress_bar.progress(75)
-            
-            # Execute LinkedIn-specific search with all parameters
+        # Execute
+        status_text.text("🤖 AI agents analyzing job market...")
+        progress_bar.progress(60)
+        
+        if search_params:
             result = linkedin_crew.search_jobs(
                 job_title=job_title,
                 location=location,
                 **search_params
             )
-            
-            status_text.text("💾 Saving results to JSON file...")
-            progress_bar.progress(100)
-            
-            # Display results with JSON file info
-            display_crewai_results_with_json(result, job_title, location, search_params)
-            
-            # Clear progress indicators
-            progress_bar.empty()
-            status_text.empty()
+        else:
+            result = linkedin_crew.search_jobs(
+                job_title=job_title,
+                location=location
+            )
+        
+        # Complete
+        status_text.text("✅ Analysis complete!")
+        progress_bar.progress(100)
+        
+        # Clear progress
+        progress_bar.empty()
+        status_text.empty()
+        
+        # Display results
+        st.markdown("---")
+        display_search_results(job_title, location, result)
         
     except Exception as e:
-        st.error(f"❌ Error processing search: {str(e)}")
-        st.info("💡 Falling back to mock results...")
-        display_mock_search_results(job_title, location)
+        progress_bar.empty()
+        status_text.empty()
+        
+        st.error(f"❌ **Search Error:** {str(e)}")
+        st.error(f"**Error Type:** {type(e).__name__}")
+        
+        with st.expander("🔍 View Error Details"):
+            import traceback
+            st.code(traceback.format_exc(), language="python")
+        
+        display_troubleshooting_tips()
 
 
-def build_search_query(job_title, location, company, experience, job_type, remote_option, industry, salary_range):
-    """Build a comprehensive search query from form inputs"""
-    
-    query_parts = [job_title]
-    
-    if location:
-        query_parts.append(f"in {location}")
-    if company:
-        query_parts.append(f"at {company}")
-    if experience != "Any":
-        query_parts.append(f"{experience.lower()} level")
-    if job_type != "Any":
-        query_parts.append(f"{job_type.lower()}")
-    if remote_option != "Any":
-        query_parts.append(f"{remote_option.lower()}")
-    if industry != "Any":
-        query_parts.append(f"in {industry}")
-    if salary_range != "Any":
-        query_parts.append(f"salary {salary_range}")
-    
-    return " ".join(query_parts)
+# ============================================================================
+# RESULTS DISPLAY
+# ============================================================================
 
-
-def display_crewai_results_with_json(result, job_title, location, search_params):
-    """Display results from CrewAI processing with JSON file management"""
+def display_search_results(job_title, location, result):
+    """Display formatted search results in organized tabs"""
     
-    st.success("✅ LinkedIn Search Complete!")
+    st.success(f"✅ **Search Complete:** {job_title}" + (f" in {location}" if location else ""))
     
-    # Header with search info
-    st.markdown(f"## 🎯 LinkedIn Job Search Results for {job_title}")
-    if location:
-        st.markdown(f"**Location**: {location}")
-    st.markdown("**Source**: LinkedIn + AI Analysis")
+    # Results tabs
+    tabs = st.tabs([
+        "💼 Job Postings",
+        "📈 Market Trends",
+        "✅ Verification",
+        "📄 Raw Data"
+    ])
     
-    # JSON File Management Section
-    st.markdown("### 💾 Search Results Management")
+    with tabs[0]:
+        display_job_postings_section(result)  # Pass runtime result
     
-    col1, col2, col3 = st.columns(3)
+    with tabs[1]:
+        display_market_trends_section()
     
-    with col1:
-        st.markdown("**� Latest Results**")
-        if st.button("🔄 Load Latest JSON"):
-            load_and_display_json_results()
+    with tabs[2]:
+        display_verification_section()
     
-    with col2:
-        st.markdown("**📂 All Results**")
-        if st.button("📋 View All Searches"):
-            display_all_search_history()
-            
-    with col3:
-        st.markdown("**💾 JSON Status**")
-        # Check if JSON was saved successfully
-        latest_results = LinkedInSearchCrew.load_latest_search_results()
-        if latest_results:
-            st.success("JSON Saved ✅")
-        else:
-            st.warning("JSON Save Error ⚠️")
+    with tabs[3]:
+        st.markdown("### 🤖 Complete AI Output")
+        st.text_area("Raw Result", str(result), height=400)
     
-    # Display the current AI-generated content
-    st.markdown("### 🤖 Current Search Results:")
-    
-    # Convert result to string if it's not already
-    result_text = str(result)
-    
-    # Display in expandable sections
-    with st.expander("📋 Detailed Analysis", expanded=True):
-        st.markdown(result_text)
-    
-    # Try to parse and structure the output if it's JSON
-    try:
-        if result_text.startswith('{') and result_text.endswith('}'):
-            result_json = json.loads(result_text)
-            
-            if "job_postings" in result_json:
-                display_job_postings(result_json["job_postings"])
-                
-    except json.JSONDecodeError:
-        # If not JSON, display as text
-        pass
-    
-    # LinkedIn-specific insights
-    st.markdown("### 📊 LinkedIn Search Insights")
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.metric("Search Engine", "LinkedIn")
-    with col2:
-        st.metric("AI Agent", "LinkedIn Scraper")
-    with col3:
-        st.metric("Data Source", "Real-time")
-    with col4:
-        st.metric("JSON Output", "✅ Saved")
-    
-    # Search parameters summary
-    with st.expander("🔍 Search Parameters Used"):
-        st.json({
-            "job_title": job_title,
-            "location": location or "Any",
-            **search_params
-        })
-    
-    # Add timestamp and JSON file info
+    # Metrics footer
     st.markdown("---")
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    st.markdown(f"**Generated**: {timestamp}")
-    st.markdown(f"**JSON File**: `src/outputs/linkedin/latest_search_results.json`")
-    st.markdown("**Powered by**: LinkedIn CrewAI + OpenAI GPT-4")
+    render_search_metrics()
 
 
-def load_and_display_json_results():
-    """Load and display the latest JSON search results"""
+def display_job_postings_section(result=None):
+    """Load and display job postings from JSON or runtime result
     
-    latest_results = LinkedInSearchCrew.load_latest_search_results()
-    
-    if latest_results:
-        st.markdown("### � Loaded from JSON File")
-        
-        # Display metadata
-        metadata = latest_results.get("search_metadata", {})
-        st.markdown(f"**Job Title**: {metadata.get('job_title', 'N/A')}")
-        st.markdown(f"**Location**: {metadata.get('location', 'Any')}")
-        st.markdown(f"**Search Time**: {metadata.get('search_timestamp', 'N/A')}")
-        
-        # Display crew output
-        crew_output = latest_results.get("crew_output", "")
-        with st.expander("🤖 AI Analysis from JSON", expanded=True):
-            st.markdown(str(crew_output))
-        
-        # Display search parameters
-        search_params = metadata.get("search_parameters", {})
-        if search_params:
-            with st.expander("🔍 Search Parameters from JSON"):
-                st.json(search_params)
-    else:
-        st.error("❌ No JSON results found. Please run a search first.")
-
-
-def display_all_search_history():
-    """Display all available search result files"""
-    
-    all_results = LinkedInSearchCrew.get_all_search_results()
-    
-    if all_results:
-        st.markdown("### 📚 Search History")
-        
-        for i, file_path in enumerate(all_results[:10]):  # Show last 10 searches
-            # Extract timestamp from filename
-            filename = os.path.basename(file_path)
-            timestamp = filename.replace("search_results_", "").replace(".json", "")
-            
-            # Format timestamp for display
+    Optimized to show top 50 latest posts with enhanced information:
+    - Short intro summary
+    - Company business description  
+    - Job role description
+    - Direct link to original post
+    """
+    # Priority 1: Use runtime result for real-time data
+    postings = None
+    if result:
+        # Try to extract postings from crew result
+        if isinstance(result, dict):
+            postings = result.get("job_postings")
+        elif hasattr(result, 'raw'):
+            # CrewAI output object
             try:
-                from datetime import datetime
-                dt = datetime.strptime(timestamp, "%Y%m%d_%H%M%S")
-                display_time = dt.strftime("%Y-%m-%d %H:%M:%S")
+                raw_data = json.loads(result.raw) if isinstance(result.raw, str) else result.raw
+                postings = raw_data.get("job_postings") if isinstance(raw_data, dict) else None
             except:
-                display_time = timestamp
-            
-            # Load and display basic info
-            results = LinkedInSearchCrew.load_search_results_by_file(file_path)
-            if results:
-                metadata = results.get("search_metadata", {})
-                job_title = metadata.get("job_title", "Unknown")
-                location = metadata.get("location", "Any")
-                
-                with st.expander(f"🔍 Search #{i+1}: {job_title} - {display_time}"):
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.markdown(f"**Job**: {job_title}")
-                        st.markdown(f"**Location**: {location}")
-                    with col2:
-                        st.markdown(f"**File**: {filename}")
-                        if st.button(f"Load This Search", key=f"load_{i}"):
-                            # Display this specific search
-                            crew_output = results.get("crew_output", "")
-                            st.markdown("### 🤖 Loaded Search Results:")
-                            st.markdown(str(crew_output))
-    else:
-        st.info("📝 No search history found. Run some searches to build your history!")
-
-
-def display_job_postings(job_postings):
-    """Display formatted job postings"""
+                pass
     
-    st.markdown("### 💼 Found Job Postings:")
+    # Priority 2: Fallback to saved JSON file
+    job_file = "src/outputs/linkedin/job_postings.json"
+    if postings is None and os.path.exists(job_file):
+        try:
+            with open(job_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            postings = data.get("job_postings") if isinstance(data, dict) else None
+        except Exception as e:
+            st.error(f"❌ Error loading job postings: {e}")
+            return
     
-    if isinstance(job_postings, list) and job_postings:
-        for i, job in enumerate(job_postings, 1):
-            with st.container():
-                st.markdown(f"#### 📋 Job #{i}")
-                
-                col1, col2 = st.columns([2, 1])
-                
-                with col1:
-                    st.markdown(f"**Position**: {job.get('job_title', 'N/A')}")
-                    st.markdown(f"**Company**: {job.get('company_name', 'N/A')}")
-                    st.markdown(f"**Location**: {job.get('location', 'N/A')}")
-                
-                with col2:
-                    st.markdown(f"**Posted**: {job.get('date_posted', 'N/A')}")
-                    st.markdown(f"**Type**: {job.get('employment_type', 'N/A')}")
-                    
-                    if job.get('job_url'):
-                        st.link_button("🔗 View Job", job['job_url'])
-                
-                st.divider()
-    else:
-        st.info("No specific job postings found, but market analysis is available above.")
-
-
-def display_market_research(research_data):
-    """Display formatted market research data"""
-    
-    if not isinstance(research_data, dict):
+    if not postings:
+        st.info("💡 Job postings will appear here after the search completes")
         return
     
-    # Display key market insights
-    col1, col2, col3 = st.columns(3)
+    # Sort by date (latest first) and limit to 50
+    def safe_date_parse(date_str):
+        """Parse date without external dependencies"""
+        if not date_str:
+            return datetime.min
+        try:
+            # Try ISO format
+            if 'T' in str(date_str):
+                return datetime.fromisoformat(str(date_str).replace('Z', '+00:00'))
+            # Try basic format
+            return datetime.strptime(str(date_str).split()[0], '%Y-%m-%d')
+        except:
+            return datetime.min
+    
+    try:
+        sorted_postings = sorted(
+            postings,
+            key=lambda p: safe_date_parse(p.get('date_posted', '')),
+            reverse=True
+        )
+    except:
+        sorted_postings = list(postings)
+    
+    # Limit to top 50 latest for file export
+    limited_postings = sorted_postings[:50]
+    
+    # Default display: top 10
+    display_count = st.session_state.get('job_display_count', 10)
+    display_postings = limited_postings[:display_count]
+    
+    st.markdown(f"### 📋 Job Listings (Showing {len(display_postings)} of {len(limited_postings)})")
+    st.markdown("")
+    
+    # Export buttons and display controls
+    col1, col2, col3, col4 = st.columns([2, 2, 2, 2])
     
     with col1:
-        st.markdown("### 🏢 Top Companies")
-        companies = research_data.get("top_hiring_companies", [])
-        if companies:
-            for company in companies[:5]:  # Show top 5
-                st.markdown(f"• {company}")
-        else:
-            st.info("No company data available")
+        if len(limited_postings) > 0:
+            try:
+                import pandas as pd
+                # Prepare data for export (all 50 jobs)
+                df = pd.DataFrame(limited_postings)
+                csv = df.to_csv(index=False, encoding='utf-8-sig')
+                st.download_button(
+                    "📥 Download CSV (50 jobs)",
+                    csv,
+                    file_name=f"linkedin_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+            except Exception as e:
+                st.caption(f"CSV export unavailable: {e}")
     
     with col2:
-        st.markdown("### 💡 Key Skills")
-        skills = research_data.get("required_skills", [])
-        if skills:
-            for skill in skills[:5]:  # Show top 5
-                st.markdown(f"• {skill}")
-        else:
-            st.info("No skills data available")
+        if len(limited_postings) > 0:
+            try:
+                import pandas as pd
+                from io import BytesIO
+                # Prepare Excel export (all 50 jobs)
+                df = pd.DataFrame(limited_postings)
+                buffer = BytesIO()
+                with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+                    df.to_excel(writer, index=False, sheet_name='LinkedIn Jobs')
+                buffer.seek(0)
+                st.download_button(
+                    "📊 Download Excel (50 jobs)",
+                    buffer,
+                    file_name=f"linkedin_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True
+                )
+            except Exception as e:
+                st.caption(f"Excel export unavailable: {e}")
     
     with col3:
-        st.markdown("### 💰 Salary Info")
-        salaries = research_data.get("average_salaries", [])
-        if salaries:
-            for salary in salaries:
-                st.markdown(f"• {salary}")
-        else:
-            st.info("No salary data available")
+        # Display count selector
+        count_options = [10, 20, 30, 50]
+        selected = st.selectbox(
+            "Display",
+            count_options,
+            index=count_options.index(display_count) if display_count in count_options else 0,
+            key="display_selector"
+        )
+        if selected != display_count:
+            st.session_state['job_display_count'] = selected
+            st.rerun()
     
-    # Display trends
-    if "hiring_trends" in research_data:
-        st.markdown("### 📈 Market Trends")
-        trends = research_data["hiring_trends"]
-        if trends:
-            for trend in trends:
-                st.markdown(f"• {trend}")
-
-
-def display_mock_search_results(job_title, location):
-    """Display mock search results when CrewAI is not available"""
+    with col4:
+        if st.button("🔄 Refresh", use_container_width=True):
+            st.rerun()
     
-    st.info("🔧 **Demo Mode**: Showing sample results")
+    st.markdown("---")
     
-    location_text = f" in {location}" if location else ""
-    st.markdown(f"## 🎯 Sample Results for {job_title}{location_text}")
+    # AI Assistant Chat Box
+    with st.expander("💬 AI Assistant - Ask for custom analysis or exports", expanded=False):
+        st.markdown("**Ask the AI to help you with:**")
+        st.markdown("""
+        - Filter jobs by specific criteria
+        - Export customized data
+        - Analyze job trends
+        - Generate reports
+        - Sort or rank jobs
+        """)
+        
+        user_instruction = st.text_area(
+            "Enter your instruction:",
+            placeholder="Example: Export only remote jobs with salary > 100k\nExample: Show me jobs from top tech companies\nExample: Rank jobs by best benefits",
+            height=100,
+            key="ai_instruction_input"
+        )
+        
+        col_a, col_b = st.columns([1, 4])
+        with col_a:
+            execute_btn = st.button("🚀 Execute", type="primary", use_container_width=True)
+        with col_b:
+            if execute_btn and user_instruction:
+                st.info("🤖 AI Assistant is processing your request...")
+                # Process AI instruction
+                process_ai_instruction(user_instruction, limited_postings)
+            elif execute_btn:
+                st.warning("⚠️ Please enter an instruction first")
     
-    # Mock job postings
-    mock_jobs = [
-        {
-            "job_title": f"Senior {job_title}",
-            "company_name": "TechCorp Inc.",
-            "location": location or "San Francisco, CA",
-            "date_posted": "2 days ago",
-            "employment_type": "Full-time",
-            "salary": "$120,000 - $150,000"
-        },
-        {
-            "job_title": f"{job_title}",
-            "company_name": "Innovation Labs",
-            "location": location or "New York, NY",
-            "date_posted": "1 week ago", 
-            "employment_type": "Full-time",
-            "salary": "$100,000 - $130,000"
-        },
-        {
-            "job_title": f"Lead {job_title}",
-            "company_name": "Future Systems",
-            "location": location or "Remote",
-            "date_posted": "3 days ago",
-            "employment_type": "Full-time",
-            "salary": "$140,000 - $170,000"
-        }
-    ]
+    st.markdown("---")
     
-    st.markdown("### 💼 Sample Job Postings:")
-    
-    for i, job in enumerate(mock_jobs, 1):
+    # Display jobs
+    for i, job in enumerate(display_postings, 1):
         with st.container():
-            st.markdown(f"#### 📋 Sample Job #{i}")
+            col1, col2 = st.columns([3, 1])
             
-            col1, col2 = st.columns([2, 1])
+            # Extract fields with multiple fallback keys
+            job_title = job.get('job_title') or job.get('title') or 'Job Title'
+            company = job.get('company_name') or job.get('company') or 'Company'
+            location = job.get('location') or job.get('job_location') or 'Location'
+            posted = job.get('date_posted') or job.get('posted') or 'Recent'
+            employment_type = job.get('employment_type')
+            experience_level = job.get('experience_level')
+            job_url = job.get('job_url') or job.get('url') or job.get('link')
+            
+            # Date information - distinguish original post vs repost
+            is_repost = job.get('is_repost', False)
+            repost_date = job.get('repost_date')
+            date_info_raw = job.get('date_info_raw')
+            
+            # Build date display string
+            date_display = ""
+            if is_repost:
+                if posted and repost_date:
+                    date_display = f"📅 Originally: {posted} | 🔄 Reposted: {repost_date}"
+                elif repost_date:
+                    date_display = f"🔄 Reposted: {repost_date}"
+                elif date_info_raw:
+                    date_display = f"🔄 {date_info_raw}"
+                else:
+                    date_display = f"🔄 Reposted: {posted}"
+            else:
+                date_display = f"📅 Posted: {posted}"
+            
+            # NEW: Enhanced information for job seekers
+            # 1. Short intro/summary
+            short_intro = job.get('short_intro') or job.get('summary')
+            if not short_intro and job_title and company:
+                short_intro = f"{employment_type or 'Position'} at {company} in {location}"
+            
+            # 2. Company business description
+            company_desc = (job.get('company_description') or 
+                          job.get('company_overview') or 
+                          job.get('about_company'))
+            
+            # 3. Job role description
+            job_desc = (job.get('job_description') or 
+                       job.get('description') or 
+                       job.get('role_description'))
             
             with col1:
-                st.markdown(f"**Position**: {job['job_title']}")
-                st.markdown(f"**Company**: {job['company_name']}")
-                st.markdown(f"**Location**: {job['location']}")
+                st.markdown(f"#### {i}. {job_title}")
+                st.markdown(f"🏢 **Company:** {company}")
+                st.markdown(f"📍 **Location:** {location}")
+                
+                # Display employment info in one line
+                info_parts = []
+                if employment_type:
+                    info_parts.append(f"💼 {employment_type}")
+                if experience_level:
+                    info_parts.append(f"⭐ {experience_level}")
+                if info_parts:
+                    st.caption(" | ".join(info_parts))
+                
+                # NEW: Short intro
+                if short_intro:
+                    st.markdown(f"**📝 Summary:** {short_intro}")
+                
+                # NEW: Company business intro (truncated for readability)
+                if company_desc:
+                    desc_preview = (company_desc[:300] + '...') if len(str(company_desc)) > 300 else company_desc
+                    with st.expander("🏢 About Company"):
+                        st.write(desc_preview)
+                
+                # NEW: Job role description (truncated for readability)
+                if job_desc:
+                    role_preview = (job_desc[:500] + '...') if len(str(job_desc)) > 500 else job_desc
+                    with st.expander("💼 Role Details"):
+                        st.write(role_preview)
             
             with col2:
-                st.markdown(f"**Posted**: {job['date_posted']}")
-                st.markdown(f"**Type**: {job['employment_type']}")
-                st.markdown(f"**Salary**: {job['salary']}")
+                st.markdown(f"**{date_display}**")
+                if job_url:
+                    st.link_button("🔗 View Job", job_url, use_container_width=True, type="primary")
+                else:
+                    st.caption("🔗 Link unavailable")
             
             st.divider()
+
+
+def display_market_trends_section():
+    """Load and display market trends from JSON"""
+    trends_file = "src/outputs/linkedin/market_trends.json"
     
-    # Mock LinkedIn search URL
-    if location:
-        search_url = f"https://linkedin.com/jobs/search?keywords={job_title.replace(' ', '%20')}&location={location.replace(' ', '%20')}"
-        st.markdown(f"### 🔍 LinkedIn Search")
-        st.link_button("🔗 Search on LinkedIn", search_url)
+    if not os.path.exists(trends_file):
+        st.info("💡 Market trends will appear here after the search completes")
+        return
     
-    st.warning("💡 **Note**: These are sample results. Set up your OpenAI API key to get real AI-powered job search results!")
+    try:
+        with open(trends_file, 'r') as f:
+            data = json.load(f)
+        
+        # Market overview
+        if "market_overview" in data:
+            st.markdown("### 📊 Market Overview")
+            overview = data["market_overview"]
+            
+            cols = st.columns(3)
+            with cols[0]:
+                st.metric("🎯 Market Health", overview.get("market_health", "N/A").upper())
+            with cols[1]:
+                st.metric("📅 Analysis Date", overview.get("analysis_date", "N/A"))
+            with cols[2]:
+                st.metric("💼 Position", overview.get("job_title", "N/A"))
+            
+            st.markdown("")
+        
+        # Salary trends
+        if "salary_trends" in data and "salary_ranges" in data["salary_trends"]:
+            st.markdown("### 💰 Salary Ranges")
+            salary_data = data["salary_trends"]["salary_ranges"]
+            
+            cols = st.columns(3)
+            levels = ["entry_level", "mid_level", "senior_level"]
+            
+            for idx, level in enumerate(levels):
+                if level in salary_data:
+                    info = salary_data[level]
+                    with cols[idx]:
+                        level_name = level.replace('_', ' ').title()
+                        st.markdown(f"**{level_name}**")
+                        if isinstance(info, dict):
+                            st.markdown(f"💵 ${info.get('min', 0):,} - ${info.get('max', 0):,}")
+                            st.markdown(f"📊 Avg: ${info.get('average', 0):,}")
+            
+            st.markdown("")
+        
+        # Top skills
+        if "skills_analysis" in data:
+            st.markdown("### 💡 Top In-Demand Skills")
+            skills = data["skills_analysis"].get("top_demanded_skills", [])
+            
+            if skills:
+                cols = st.columns(2)
+                for idx, skill in enumerate(skills[:8]):
+                    with cols[idx % 2]:
+                        if isinstance(skill, dict):
+                            st.markdown(f"**{skill.get('skill_name', 'N/A')}**")
+                            st.caption(f"Demand: {skill.get('demand_frequency', 'N/A')}")
+                        else:
+                            st.markdown(f"• {skill}")
+        
+    except json.JSONDecodeError as e:
+        st.warning(f"⚠️ JSON parsing error: {e}")
+    except Exception as e:
+        st.error(f"❌ Error loading market trends: {e}")
+
+
+def display_verification_section():
+    """Load and display verification report from JSON"""
+    verify_file = "src/outputs/linkedin/verification_report.json"
+    
+    if not os.path.exists(verify_file):
+        st.info("💡 Verification report will appear here after the search completes")
+        return
+    
+    try:
+        with open(verify_file, 'r') as f:
+            data = json.load(f)
+        
+        # Status metrics
+        cols = st.columns(3)
+        
+        with cols[0]:
+            status = data.get("verification_status", "unknown")
+            emoji = "✅" if status == "verified" else "⚠️"
+            st.metric("📋 Status", f"{emoji} {status.upper()}")
+        
+        with cols[1]:
+            st.metric("📊 Accuracy", data.get("accuracy_score", "N/A"))
+        
+        with cols[2]:
+            confidence = data.get("confidence_level", "N/A")
+            emoji_conf = "🟢" if confidence == "high" else "🟡" if confidence == "medium" else "🔴"
+            st.metric("🎯 Confidence", f"{emoji_conf} {str(confidence).upper()}")
+        
+        st.markdown("")
+        
+        # Verified fields
+        if "verified_fields" in data:
+            verified = data["verified_fields"]
+            if verified:
+                st.markdown("### ✅ Verified Data Points")
+                cols = st.columns(3)
+                for idx, field in enumerate(verified):
+                    with cols[idx % 3]:
+                        st.markdown(f"✓ {field}")
+        
+        # Issues
+        if "flagged_issues" in data:
+            issues = data["flagged_issues"]
+            if issues:
+                st.markdown("### ⚠️ Flagged Issues")
+                for issue in issues:
+                    st.warning(issue)
+        
+        # Corrections
+        if "corrections" in data:
+            corrections = data["corrections"]
+            if corrections:
+                st.markdown("### 🔧 Suggested Corrections")
+                for correction in corrections:
+                    st.info(correction)
+        
+    except json.JSONDecodeError as e:
+        st.warning(f"⚠️ JSON parsing error: {e}")
+    except Exception as e:
+        st.error(f"❌ Error loading verification: {e}")
+
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def display_search_summary(job_title, location, search_params):
+    """Display a formatted search summary"""
+    cols = st.columns(4)
+    
+    with cols[0]:
+        st.markdown("**📋 Position**")
+        st.markdown(job_title)
+    
+    with cols[1]:
+        st.markdown("**📍 Location**")
+        st.markdown(location or "Any")
+    
+    with cols[2]:
+        st.markdown("**⭐ Experience**")
+        st.markdown(search_params.get("experience_level", "Any"))
+    
+    with cols[3]:
+        st.markdown("**💼 Type**")
+        st.markdown(search_params.get("job_type", "Any"))
+
+
+def render_search_metrics():
+    """Display search performance metrics"""
+    cols = st.columns(4)
+    
+    with cols[0]:
+        st.metric("🤖 AI Agents", "4 Active")
+    
+    with cols[1]:
+        st.metric("🌐 Data Source", "LinkedIn")
+    
+    with cols[2]:
+        st.metric("⚡ Analysis", "Real-time")
+    
+    with cols[3]:
+        st.metric("💾 Output", "JSON")
+
+
+def display_troubleshooting_tips():
+    """Display troubleshooting information"""
+    st.markdown("### 💡 Troubleshooting Tips")
+    st.markdown("""
+    - ✅ Verify your OpenAI API key has available credits
+    - ✅ Check SERPER_API_KEY is configured in .env
+    - ✅ Ensure stable internet connection
+    - ✅ Try with a simpler job title first
+    - ✅ Check the terminal output for detailed logs
+    """)
+
+
+def process_ai_instruction(instruction: str, job_postings: list):
+    """
+    Process user AI instructions to manipulate job data
+    
+    Args:
+        instruction: User's natural language instruction
+        job_postings: List of job posting dictionaries
+    """
+    try:
+        import pandas as pd
+        from io import BytesIO
+        import openai
+        import os
+        
+        # Use OpenAI to interpret the instruction
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            st.error("❌ OpenAI API key not found. Please configure it in .env file.")
+            return
+        
+        client = openai.OpenAI(api_key=api_key)
+        
+        # Create a prompt for GPT to generate filtering/processing logic
+        system_prompt = """You are a data processing assistant for LinkedIn job postings. 
+        Analyze the user's instruction and provide Python code to filter, sort, or process the job data.
+        
+        The data is in a list called 'job_postings' where each item is a dictionary with fields like:
+        - job_title, company_name, location, date_posted, employment_type, experience_level
+        - job_url, salary, benefits, remote_option, etc.
+        
+        Return ONLY valid Python code that:
+        1. Filters/processes 'job_postings' and stores result in 'filtered_jobs'
+        2. Optionally sets 'export_format' to 'csv' or 'excel' if user wants export
+        3. Optionally sets 'display_message' with a summary message
+        
+        Example code format:
+        ```python
+        # Filter remote jobs
+        filtered_jobs = [job for job in job_postings if job.get('remote_option') == 'Remote']
+        display_message = f"Found {len(filtered_jobs)} remote positions"
+        export_format = 'csv'
+        ```
+        
+        Return ONLY the Python code, no explanations."""
+        
+        with st.spinner("🤖 AI is analyzing your request..."):
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"User instruction: {instruction}\n\nGenerate Python code to process the job_postings list."}
+                ],
+                temperature=0.3
+            )
+            
+            code = response.choices[0].message.content.strip()
+            # Remove markdown code blocks if present
+            if code.startswith("```python"):
+                code = code[9:]
+            if code.startswith("```"):
+                code = code[3:]
+            if code.endswith("```"):
+                code = code[:-3]
+            code = code.strip()
+            
+            # Display generated code
+            with st.expander("🔍 Generated Processing Code", expanded=False):
+                st.code(code, language="python")
+            
+            # Execute the code in a safe environment
+            local_vars = {
+                'job_postings': job_postings,
+                'filtered_jobs': job_postings,  # Default
+                'export_format': None,
+                'display_message': None
+            }
+            
+            try:
+                exec(code, {"__builtins__": {}}, local_vars)
+                
+                filtered_jobs = local_vars.get('filtered_jobs', job_postings)
+                export_format = local_vars.get('export_format')
+                display_message = local_vars.get('display_message')
+                
+                # Display results
+                if display_message:
+                    st.success(f"✅ {display_message}")
+                else:
+                    st.success(f"✅ Processed {len(filtered_jobs)} jobs")
+                
+                # Show preview
+                if filtered_jobs:
+                    st.markdown("#### 📊 Results Preview (First 5)")
+                    df = pd.DataFrame(filtered_jobs[:5])
+                    st.dataframe(df, use_container_width=True)
+                    
+                    # Offer export
+                    st.markdown("#### 💾 Download Results")
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        csv = pd.DataFrame(filtered_jobs).to_csv(index=False, encoding='utf-8-sig')
+                        st.download_button(
+                            "📥 Download as CSV",
+                            csv,
+                            file_name=f"filtered_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                            mime="text/csv",
+                            use_container_width=True
+                        )
+                    
+                    with col2:
+                        try:
+                            buffer = BytesIO()
+                            with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+                                pd.DataFrame(filtered_jobs).to_excel(writer, index=False, sheet_name='Filtered Jobs')
+                            buffer.seek(0)
+                            st.download_button(
+                                "📊 Download as Excel",
+                                buffer,
+                                file_name=f"filtered_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                use_container_width=True
+                            )
+                        except:
+                            st.caption("Excel export requires openpyxl")
+                else:
+                    st.warning("⚠️ No jobs matched your criteria")
+                    
+            except Exception as exec_error:
+                st.error(f"❌ Error executing generated code: {exec_error}")
+                st.code(code, language="python")
+                
+    except Exception as e:
+        st.error(f"❌ Error processing instruction: {e}")
+        st.markdown("**Please try:**")
+        st.markdown("- Being more specific with your request")
+        st.markdown("- Using simpler filtering criteria")
+        st.markdown("- Checking that your OpenAI API key is valid")
+
+
+def render_page_footer():
+    """Render page footer with helpful information"""
+    st.markdown("---")
+    
+    with st.expander("ℹ️ How to Use This Page"):
+        st.markdown("""
+        ### 🎯 Advanced Search
+        - Use detailed filters for precise job discovery
+        - Filter by experience level, job type, remote options, industry
+        - Enter job title and optionally specify location
+        - Results appear with company and job descriptions
+        
+        ### 📚 Search History
+        - View all your previous searches
+        - Reload and compare past results
+        - Track your job search journey over time
+        
+        ### 💾 Automatic Saving
+        - All search results are automatically saved as JSON files
+        - Find them in `src/outputs/linkedin/`
+        - Easy to share, analyze, or process further
+        """)
+    
+    st.caption("Powered by CrewAI + OpenAI GPT-4o | LinkedIn Job Search Engine")
