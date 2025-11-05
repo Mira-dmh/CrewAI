@@ -8,6 +8,15 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+from datetime import datetime
+
+# Import json_manager functions directly
+from utils.json_manager import (
+    save_linkedin_search,
+    load_latest_linkedin_search,
+    get_linkedin_search_history,
+    SearchResultsManager
+)
 
 @CrewBase
 class LinkedInSearchCrew:
@@ -16,8 +25,8 @@ class LinkedInSearchCrew:
     Includes agents for input processing, LinkedIn scraping, market trends analysis, and verification
     """
     
-    agents_config = 'config/agents.yaml'
-    tasks_config = 'config/tasks.yaml'
+    agents_config = '../config/linkedin_agents.yaml'
+    tasks_config = '../config/linkedin_tasks.yaml'
     
     def __init__(self, llm):
         self.llm = llm  
@@ -25,10 +34,10 @@ class LinkedInSearchCrew:
         self.tasks: List[Task] = []
     
     @agent
-    def dashboard_input_catcher(self) -> Agent:
+    def dashboard_input_processor(self) -> Agent:
         """Process and analyze user search inputs from the dashboard"""
         return Agent(
-            config=self.agents_config['dashboard_input_catcher'], # type: ignore[index]
+            config=self.agents_config['dashboard_input_processor'], # type: ignore[index]
             llm=self.llm 
         )
     
@@ -64,7 +73,7 @@ class LinkedInSearchCrew:
         """Process user input specifically for LinkedIn search parameters"""
         return Task(
             config=self.tasks_config['dashboard_input_processing_task'], # type: ignore[index]
-            agent=self.dashboard_input_catcher(),
+            agent=self.dashboard_input_processor(),
             output_file="src/outputs/linkedin/user_search_params.json"
         )
     
@@ -108,14 +117,7 @@ class LinkedInSearchCrew:
             agents=self.agents, 
             tasks=self.tasks, 
             process=Process.sequential,
-            verbose=True,
-            memory=True,  # Enable memory for better context retention
-            embedder={
-                "provider": "openai",
-                "config": {
-                    "model": "text-embedding-3-small"
-                }
-            }
+            verbose=True
         )
     
     def search_jobs(self, job_title: str, location: str = None, **kwargs):
@@ -130,14 +132,6 @@ class LinkedInSearchCrew:
         Returns:
             CrewAI result object with job search results
         """
-        from datetime import datetime
-        import sys
-        import os
-        
-        # Add utils to path for JSON manager import
-        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-        from utils.json_manager import save_linkedin_search
-        
         inputs = {
             "job_title": job_title,
             "location": location or "",
@@ -153,51 +147,35 @@ class LinkedInSearchCrew:
             saved_file = save_linkedin_search(result, job_title, location, **kwargs)
             if saved_file:
                 print(f"✅ Search results saved to: {saved_file}")
-            else:
-                print("⚠️ Warning: Could not save results to JSON")
         except Exception as e:
-            print(f"⚠️ Warning: Could not save results to JSON: {e}")
+            print(f"⚠️ Warning: Could not save results: {e}")
         
         return result
     
     @staticmethod
     def load_latest_search_results():
         """
-        Load the latest search results from JSON file using JSON manager
+        Load the latest search results from JSON file
         
         Returns:
             dict: Latest search results or None if file doesn't exist
         """
-        import sys
-        import os
-        
-        # Add utils to path for JSON manager import
-        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-        from utils.json_manager import load_latest_linkedin_search
-        
         return load_latest_linkedin_search()
     
     @staticmethod
     def get_all_search_results():
         """
-        Get list of all available search result files using JSON manager
+        Get list of all available search result files
         
         Returns:
             list: List of search result file paths
         """
-        import sys
-        import os
-        
-        # Add utils to path for JSON manager import
-        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-        from utils.json_manager import get_linkedin_search_history
-        
         return get_linkedin_search_history()
     
     @staticmethod
     def load_search_results_by_file(file_path: str):
         """
-        Load search results from a specific file using JSON manager
+        Load search results from a specific file
         
         Args:
             file_path (str): Path to the JSON results file
@@ -205,13 +183,6 @@ class LinkedInSearchCrew:
         Returns:
             dict: Search results or None if error
         """
-        import sys
-        import os
-        
-        # Add utils to path for JSON manager import
-        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-        from utils.json_manager import SearchResultsManager
-        
         return SearchResultsManager.load_results_by_file(file_path)
     
     def analyze_market_trends(self, job_title: str, location: str = None):

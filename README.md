@@ -1,4 +1,6 @@
+
 # CrewAI Job Assistant 🚀
+# use this term to run : streamlit run src/app.py
 
 A powerful job search and career development platform powered by AI agents using CrewAI and Streamlit.
 
@@ -56,7 +58,7 @@ Our platform includes 8 specialized AI agents:
 
 5. **Run the application**:
    ```bash
-   streamlit run app.py
+   streamlit run src/app.py
    ```
 
    Access the app at: http://localhost:8501
@@ -244,7 +246,7 @@ For high-traffic deployments:
 docker-compose -f src/docker/docker-compose.yml logs -f crewai-job-assistant
 
 # Debug mode
-streamlit run app.py --logger.level=debug
+streamlit run src/app.py --logger.level=debug
 
 # Check container health
 docker inspect crewai-job-assistant | grep -i health

@@ -8,7 +8,6 @@ from streamlit_pages.home import home_page
 from streamlit_pages.job_search import job_search_page
 from streamlit_pages.analytics import analytics_page
 from streamlit_pages.settings import settings_page
-from streamlit_pages.info_page import info_page
 from streamlit_pages.specific_jobs import specific_jobs_page
 from streamlit_pages.resume_prep import resume_prep_page
 
@@ -80,9 +79,7 @@ with st.sidebar:
 # Page routing function
 def route_to_page():
     """Route to the appropriate page based on URL parameter"""
-    if current_page == "Info_Page":
-        info_page()
-    elif current_page == "job_search":
+    if current_page == "job_search":
         job_search_page()
     elif current_page == "Specific_Jobs":
         specific_jobs_page()
@@ -143,7 +140,6 @@ def show_breadcrumb():
     
     breadcrumb_map = {
         "home": "🏠 Home",
-        "Info_Page": "🏠 Home > 💡 Info Page",
         "job_search": "🏠 Home > 🔍 Job Search Assistant", 
         "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
         "Resume_Prep": "🏠 Home > 📝 Resume Prep",

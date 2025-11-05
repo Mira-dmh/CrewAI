@@ -1,0 +1,43 @@
+{
+  "market_overview": {
+    "job_title": "Data Scientist",
+    "analysis_date": "October 2023",
+    "market_health": "strong"
+  },
+  "job_posting_trends": {
+    "total_active_postings": "23,400",
+    "weekly_posting_volume": "1,200",
+    "growth_rate": "36%",
+    "seasonal_patterns": ["Increased hiring in Q1 due to new budgets", "Surge in postings during graduation season (May-June)"]
+  },
+  "salary_trends": {
+    "salary_ranges": {
+      "entry_level": {"min": 70000, "max": 90000, "average": 80000},
+      "mid_level": {"min": 90000, "max": 120000, "average": 105000},
+      "senior_level": {"min": 120000, "max": 160000, "average": 140000}
+    },
+    "geographic_salary_variance": [
+      {"location": "San Francisco", "average_salary": 145000, "variance_from_national": "10%"},
+      {"location": "New York", "average_salary": 135000, "variance_from_national": "5%"},
+      {"location": "Austin", "average_salary": 120000, "variance_from_national": "-5%"}
+    ],
+    "salary_trend_direction": "increasing"
+  },
+  "skills_analysis": {
+    "top_demanded_skills": [
+      {"skill_name": "Python", "demand_frequency": "25%", "salary_impact": "15%"},
+      {"skill_name": "Machine Learning", "demand_frequency": "20%", "salary_impact": "20%"},
+      {"skill_name": "Data Visualization", "demand_frequency": "15%", "salary_impact": "10%"},
+      {"skill_name": "SQL", "demand_frequency": "18%", "salary_impact": "12%"},
+      {"skill_name": "R Programming", "demand_frequency": "10%", "salary_impact": "8%"}
+    ],
+    "emerging_skills": ["AI Integration", "Cloud Computing", "Big Data Technologies"],
+    "skill_gaps": ["Data Engineering", "Advanced Statistical Analysis"]
+  },
+  "hiring_insights": {
+    "top_hiring_companies": ["Google", "Amazon", "Facebook", "Microsoft", "IBM"],
+    "average_time_to_fill": "45 days",
+    "competition_level": "high",
+    "geographic_hotspots": ["San Francisco", "New York", "Seattle", "Boston"]
+  }
+}
