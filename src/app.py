@@ -50,8 +50,8 @@ with st.sidebar:
     
     # Services section
     st.markdown("### Services")   
-    job_search_button_type = "primary" if current_page == "job_search" else "secondary"
-    if st.button("🔍 Job Search Assistant", key="nav_job_search", use_container_width=True, type=job_search_button_type):
+    job_search_button_type = "primary" if current_page == "info_page" else "secondary"
+    if st.button("🔍 Job Research Assistant", key="nav_info_page", use_container_width=True, type=job_search_button_type):
         st.query_params.page = "job_search"
         st.rerun()
     

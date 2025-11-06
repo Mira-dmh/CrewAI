@@ -6,7 +6,7 @@ research_task:
     and common interview themes. Identify what qualifications and skills are most valued 
     and summarize the insights clearly for downstream agents.
   expected_output: >
-    A structured JSON file following the example given.
+    A structured JSON file following the example given:
 
     Example output:
     {
@@ -98,13 +98,62 @@ research_task:
       ]
     }
 
+verify_research_task:
+  description: >
+    Review the job research summary produced by the Research Agent and determine its
+    factual accuracy, logical consistency, and data validity using multiple verification
+    dimensions. Each feature contributes a weighted score toward the final
+    Verification Confidence Score (0-1 scale).
+
+    Verification features and weights:
+    [
+      {
+        "feature": "Link validity",
+        "description": "Confirm that all links return HTTP 200 and originate from reputable domains (.edu, .gov, .org, or major .com).",
+        "weight": 0.1
+      },
+      {
+        "feature": "Cross-source agreement",
+        "description": "Measure semantic similarity (cosine > 0.85) across three or more independent sources from different domains to ensure factual overlap.",
+        "weight": 0.3
+      },
+      {
+        "feature": "Schema alignment",
+        "description": "Compare structured fields (skills, salary, education, duties) against canonical O*NET schema in onet_snapshot.json to validate mapping and values.",
+        "weight": 0.3
+      },
+      {
+        "feature": "Recency",
+        "description": "Ensure all referenced data and sources are no more than 12 months old.",
+        "weight": 0.1
+      },
+      {
+        "feature": "Logical consistency",
+        "description": "Run LLM-based consistency checks to verify that claims do not contradict each other and align with established occupational standards.",
+        "weight": 0.2
+      }
+    ]
+
+    Combine all features to compute:
+    Verification_Confidence_Score = Σ(weight_i × normalized_feature_score_i)
+
+
+
+  expected_output: >
+    A structured JSON file following the example given:
+      {
+        "claim_text": "Short, one sentence description of findings as a string",
+        "verification_confidence_score": "Final verification confidence score as a float",
+        "reasoning": "Short explanation of given score. Highlight any major losses in score."
+      }
+
 content_generation_task:
   description: >
     Transform the research data from the Lead Research Analyst into user-friendly content for dashboard display.
     Create compelling job descriptions, market insights summaries, and actionable recommendations.
     Format the content to be engaging and easy to understand for job seekers.
   expected_output: >
-    A structured JSON document with the following fields:
+    A structured JSON file following the example given:
     {
       "job_overview": "Engaging description of the role as a string",
       "market_insights": ["List of key trends and opportunities as strings"],

@@ -1,0 +1,13 @@
+{
+  "job_title": "Data Scientist",
+  "description": "Data Scientists analyze and interpret complex data to help organizations make informed decisions.",
+  "skills": ["Python", "SQL", "Machine Learning", "Statistics", "Data Visualization"],
+  "education": "Bachelor's degree in Computer Science, Statistics, or related field",
+  "salary": {
+    "median": 125000,
+    "range": [100000, 150000]
+  },
+  "experience": {
+    "typical_years": 2
+  }
+}

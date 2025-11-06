@@ -1,0 +1,5 @@
+{
+  "claim_text": "The job research summary for the Data Scientist position is factually accurate and well-supported by multiple reputable sources.",
+  "verification_confidence_score": 0.95,
+  "reasoning": "The verification process confirmed high accuracy across all dimensions, with minor losses in cross-source agreement for some claims, which still averaged above the threshold. All claims exhibited strong support from O*NET and BLS data, with valid links checked for HTTP status."
+}
