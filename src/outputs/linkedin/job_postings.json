@@ -1,0 +1,38 @@
+{
+  "search_metadata": {
+    "job_title": "Data Scientist",
+    "location": "New York",
+    "search_url": "https://www.linkedin.com/jobs/data-scientist-jobs-new-york",
+    "search_date": "2023-10-10",
+    "total_results_found": 9000
+  },
+  "job_postings": [
+    {
+      "job_title": "AI Product Specialist",
+      "company_name": "REGAL",
+      "location": "New York, NY",
+      "date_posted": "2023-10-10",
+      "job_url": "https://www.linkedin.com/jobs/entry-level-data-scientist-jobs-new-york-ny",
+      "employment_type": "Full-time",
+      "experience_level": "Entry Level"
+    },
+    {
+      "job_title": "Senior Marketing Data Scientist",
+      "company_name": "Confidential",
+      "location": "New York, NY",
+      "date_posted": "2023-10-10",
+      "job_url": "https://www.linkedin.com/jobs/senior-data-scientist-jobs-new-york",
+      "employment_type": "Full-time",
+      "experience_level": "Senior Level"
+    },
+    {
+      "job_title": "Data Scientist - Credit Risk Analytics",
+      "company_name": "Confidential",
+      "location": "New York, NY",
+      "date_posted": "2023-10-10",
+      "job_url": "https://www.linkedin.com/jobs/credit-risk-data-scientist-jobs-new-york-ny",
+      "employment_type": "Full-time",
+      "experience_level": "Mid Level"
+    }
+  ]
+}

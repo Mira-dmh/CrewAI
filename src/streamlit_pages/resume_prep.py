@@ -90,7 +90,11 @@ def resume_prep_page():
                 st.success("✅ Interview Guide Created Successfully!")
 
                 guide_path = Path(result["guide_path"])
-                st.markdown(f"**Total Questions:** {result['counts']}")
+        
+                if "counts" in result:
+                   st.markdown(f"**Total Questions:** {result['counts']}")
+                else:
+                   st.markdown("✅ Interview guide generated successfully!")
 
                 if guide_path.exists():
                     with open(guide_path, "r", encoding="utf-8") as f:

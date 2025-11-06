@@ -1,5 +1,5 @@
-# Use Python 3.13 as base image
-FROM python:3.13-slim
+# Use Python 3.10 as base image (matching pyproject.toml)
+FROM python:3.10-slim
 
 # Set working directory
 WORKDIR /app
@@ -8,22 +8,27 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     STREAMLIT_SERVER_PORT=8501 \
-    STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
+    PYTHONPATH=/app
 
-# Install system dependencies
+# Install system dependencies including curl for healthcheck
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+# Copy project configuration files
+COPY pyproject.toml .
+COPY README.md .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies from pyproject.toml
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -e .
 
-# Copy application code
-COPY . .
+# Copy source code and data
+COPY src/ ./src/
+COPY data/ ./data/
 
 # Create necessary directories
 RUN mkdir -p src/outputs/dashboard \
@@ -37,7 +42,8 @@ RUN mkdir -p src/outputs/dashboard \
 EXPOSE 8501
 
 # Health check
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl --fail http://localhost:8501/_stcore/health || exit 1
 
-# Run the application
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Run the application (fixed path)
+CMD ["streamlit", "run", "src/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

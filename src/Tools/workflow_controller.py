@@ -174,10 +174,10 @@ def example_usage():
     """
     Example of how to use the WorkflowController
     """
-    from langchain_openai import ChatOpenAI
+    from crewai import LLM
     
-    # Initialize LLM (replace with your preferred LLM)
-    llm = ChatOpenAI(model="gpt-4")
+    # Initialize LLM using CrewAI (replace with your preferred configuration)
+    llm = LLM(model="gpt-4", api_key=os.getenv("OPENAI_API_KEY"))
     
     # Create workflow controller
     controller = WorkflowController(llm)
