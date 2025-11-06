@@ -156,7 +156,7 @@ content_generation_task:
     A structured JSON file following the example given:
     {
       "job_overview": "Engaging description of the role as a string",
-      "market_insights": ["List of key trends and opportunities as strings"],
+      "market_insights": Deep and Insightful summary of recent hiring trends and job openings as a string,
       "top_hiring_companies": ["List of hiring company names as strings"],
       "skills_in_demand": ["Prioritized list of skill requirements as strings"],
       "salary_expectations": ["List of expected salaries for entry level, mid level and high level of experience as strings"]

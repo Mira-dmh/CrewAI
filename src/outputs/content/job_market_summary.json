@@ -1,37 +1,42 @@
 {
-  "job_overview": "Data Scientists analyze complex data sets to uncover insights that drive strategic business decisions. They design and implement data models, build predictive algorithms, and communicate findings to stakeholders. Typically, they work cross-functionally with engineering, product, and business teams to transform raw data into actionable intelligence.",
-  "market_insights": [
-    "The demand for Data Scientists continues to grow rapidly due to increasing reliance on data-driven decision-making across industries such as technology, finance, healthcare, and retail.",
-    "Emerging trends highlight a strong push towards expertise in machine learning, artificial intelligence, and big data technologies, making continuous learning essential for career advancement."
-  ],
-  
+  "job_overview": "AI Engineers design, develop, and deploy artificial intelligence systems and models that enable machines to simulate human intelligence. They apply machine learning algorithms, deep learning frameworks, natural language processing, and computer vision techniques to create AI-powered applications across diverse sectors such as technology, finance, healthcare, and automotive. This role demands a strong foundation in programming, mathematics, and critical thinking to innovate and optimize AI solutions in an expanding market.",
+  "market_insights": "The demand for AI Engineers is rapidly increasing driven by expanding AI capabilities and enterprise adoption worldwide. Key industries hiring AI Engineers include technology firms, financial services, healthcare providers, and automotive companies. Leading locations for AI roles are major tech hubs in the United States, Europe, and Asia. Industry trends show a strong focus on cloud platform integration, real-time machine learning model deployment, and ethical AI development practices. Competition is growing, making advanced education and recognized certifications important to stand out.",
   "top_hiring_companies": [
     "Google",
+    "Microsoft",
     "Amazon",
-    "Facebook",
     "IBM",
-    "Apple",
-    "JPMorgan Chase",
-    "Goldman Sachs",
-    "Pfizer",
-    "Novartis"
+    "Facebook (Meta)",
+    "NVIDIA",
+    "Tesla",
+    "Apple"
   ],
-  
   "skills_in_demand": [
-    "Python and R programming",
-    "Machine learning and statistical modeling",
-    "Data visualization tools (Tableau, Power BI)",
-    "Big data technologies (Hadoop, Spark)",
-    "SQL and database management"
+    "Proficient programming in Python, R, Java, and C++",
+    "Expertise with machine learning & deep learning frameworks: TensorFlow, PyTorch, Keras",
+    "Data analysis and manipulation using SQL, Pandas, NumPy",
+    "Natural Language Processing (NLP) capabilities",
+    "Computer vision techniques",
+    "Experience with cloud platforms: AWS, Google Cloud, Microsoft Azure",
+    "Model deployment, monitoring, and version control (Git)",
+    "Strong mathematical skills in linear algebra, probability, and statistics",
+    "Problem-solving and critical thinking"
   ],
-  
-  "salary_expectations": [
-    "Entry-level Data Scientists can expect salaries starting around $85,000 annually.",
-    "Experienced professionals with advanced skills and leadership roles can earn upwards of $150,000 per year."
-  ],
-  
-  "next_steps": [
-    "Obtain a strong foundation in statistics, mathematics, and programming — commonly through a bachelor's or master's degree in data science, computer science, or related fields.",
-    "Build a portfolio of projects demonstrating your ability to apply data science techniques to real-world problems, and pursue relevant certifications to enhance your credibility."
-  ]
+  "salary_expectations": {
+    "entry_level": "$90,000 - $110,000 per year",
+    "mid_level": "$120,000 - $150,000 per year",
+    "senior_level": "$160,000 - $210,000+ per year",
+    "note": "Salaries vary based on location, company, and candidate experience. Rapid growth in AI demand is driving salary inflation, especially in top tech hubs."
+  },
+  "next_steps": {
+    "education": "Pursue a Bachelor’s degree in Computer Science, Data Science, Engineering, Mathematics, or related fields. Consider advanced degrees (Master’s or PhD) for competitive advantage.",
+    "certifications": [
+      "Certified Artificial Intelligence Practitioner",
+      "AWS Certified Machine Learning Specialty",
+      "Google Professional Machine Learning Engineer",
+      "Microsoft Certified: Azure AI Engineer Associate"
+    ],
+    "training": "Engage in online courses on platforms like Coursera, edX, and Udacity focusing on AI and machine learning. Participate in bootcamps and hands-on projects, including competitions on Kaggle to build practical skills.",
+    "career_advice": "Build a strong portfolio showcasing AI projects and collaborations. Stay updated on AI trends and continuously develop expertise in emerging tools and technologies. Network with professionals in top hiring companies and attend industry events."
+  }
 }

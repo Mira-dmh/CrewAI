@@ -2,6 +2,7 @@ import streamlit as st
 import json
 from Crew.research_crew import JobResearchCrew
 from crewai import LLM
+from onet_get import search_top_job
 
 llm = LLM(model="gpt-4.1-mini")
 
@@ -23,7 +24,8 @@ def info_page():
     if st.button("Run Research Crew"):
         st.write("⏳ Running the crew, please wait...")
         try:
-            result = run(job_title)
+            search_top_job(job_title)
+            run(job_title)
             st.success("✅ Crew finished running!")
             run_completed = True
         except Exception as e:
@@ -47,8 +49,7 @@ def info_page():
 
         with col2:
             st.header("Market Trends")
-            for trend in data.get("market_insights", []):
-                st.markdown(f"- {trend}")
+            st.write(data.get("market_insights", "No data available"))
 
         with col3:
             st.header("Top Hiring Companies")
