@@ -46,7 +46,7 @@ class JobResearchCrew:
     def verification_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config['verification_analyst'], # type: ignore[index]
-            tools=[SerperDevTool(),FileReadTool(file_path="data/onet/onet_snapshot.json")],
+            tools=[SerperDevTool(),FileReadTool(file_path="src/outputs/lead_research_analyst/research_data.json"),FileReadTool(file_path="src/data/onet/onet_snapshot.json")],
             llm=self.llm
         )
     
@@ -54,6 +54,7 @@ class JobResearchCrew:
     def content_editor(self) -> Agent:
         return Agent(
             config=self.agents_config['content_editor'], # type: ignore[index]
+            tools=[FileReadTool(file_path="src/outputs/lead_research_analyst/research_data.json")],
             llm=self.llm
         )
         

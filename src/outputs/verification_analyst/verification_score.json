@@ -1,5 +1,5 @@
 {
-  "claim_text": "The job research summary for the Data Scientist position is factually accurate and well-supported by multiple reputable sources.",
-  "verification_confidence_score": 0.95,
-  "reasoning": "The verification process confirmed high accuracy across all dimensions, with minor losses in cross-source agreement for some claims, which still averaged above the threshold. All claims exhibited strong support from O*NET and BLS data, with valid links checked for HTTP status."
+  "claim_text": "The AI Engineer job research summary is factually accurate, logically consistent, well-aligned with O*NET schema, uses valid and relevant sources, and is recently updated.",
+  "verification_confidence_score": 0.955,
+  "reasoning": "All source URLs checked out as valid and relevant, core job data points on skills, education, salary, and outlook closely match trusted external sources and O*NET 15-1221.00 occupation schema. The summary is internally consistent with current market trends and industry standards. It uses recent data updated in mid-2024 with reference to O*NET 2025 data. Overall, the research summary's content is highly reliable."
 }
