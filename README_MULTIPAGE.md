@@ -5,15 +5,15 @@
 Run the multipage application:
 
 ```bash
-streamlit run app.py
+streamlit run src/app.py
 ```
 
 ## 📁 Project Structure
 
 ```
 CrewAI/
-├── app.py                          # Main entry point (multipage app)
 ├── src/
+│   ├── app.py                      # Main entry point (multipage app)
 │   └── streamlit_pages/
 │       ├── home.py                 # Home/landing page
 │       ├── job_search.py           # Job search assistant (formerly dashboard.py)
@@ -81,7 +81,8 @@ OPENAI_API_KEY=sk-your-openai-api-key-here
 The app will automatically install required packages:
 - `streamlit`
 - `crewai`
-- `langchain-openai`
+- `crewai-tools`
+- `openai`
 - `plotly`
 - `pandas`
 - `python-dotenv`

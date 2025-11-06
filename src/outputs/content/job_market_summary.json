@@ -1,16 +1,23 @@
+```json
 {
   "job_overview": "Data Scientists analyze complex data sets to uncover insights that drive strategic business decisions. They design and implement data models, build predictive algorithms, and communicate findings to stakeholders. Typically, they work cross-functionally with engineering, product, and business teams to transform raw data into actionable intelligence.",
   "market_insights": [
     "The demand for Data Scientists continues to grow rapidly due to increasing reliance on data-driven decision-making across industries such as technology, finance, healthcare, and retail.",
     "Emerging trends highlight a strong push towards expertise in machine learning, artificial intelligence, and big data technologies, making continuous learning essential for career advancement."
   ],
+  
   "top_hiring_companies": [
     "Google",
     "Amazon",
+    "Facebook",
     "IBM",
-    "Microsoft",
-    "Facebook (Meta)"
+    "Apple",
+    "JPMorgan Chase",
+    "Goldman Sachs",
+    "Pfizer",
+    "Novartis"
   ],
+  
   "skills_in_demand": [
     "Python and R programming",
     "Machine learning and statistical modeling",
@@ -18,12 +25,15 @@
     "Big data technologies (Hadoop, Spark)",
     "SQL and database management"
   ],
+  
   "salary_expectations": [
     "Entry-level Data Scientists can expect salaries starting around $85,000 annually.",
     "Experienced professionals with advanced skills and leadership roles can earn upwards of $150,000 per year."
   ],
+  
   "next_steps": [
     "Obtain a strong foundation in statistics, mathematics, and programming — commonly through a bachelor's or master's degree in data science, computer science, or related fields.",
     "Build a portfolio of projects demonstrating your ability to apply data science techniques to real-world problems, and pursue relevant certifications to enhance your credibility."
   ]
 }
+```

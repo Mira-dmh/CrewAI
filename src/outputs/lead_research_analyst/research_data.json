@@ -63,18 +63,24 @@
     ]
   },
   "education_and_training": {
-    "minimum_education": "Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related STEM field is typical. Many positions prefer or require a Master's or PhD in related disciplines.",
+    "minimum_education": "Bachelor’s degree",
     "common_degrees": [
       "Computer Science",
       "Statistics",
       "Mathematics",
+      "Information Technology",
+      "Data Science",
       "Engineering",
       "Data Science"
     ],
     "recommended_courses": [
-      "Advanced machine learning courses",
-      "Statistics and probability theory",
-      "Hands-on projects involving real-world datasets"
+      "Introduction to Data Science",
+      "Machine Learning",
+      "Probability and Statistics",
+      "Data Structures and Algorithms",
+      "Big Data Analytics",
+      "Artificial Intelligence",
+      "Data Visualization"
     ],
     "professional_certifications": [
       "Google Data Analytics Professional Certificate",
@@ -84,6 +90,7 @@
   },
   "career_path": {
     "entry_level_positions": [
+      "Data Analyst",
       "Junior Data Scientist",
       "Data Analyst"
     ],
@@ -136,8 +143,8 @@
     "top_employers": [
       "Google",
       "Amazon",
-      "Microsoft",
-      "Facebook (Meta)",
+      "Facebook",
+      "IBM",
       "Apple",
       "IBM",
       "JPMorgan Chase",
@@ -223,7 +230,9 @@
       "Coursera",
       "edX",
       "Udacity",
-      "DataCamp"
+      "DataCamp",
+      "edX",
+      "365 Data Science"
     ]
   },
   "citations": [
