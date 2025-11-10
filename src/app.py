@@ -5,7 +5,7 @@ Main entry point for the multipage app with integrated CrewAI agents and tasks
 
 import streamlit as st
 from streamlit_pages.home import home_page
-from streamlit_pages.job_search import job_search_page
+from streamlit_pages.info_page import info_page
 from streamlit_pages.analytics import analytics_page
 from streamlit_pages.settings import settings_page
 from streamlit_pages.specific_jobs import specific_jobs_page
@@ -41,17 +41,15 @@ with st.sidebar:
     st.markdown("## 📍 Navigation")
     
     # Main section
-    st.markdown("### Main")
     home_button_type = "primary" if current_page == "home" else "secondary"
     if st.button("🏠 Home", key="nav_home", use_container_width=True, type=home_button_type):
         st.query_params.page = "home"
         st.rerun()
     
     # Services section
-    st.markdown("### Services")   
     job_search_button_type = "primary" if current_page == "info_page" else "secondary"
     if st.button("🔍 Job Research Assistant", key="nav_info_page", use_container_width=True, type=job_search_button_type):
-        st.query_params.page = "job_search"
+        st.query_params.page = "info_page"
         st.rerun()
     
     specific_button_type = "primary" if current_page == "Specific_Jobs" else "secondary"
@@ -65,7 +63,7 @@ with st.sidebar:
         st.rerun()
     
     # Analytics & Settings section
-    st.markdown("### Analytics & Settings")
+
     analytics_button_type = "primary" if current_page == "analytics" else "secondary"
     if st.button("📊 Job Market Analytics", key="nav_analytics", use_container_width=True, type=analytics_button_type):
         st.query_params.page = "analytics"
@@ -79,8 +77,8 @@ with st.sidebar:
 # Page routing function
 def route_to_page():
     """Route to the appropriate page based on URL parameter"""
-    if current_page == "job_search":
-        job_search_page()
+    if current_page == "info_page":
+        info_page()
     elif current_page == "Specific_Jobs":
         specific_jobs_page()
     elif current_page == "Resume_Prep":
@@ -134,24 +132,24 @@ with st.container():
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Add breadcrumb navigation
-def show_breadcrumb():
-    """Display breadcrumb navigation"""
-    current_url = st.query_params.get("page", "home")
+# def show_breadcrumb():
+#     """Display breadcrumb navigation"""
+#     current_url = st.query_params.get("page", "home")
     
-    breadcrumb_map = {
-        "home": "🏠 Home",
-        "job_search": "🏠 Home > 🔍 Job Search Assistant", 
-        "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
-        "Resume_Prep": "🏠 Home > 📝 Resume Prep",
-        "analytics": "🏠 Home > 📊 Analytics",
-        "settings": "🏠 Home > ⚙️ Settings"
-    }
+#     breadcrumb_map = {
+#         "home": "🏠 Home",
+#         "info_page": "🏠 Home > 🔍 Job Search Assistant", 
+#         "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
+#         "Resume_Prep": "🏠 Home > 📝 Resume Prep",
+#         "analytics": "🏠 Home > 📊 Analytics",
+#         "settings": "🏠 Home > ⚙️ Settings"
+#     }
     
-    if current_url in breadcrumb_map:
-        st.markdown(f"**{breadcrumb_map[current_url]}**")
-        st.markdown("---")
+#     if current_url in breadcrumb_map:
+#         st.markdown(f"**{breadcrumb_map[current_url]}**")
+#         st.markdown("---")
 
-show_breadcrumb()
+# show_breadcrumb()
 
 # Run the selected page
 route_to_page()

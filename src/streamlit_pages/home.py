@@ -60,7 +60,7 @@ def home_page():
         
         st.markdown("<div style='margin: 1rem 0;'></div>", unsafe_allow_html=True)
         if st.button("🚀 Start Exploring", key="explore_jobs", use_container_width=True, type="primary"):
-            st.query_params.page = "Info_Page"
+            st.query_params.page = "info_page"
             st.rerun()
     
     with col2:
