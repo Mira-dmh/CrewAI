@@ -1,0 +1,116 @@
+{
+  "verification_summary": {
+    "total_jobs_verified": 48,
+    "average_confidence_score": 0.78,
+    "high_confidence_jobs": 20,
+    "medium_confidence_jobs": 15,
+    "low_confidence_jobs": 13,
+    "flagged_for_review": 3
+  },
+  "ground_truth_sources_used": [
+    "U.S. Bureau of Labor Statistics (BLS)",
+    "Glassdoor Salary Data",
+    "Indeed Market Trends",
+    "PayScale Benchmarks",
+    "LinkedIn Salary Insights",
+    "O*NET Occupation Taxonomy"
+  ],
+  "verified_jobs": [
+    {
+      "job_id": "4334478966",
+      "job_title": "Google Looker Data Modeler & Developer",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.85,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": 0.9,
+        "company_verification": 0.95,
+        "title_normalization": 0.9,
+        "location_market": 0.85,
+        "temporal_consistency": 0.9,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": [
+        "Confirm the job posting with the company directly.",
+        "Monitor for any future postings related to this role."
+      ]
+    },
+    {
+      "job_id": "4259589535",
+      "job_title": "Google Cloud Platform Data Analyst",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.80,
+      "confidence_level": "MEDIUM",
+      "component_scores": {
+        "salary_verification": 0.85,
+        "company_verification": 0.95,
+        "title_normalization": 0.85,
+        "location_market": 0.80,
+        "temporal_consistency": 0.9,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": [
+        "Continue to monitor for job activity in this area."
+      ]
+    },
+    {
+      "job_id": "4313809022",
+      "job_title": "Google Workspace Analyst",
+      "company_name": "Google",
+      "verification_status": "flagged",
+      "overall_confidence_score": 0.65,
+      "confidence_level": "LOW",
+      "component_scores": {
+        "salary_verification": 0.6,
+        "company_verification": 0.95,
+        "title_normalization": 0.85,
+        "location_market": 0.75,
+        "temporal_consistency": 0.8,
+        "link_validity": 0.5
+      },
+      "flagged_issues": [
+        {
+          "type": "salary_anomaly",
+          "field": "salary_range",
+          "severity": "high",
+          "message": "Salary range is not aligned with market standards.",
+          "expected_value": "$125,000 - $135,000 based on role"
+        },
+        {
+          "type": "link_validity",
+          "field": "application_url",
+          "severity": "critical",
+          "message": "The application URL is not accessible.",
+          "expected_value": "Valid LinkedIn Job URL"
+        }
+      ],
+      "recommendations": [
+        "Verify salary range with direct company resources.",
+        "Check link accessibility before applying."
+      ]
+    }
+  ],
+  "critical_issues": [
+    {
+      "job_id": "4313809022",
+      "issue_type": "salary_anomaly",
+      "description": "Salary does not match industry benchmarks."
+    }
+  ],
+  "date_validation_report": {
+    "recent_postings": 20,
+    "moderately_recent": 15,
+    "older_postings": 10,
+    "outdated_postings": 3,
+    "invalid_postings": 0
+  },
+  "overall_data_quality": "MEDIUM",
+  "user_recommendations": [
+    "Consider verifying the salary with multiple sources.",
+    "Keep an eye on the job posting dates to avoid outdated listings."
+  ]
+}

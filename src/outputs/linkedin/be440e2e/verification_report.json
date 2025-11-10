@@ -1,0 +1,139 @@
+{
+  "verification_summary": {
+    "total_jobs_verified": 40,
+    "average_confidence_score": 0.85,
+    "high_confidence_jobs": 25,
+    "medium_confidence_jobs": 10,
+    "low_confidence_jobs": 5,
+    "flagged_for_review": 5
+  },
+  "ground_truth_sources_used": [
+    "U.S. Bureau of Labor Statistics (BLS)",
+    "Glassdoor Salary Data",
+    "Indeed Market Trends",
+    "PayScale Benchmarks",
+    "LinkedIn Salary Insights",
+    "O*NET Occupation Taxonomy"
+  ],
+  "verified_jobs": [
+    {
+      "job_id": "4290597843",
+      "job_title": "AI Developer, Professional Services Organization, Google",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.92,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": 0.95,
+        "company_verification": 1.0,
+        "title_normalization": 0.90,
+        "location_market": 1.0,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4321159056",
+      "job_title": "Artificial Intelligence Engineering Lead in Mountain View, CA",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.93,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": 0.94,
+        "company_verification": 1.0,
+        "title_normalization": 0.92,
+        "location_market": 1.0,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4301968407",
+      "job_title": "Artificial Intelligence Engineer - Calgary, Alberta, Canada",
+      "company_name": "Google",
+      "verification_status": "flagged",
+      "overall_confidence_score": 0.68,
+      "confidence_level": "LOW",
+      "component_scores": {
+        "salary_verification": 0.70,
+        "company_verification": 1.0,
+        "title_normalization": 0.80,
+        "location_market": 0.60,
+        "temporal_consistency": 0.90,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [
+        {
+          "type": "location_market_anomaly",
+          "field": "location",
+          "severity": "medium",
+          "message": "Market data for Calgary shows lower demand for AI Engineers.",
+          "expected_value": "Higher demand expected in Northern California."
+        }
+      ],
+      "recommendations": [
+        "Consider revising the job posting location or salary expectations."
+      ]
+    },
+    {
+      "job_id": "4318398074",
+      "job_title": "Applied AI Software Engineer, Looker",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.91,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": 0.92,
+        "company_verification": 1.0,
+        "title_normalization": 0.89,
+        "location_market": 1.0,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4333925343",
+      "job_title": "Machine Learning Engineer, Generative AI Innovation Center",
+      "company_name": "Amazon",
+      "verification_status": "verified",
+      "overall_confidence_score": 0.90,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": 0.91,
+        "company_verification": 1.0,
+        "title_normalization": 0.88,
+        "location_market": 1.0,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    }
+  ],
+  "critical_issues": [
+    {
+      "job_id": "4301968407",
+      "issue_type": "location_market_anomaly",
+      "description": "Lower demand for AI Engineers in Calgary compared to California."
+    }
+  ],
+  "date_validation_report": {
+    "recent_postings": 30,
+    "moderately_recent": 5,
+    "older_postings": 5,
+    "outdated_postings": 0,
+    "invalid_postings": 0
+  },
+  "overall_data_quality": "HIGH",
+  "user_recommendations": [
+    "Focus on high-demand regions for AI Engineer roles.",
+    "Update job postings regularly to reflect current market conditions."
+  ]
+}

@@ -3,140 +3,271 @@
 
 dashboard_input_processing_task:
   description: >
-    Process user input from the dashboard to determine the type of request and extract key information.
-    Analyze whether the user wants:
-    1. General job market research for a specific position (route to lead_research_analyst)
-    2. Location-based job search for specific postings (route to LinkedIn_Scraper)
-    Extract job titles, locations, and any additional keywords from the user input.
+    Process comprehensive user input from the dashboard to extract all search parameters:
+    - Job Title: {job_title} (REQUIRED)
+    - Location: {location} (optional - city, state, zip code)
+    - Company: {company} (optional - specific company or leave empty for all)
+    - Job Type: {job_type} (Full-time, Part-time, Internship, Contract, Temporary, or Any)
+    - Work Mode: {remote_option} (Remote, Hybrid, On-site, or Any)
+    - Date Posted: {date_posted} (Past 24 hours, Past week, Past month, or Any time)
+    - Work Authorization: {work_authorization} (OPT, CPT, US Visa Sponsorship, or Any)
+    
+    Validate all inputs, set defaults for empty values, and structure the data for the LinkedIn scraper.
+    Ensure job_title is always provided. Create an optimized search query that combines all filters.
   expected_output: >
-    A structured JSON response with the following fields:
+    A structured JSON response with validated and formatted search parameters:
     {
-      "request_type": "job_research" or "location_search",
-      "job_title": "extracted job title",
-      "location": "extracted location (if provided)",
-      "keywords": ["list", "of", "relevant", "keywords"],
-      "routing_recommendation": "lead_research_analyst" or "linkedin_scraper",
-      "processed_query": "cleaned and formatted query for the target agent"
+      "request_type": "linkedin_job_search",
+      "search_parameters": {
+        "job_title": "validated job title (REQUIRED)",
+        "location": "validated location or empty string",
+        "company": "validated company name or empty string for all companies",
+        "job_type": "Full-time/Part-time/Internship/Contract/Temporary or Any",
+        "remote_option": "Remote/Hybrid/On-site or Any",
+        "date_posted": "Past 24 hours/Past week/Past month or Any time",
+        "work_authorization": "OPT/CPT/US Visa Sponsorship or Any"
+      },
+      "routing_recommendation": "linkedin_scraper",
+      "processed_query": "optimized search query combining all filters",
+      "validation_status": "valid or invalid",
+      "validation_errors": ["list of any validation errors if invalid"]
     }
 
 linkedin_scraping_task:
   description: >
-    Generate targeted LinkedIn job search links for {job_title} positions in {location}.
-    Use LinkedIn's advanced search features to filter by job type, experience level, and date posted.
-    Collect direct URLs to relevant job postings and summarize the key details
-    (company, title, location, date posted).
-    IMPORTANT: Clearly distinguish between original post dates and repost dates:
-    - "Posted X days/weeks ago" = original posting time
-    - "Reposted X days/weeks ago" = the job was reposted, NOT the original date
-    - If a job shows "Reposted", try to identify when it was originally posted
-    - Always include both dates if available (original_post_date and repost_date)
+    You are tasked with finding REAL LinkedIn job postings using your tools.
+    
+    USER INPUT PARAMETERS:
+    - Job Title: {job_title} (REQUIRED)
+    - Location: {location}
+    - Company: {company}
+    - Job Type: {job_type}
+    - Work Mode: {remote_option}
+    - Date Posted: {date_posted}
+    - Work Authorization: {work_authorization}
+    
+    STEP 1: Use the "Search LinkedIn Jobs with Filters" tool
+    - Pass all user parameters as JSON to get the search strategy
+    
+    STEP 2: Use SerperDev tool to search LinkedIn (MULTIPLE SEARCHES)
+    - Build a SIMPLE search query: "site:linkedin.com/jobs [job_title] [location]"
+    - Do NOT include too many filters in the search query - it makes searches fail
+    - Start broad, then filter results programmatically
+    - SerperDev will return up to 50 results per search
+    - **IMPORTANT**: To get more jobs, perform MULTIPLE searches with variations:
+      * Search 1: "site:linkedin.com/jobs [job_title] [location]"
+      * Search 2: "site:linkedin.com/jobs [job_title] [broader_location]" (e.g., state instead of zip)
+      * Search 3: "site:linkedin.com/jobs [related_job_title] [location]" (e.g., "data analyst" → "business analyst")
+    - Combine results from all searches to get 30-50+ unique jobs
+    - Example working query: "site:linkedin.com/jobs data analyst Pennsylvania"
+    - Example backup query: "site:linkedin.com/jobs data analyst"
+    
+    STEP 3: Extract job data from SerperDev results
+    For EACH result from ALL searches (aim for 30-50+ unique jobs):
+    - Extract job_id from LinkedIn URL (numbers after /jobs/view/)
+    - **SKIP** results that are collection pages (e.g., "2000+ jobs in...")
+    - **ONLY KEEP** results with specific job IDs in the URL
+    - Get job_title from the result title
+    - Get company_name from the result
+    - Get location from the result
+    - Infer employment_type from title/description (Full-time, Part-time, Internship, Contract)
+    - Infer work_arrangement from description (Remote, Hybrid, On-site)
+    - Infer experience_level (Entry level, Mid-Senior level, Executive)
+    - Extract salary_range if mentioned in snippet
+    - Use result snippet as job_description
+    - Extract qualifications if mentioned
+    - Build application_url: https://www.linkedin.com/jobs/view/[job_id]
+    - Parse date_posted - distinguish "Posted X ago" vs "Reposted X ago"
+    - Set is_repost: true if "Reposted" appears, false otherwise
+    - Store raw date string in date_info_raw
+    - Look for work_authorization keywords (visa, sponsorship, OPT, CPT, H-1B)
+    - Extract applicant_count if shown (e.g., "50 applicants")
+    - **Remove duplicates** - keep only unique job_ids
+    
+    STEP 4: Return structured JSON with 30-50+ unique jobs
+    - Combine results from all searches
+    - Remove duplicates by job_id
+    - Sort by most recent date first
+    - Target: 30-50 jobs minimum (more is better!)
+    
+    IMPORTANT:
+    - You MUST use SerperDev tool to get real LinkedIn results
+    - Do NOT make up job postings
+    - Extract information from actual search results
+    - If SerperDev returns fewer than 50, that's okay - return what you find
+    - Sort results by most recent date first
   expected_output: >
-    A structured JSON document with the following fields:
+    A complete JSON document with this EXACT structure:
     {
       "search_metadata": {
-        "job_title": "searched job title",
-        "location": "searched location",
-        "search_url": "generated LinkedIn search URL",
-        "search_date": "date when search was performed",
-        "total_results_found": "number of job postings found"
+        "job_title": "{job_title}",
+        "location": "{location}",
+        "company": "{company}",
+        "job_type": "{job_type}",
+        "remote_option": "{remote_option}",
+        "date_posted": "{date_posted}",
+        "work_authorization": "{work_authorization}",
+        "search_query": "the actual SerperDev query used",
+        "search_date": "ISO format timestamp",
+        "total_results_found": "actual number of jobs found"
       },
       "job_postings": [
         {
-          "job_title": "exact job title from posting",
-          "company_name": "company name",
-          "location": "job location",
-          "date_posted": "when the job was originally posted (not repost date)",
-          "repost_date": "if the job was reposted, when it was reposted",
+          "job_id": "extracted from LinkedIn URL",
+          "job_title": "exact title from search result",
+          "company_name": "company name from result",
+          "company_url": "LinkedIn company URL if available",
+          "location": "job location from result",
+          "employment_type": "Full-time/Part-time/Contract/Internship",
+          "work_arrangement": "Remote/Hybrid/On-site",
+          "experience_level": "Entry level/Mid-Senior level/Executive",
+          "salary_range": "salary if mentioned in result",
+          "benefits": "benefits if mentioned",
+          "job_description": "snippet from search result",
+          "qualifications": "requirements from snippet",
+          "application_url": "https://www.linkedin.com/jobs/view/[job_id]",
+          "date_posted": "parsed date",
+          "repost_date": "parsed repost date if applicable",
           "is_repost": true or false,
-          "date_info_raw": "the exact date string from LinkedIn",
-          "job_url": "direct URL to the job posting",
-          "employment_type": "full-time/part-time/contract etc",
-          "experience_level": "entry/mid/senior level if available"
+          "date_info_raw": "exact date text from result",
+          "work_authorization": "visa/sponsorship details if mentioned",
+          "applicant_count": "number if shown"
         }
       ]
     }
+    
+    Return ONLY the JSON, no other text.
 
 linkedin_market_trends_task:
   description: >
     Analyze LinkedIn market trends for {job_title} positions to extract comprehensive market intelligence.
     Focus on job posting trends, salary data, skill demand analysis, hiring patterns, and geographic distribution.
     Provide quantitative insights and market metrics to support data-driven career decisions.
+    
+    IMPORTANT: Use current date (2025) for all analysis. Search for recent market data from 2024-2025.
   expected_output: >
-    A structured JSON document with comprehensive market trends data:
+    A comprehensive market analysis report in JSON format with current data:
     {
       "market_overview": {
-        "job_title": "analyzed position title",
-        "analysis_date": "date of analysis",
-        "market_health": "strong/moderate/weak market demand"
+        "job_title": "{job_title}",
+        "analysis_date": "2025-11-05 (MUST use current date)",
+        "market_health": "strong/moderate/weak"
       },
-      "job_posting_trends": {
-        "total_active_postings": "current number of open positions",
-        "weekly_posting_volume": "average new postings per week",
-        "growth_rate": "month-over-month growth percentage",
-        "seasonal_patterns": ["list of seasonal hiring patterns"]
-      },
-      "salary_trends": {
-        "salary_ranges": {
-          "entry_level": {"min": 0, "max": 0, "average": 0},
-          "mid_level": {"min": 0, "max": 0, "average": 0},
-          "senior_level": {"min": 0, "max": 0, "average": 0}
-        },
-        "geographic_salary_variance": [
-          {"location": "city/region", "average_salary": 0, "variance_from_national": "percentage"}
-        ],
-        "salary_trend_direction": "increasing/stable/decreasing"
-      },
-      "skills_analysis": {
-        "top_demanded_skills": [
-          {"skill_name": "skill", "demand_frequency": "percentage", "salary_impact": "percentage"}
-        ],
-        "emerging_skills": ["list of newly trending skills"],
-        "skill_gaps": ["list of skills with high demand but low supply"]
-      },
-      "hiring_insights": {
-        "top_hiring_companies": ["list of companies actively hiring"],
-        "average_time_to_fill": "days to fill positions",
-        "competition_level": "high/medium/low",
-        "geographic_hotspots": ["cities/regions with highest demand"]
-      }
-    }
 
-research_verification_task:
+linkedin_verification_task:
   description: >
-    Use web searches to fact-check the content and verify the accuracy of the information.
-    Pay special attention to date validation:
-    - Dates like "Reposted 1 week ago" indicate the job was RE-POSTED, not originally posted
-    - Dates like "Posted 2 days ago" indicate original posting time
-    - For reposted jobs, try to find the original posting date if possible
-    - Flag any date inconsistencies or impossible dates
-    Report any inconsistencies, missing fields, or likely false data.
+    **MISSION**: Verify EACH LinkedIn job posting against trusted ground truth sources and generate 
+    quantitative confidence scores using the LinkedIn Job Data Verifier tool.
+    
+    **GROUND TRUTH SOURCES** (Must reference these):
+    1. **U.S. Bureau of Labor Statistics (BLS)** - Official median wages and employment data
+    2. **Glassdoor** - Salary ranges, company reviews, and market benchmarks
+    3. **Indeed** - Job market trends and salary statistics
+    4. **PayScale** - Compensation benchmarks by title and location
+    5. **LinkedIn Salary Insights** - Platform's own salary data
+    6. **Levels.fyi** - Tech industry salary data (for tech roles)
+    
+    **VERIFICATION PROCESS**:
+    For EACH job posting in the input data:
+    
+    STEP 1: Use the "LinkedIn Job Data Verifier" tool
+    - Pass the job posting data as JSON string
+    - Tool will automatically verify against 6 dimensions:
+      * Salary Verification (30% weight) - Compare against BLS/Glassdoor/PayScale
+      * Company Verification (20% weight) - Validate against LinkedIn/Glassdoor/Fortune lists
+      * Job Title Normalization (15% weight) - Check against O*NET taxonomy
+      * Location Market Data (15% weight) - Verify against BLS regional data
+      * Temporal Consistency (10% weight) - Flag outdated postings (>3 months)
+      * Link Validity (10% weight) - Verify LinkedIn URL formats
+    
+    STEP 2: Collect verification report for each job
+    - overall_confidence_score (0-1 scale)
+    - confidence_level (HIGH/MEDIUM/LOW)
+    - component_scores (breakdown by dimension)
+    - flagged_issues (anomalies and warnings)
+    - recommendations (actionable next steps)
+    
+    STEP 3: Aggregate results
+    - Calculate average confidence score across all jobs
+    - Count jobs by confidence level (HIGH/MEDIUM/LOW)
+    - Identify most common issues
+    - Flag critical issues requiring immediate attention
+    
+    **DATE VALIDATION** (Critical):
+    - "Reposted X ago" = job was RE-POSTED, not originally posted
+    - "Posted X ago" = original posting time
+    - Flag jobs older than 3 months as potentially filled
+    - Flag jobs older than 1 year as invalid
+    
+    **OUTPUT REQUIREMENTS**:
+    Return comprehensive verification report with trust scores for ALL jobs.
   expected_output: >
-    A structured JSON report with the following fields:
+    A complete JSON verification report with quantitative confidence scores:
     {
-      "verification_status": "verified" or "issues_found",
-      "accuracy_score": "percentage or rating of data accuracy",
-      "verified_fields": ["list of fields that passed verification"],
-      "flagged_issues": [
+      "verification_summary": {
+        "total_jobs_verified": "number of jobs processed",
+        "average_confidence_score": "mean score (0-1)",
+        "high_confidence_jobs": "count with score >= 0.85",
+        "medium_confidence_jobs": "count with score 0.70-0.84",
+        "low_confidence_jobs": "count with score < 0.70",
+        "flagged_for_review": "count requiring manual review"
+      },
+      "ground_truth_sources_used": [
+        "U.S. Bureau of Labor Statistics (BLS)",
+        "Glassdoor Salary Data",
+        "Indeed Market Trends",
+        "PayScale Benchmarks",
+        "LinkedIn Salary Insights",
+        "O*NET Occupation Taxonomy"
+      ],
+      "verified_jobs": [
         {
-          "issue_type": "date_inconsistency" or "missing_field" or "suspicious_data",
-          "field_name": "name of the problematic field",
-          "current_value": "current value that needs review",
-          "issue_description": "detailed explanation of the issue",
-          "suggested_correction": "recommended fix if applicable"
+          "job_id": "LinkedIn job ID",
+          "job_title": "job title",
+          "company_name": "company name",
+          "verification_status": "verified or flagged",
+          "overall_confidence_score": "0.xxx (0-1 scale)",
+          "confidence_level": "HIGH/MEDIUM/LOW",
+          "component_scores": {
+            "salary_verification": "0.xxx (30% weight)",
+            "company_verification": "0.xxx (20% weight)",
+            "title_normalization": "0.xxx (15% weight)",
+            "location_market": "0.xxx (15% weight)",
+            "temporal_consistency": "0.xxx (10% weight)",
+            "link_validity": "0.xxx (10% weight)"
+          },
+          "flagged_issues": [
+            {
+              "type": "salary_anomaly or missing_company or outdated_posting etc.",
+              "field": "affected field name",
+              "severity": "critical/high/medium/low",
+              "message": "detailed description of the issue",
+              "expected_value": "what the value should be based on ground truth"
+            }
+          ],
+          "recommendations": [
+            "actionable recommendations based on verification results"
+          ]
         }
       ],
-      "date_validation": {
-        "original_vs_repost": [
-          {
-            "job_title": "job title",
-            "company": "company name",
-            "date_info": "date string from posting",
-            "is_repost": true or false,
-            "original_post_date": "original date if available",
-            "note": "explanation or clarification"
-          }
-        ]
+      "critical_issues": [
+        {
+          "job_id": "job with critical issue",
+          "issue_type": "type of critical issue",
+          "description": "what needs immediate attention"
+        }
+      ],
+      "date_validation_report": {
+        "recent_postings": "count posted within 7 days",
+        "moderately_recent": "count posted 8-30 days ago",
+        "older_postings": "count posted 1-3 months ago",
+        "outdated_postings": "count posted >3 months ago (flagged)",
+        "invalid_postings": "count posted >1 year ago (flagged as invalid)"
       },
-      "corrections": ["list of suggested corrections or updates"],
-      "confidence_level": "high/medium/low confidence in the verification results"
+      "overall_data_quality": "HIGH/MEDIUM/LOW based on average confidence",
+      "user_recommendations": [
+        "overall recommendations for the user based on verification results"
+      ]
     }
+    
+    Return ONLY the JSON, no other text.

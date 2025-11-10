@@ -1,8 +1,0 @@
-{
-  "request_type": "location_search",
-  "job_title": "Software Engineer",
-  "location": "New York",
-  "keywords": ["software", "engineer", "New York", "job openings", "listings"],
-  "routing_recommendation": "linkedin_scraper",
-  "processed_query": "Find Software Engineer job listings in New York"
-}

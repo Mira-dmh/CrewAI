@@ -1,0 +1,16 @@
+{
+  "request_type": "linkedin_job_search",
+  "search_parameters": {
+    "job_title": "AI Engineer",
+    "location": "CA",
+    "company": "",
+    "job_type": "Any",
+    "remote_option": "Any",
+    "date_posted": "Any time",
+    "work_authorization": "Any"
+  },
+  "routing_recommendation": "linkedin_scraper",
+  "processed_query": "AI Engineer jobs in CA with any job type, work mode, date posted, and work authorization.",
+  "validation_status": "valid",
+  "validation_errors": []
+}
