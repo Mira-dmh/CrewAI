@@ -1,0 +1,55 @@
+{
+  "market_overview": {
+    "job_title": "data analyst",
+    "analysis_date": "2025-11-05",
+    "market_health": "strong"
+  },
+  "job_posting_trends": {
+    "volume": "High",
+    "growth_rate": "15%",
+    "seasonal_patterns": "Increased postings during Q1 and Q3"
+  },
+  "salary_data": {
+    "average_salary": "$82,000",
+    "salary_range": {
+      "min": "$68,230",
+      "max": "$111,000"
+    },
+    "salary_growth": "Increased by $20,000 since 2024"
+  },
+  "in_demand_skills": {
+    "top_skills": [
+      "SQL",
+      "Data Visualization",
+      "Statistical Analysis",
+      "Python",
+      "Machine Learning"
+    ],
+    "skill_frequency": {
+      "SQL": "80%",
+      "Data Visualization": "70%",
+      "Statistical Analysis": "65%",
+      "Python": "60%",
+      "Machine Learning": "55%"
+    }
+  },
+  "hiring_patterns": {
+    "top_hiring_companies": [
+      "Company A",
+      "Company B",
+      "Company C"
+    ],
+    "geographic_distribution": {
+      "high_demand_areas": [
+        "Philadelphia",
+        "Pittsburgh",
+        "Allentown"
+      ]
+    }
+  },
+  "experience_level_requirements": {
+    "entry_level": "20%",
+    "mid_level": "50%",
+    "senior_level": "30%"
+  }
+}
