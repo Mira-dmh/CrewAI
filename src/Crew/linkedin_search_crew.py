@@ -9,6 +9,9 @@ from crewai_tools import SerperDevTool
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 from datetime import datetime
+import json
+import os
+import uuid
 
 # Import json_manager functions directly
 from utils.json_manager import (
@@ -17,6 +20,9 @@ from utils.json_manager import (
     get_linkedin_search_history,
     SearchResultsManager
 )
+
+# Import LinkedIn job search tools
+from Tools.LinkedInJobSearchTool import LinkedInJobSearchTool
 
 @CrewBase
 class LinkedInSearchCrew:
@@ -32,6 +38,17 @@ class LinkedInSearchCrew:
         self.llm = llm  
         self.agents: List[BaseAgent] = []
         self.tasks: List[Task] = []
+        # Generate unique session ID for this search
+        self.session_id = str(uuid.uuid4())[:8]  # Short UUID (e.g., "a3b4c5d6")
+        self.output_dir = f"src/outputs/linkedin/{self.session_id}"
+        # Create output directory
+        os.makedirs(self.output_dir, exist_ok=True)
+        print(f"📁 Session ID: {self.session_id}")
+        print(f"📁 Output directory: {self.output_dir}")
+        # Initialize LinkedIn search tool with session-specific output directory
+        self.linkedin_search_tool = LinkedInJobSearchTool(output_dir=self.output_dir)
+        # Save session info
+        self._save_session_info()
     
     @agent
     def dashboard_input_processor(self) -> Agent:
@@ -46,7 +63,7 @@ class LinkedInSearchCrew:
         """Specialized agent for LinkedIn job posting discovery and scraping"""
         return Agent(
             config=self.agents_config['LinkedIn_Scraper'], # type: ignore[index]
-            tools=[SerperDevTool()],
+            tools=[self.linkedin_search_tool],  # Use session-specific tool instance
             llm=self.llm 
         )
     
@@ -74,7 +91,7 @@ class LinkedInSearchCrew:
         return Task(
             config=self.tasks_config['dashboard_input_processing_task'], # type: ignore[index]
             agent=self.dashboard_input_processor(),
-            output_file="src/outputs/linkedin/user_search_params.json"
+            output_file=f"{self.output_dir}/user_search_params.json"
         )
     
     @task
@@ -84,7 +101,7 @@ class LinkedInSearchCrew:
             config=self.tasks_config['linkedin_scraping_task'], # type: ignore[index]
             agent=self.linkedin_scraper(),
             context=[self.linkedin_input_processing_task()],
-            output_file="src/outputs/linkedin/job_postings.json"
+            output_file=f"{self.output_dir}/job_postings.json"
         )
     
     @task
@@ -94,7 +111,7 @@ class LinkedInSearchCrew:
             config=self.tasks_config['linkedin_market_trends_task'], # type: ignore[index]
             agent=self.linkedin_market_trends_analyst(),
             context=[self.linkedin_input_processing_task()],
-            output_file="src/outputs/linkedin/market_trends.json"
+            output_file=f"{self.output_dir}/market_trends.json"
         )
     
     @task
@@ -104,8 +121,21 @@ class LinkedInSearchCrew:
             config=self.tasks_config['research_verification_task'], # type: ignore[index]
             agent=self.verification_specialist(),
             context=[self.linkedin_scraping_task(), self.linkedin_market_trends_task()],
-            output_file="src/outputs/linkedin/verification_report.json"
+            output_file=f"{self.output_dir}/verification_report.json"
         )
+    
+    def _save_session_info(self):
+        """Save session metadata to session_info.json"""
+        session_info = {
+            "session_id": self.session_id,
+            "created_at": datetime.now().isoformat(),
+            "output_dir": self.output_dir,
+            "status": "initialized"
+        }
+        
+        session_file = f"{self.output_dir}/session_info.json"
+        with open(session_file, 'w', encoding='utf-8') as f:
+            json.dump(session_info, f, indent=2, ensure_ascii=False)
 
     @crew
     def crew(self) -> Crew:

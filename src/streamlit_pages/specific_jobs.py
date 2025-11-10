@@ -31,6 +31,35 @@ except (ImportError, Exception) as e:
 # MAIN PAGE
 # ============================================================================
 
+def get_latest_session_folder() -> str:
+    """
+    Get the most recent session folder from LinkedIn outputs.
+    
+    Returns:
+        Path to the latest session folder, or None if no sessions exist
+    """
+    linkedin_output_dir = "src/outputs/linkedin"
+    
+    # Check if output directory exists
+    if not os.path.exists(linkedin_output_dir):
+        return None
+    
+    # Get all subdirectories (session folders)
+    session_folders = [
+        f for f in os.listdir(linkedin_output_dir)
+        if os.path.isdir(os.path.join(linkedin_output_dir, f))
+    ]
+    
+    if not session_folders:
+        return None
+    
+    # Get the most recently modified folder
+    session_paths = [os.path.join(linkedin_output_dir, f) for f in session_folders]
+    latest_session = max(session_paths, key=os.path.getmtime)
+    
+    return latest_session
+
+
 def specific_jobs_page():
     """Main entry point for the specific jobs search page"""
     
@@ -413,8 +442,9 @@ def display_job_postings_section(result=None):
             except:
                 pass
     
-    # Priority 2: Fallback to saved JSON file
-    job_file = "src/outputs/linkedin/job_postings.json"
+    # Priority 2: Fallback to saved JSON file from latest session
+    latest_session = get_latest_session_folder()
+    job_file = f"{latest_session}/job_postings.json" if latest_session else "src/outputs/linkedin/job_postings.json"
     if postings is None and os.path.exists(job_file):
         try:
             with open(job_file, 'r', encoding='utf-8') as f:
@@ -643,7 +673,8 @@ def display_job_postings_section(result=None):
 
 def display_market_trends_section():
     """Load and display market trends from JSON"""
-    trends_file = "src/outputs/linkedin/market_trends.json"
+    latest_session = get_latest_session_folder()
+    trends_file = f"{latest_session}/market_trends.json" if latest_session else "src/outputs/linkedin/market_trends.json"
     
     if not os.path.exists(trends_file):
         st.info("💡 Market trends will appear here after the search completes")
@@ -711,7 +742,8 @@ def display_market_trends_section():
 
 def display_verification_section():
     """Load and display verification report from JSON"""
-    verify_file = "src/outputs/linkedin/verification_report.json"
+    latest_session = get_latest_session_folder()
+    verify_file = f"{latest_session}/verification_report.json" if latest_session else "src/outputs/linkedin/verification_report.json"
     
     if not os.path.exists(verify_file):
         st.info("💡 Verification report will appear here after the search completes")
