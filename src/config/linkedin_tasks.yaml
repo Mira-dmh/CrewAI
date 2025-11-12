@@ -140,19 +140,138 @@ linkedin_scraping_task:
 
 linkedin_market_trends_task:
   description: >
-    Analyze LinkedIn market trends for {job_title} positions to extract comprehensive market intelligence.
-    Focus on job posting trends, salary data, skill demand analysis, hiring patterns, and geographic distribution.
-    Provide quantitative insights and market metrics to support data-driven career decisions.
+    **CRITICAL**: Analyze the ACTUAL LinkedIn job postings data provided by the LinkedIn Scraper agent.
+    DO NOT search for external market data - extract ALL insights from the job_postings JSON data.
     
-    IMPORTANT: Use current date (2025) for all analysis. Search for recent market data from 2024-2025.
+    **DATA SOURCE**: Use the output from linkedin_scraping_task which contains:
+    - "search_metadata": job count, search parameters
+    - "job_postings": array of job objects with fields like salary_range, location, company_name, 
+      job_description, required_skills, experience_level, employment_type, etc.
+    
+    **ANALYSIS TASKS**:
+    1. **Read job descriptions and extract skills**: Parse EVERY job's "job_description" and "required_skills" 
+       fields to identify technical skills (Python, SQL, Java, etc.), tools (Tableau, Excel, etc.), 
+       and soft skills (communication, teamwork, etc.). Count frequency across ALL jobs.
+    
+    2. **Parse salary data**: Extract salary information from "salary_range" field for ALL jobs. 
+       Calculate minimum, maximum, and average. Handle various formats like "$80K-$100K", 
+       "$80,000 - $100,000/year", "80000-100000", etc.
+    
+    3. **Analyze locations**: Count jobs by "location" field to identify high-demand geographic areas.
+    
+    4. **Identify top companies**: Count jobs by "company_name" to find top hiring companies.
+    
+    5. **Experience level distribution**: Count jobs by "experience_level" (Entry, Mid, Senior).
+    
+    6. **Employment type breakdown**: Count "employment_type" (Full-time, Part-time, Contract, etc.).
+    
+    7. **Remote work options**: Count "remote_option" (Remote, Hybrid, On-site).
+    
+    **OUTPUT REQUIREMENTS**:
+    - ALL numbers must be REAL counts from the actual data
+    - Skills list must include ONLY skills found in job descriptions
+    - Salary ranges must be CALCULATED from actual posted salaries
+    - Company names must be EXACT names from job postings
+    - Use current date (2025-11-11) for analysis_date
+    
   expected_output: >
-    A comprehensive market analysis report in JSON format with current data:
+    A comprehensive market analysis report in JSON format with REAL data extracted from job postings:
     {
       "market_overview": {
-        "job_title": "{job_title}",
-        "analysis_date": "2025-11-05 (MUST use current date)",
-        "market_health": "strong/moderate/weak"
+        "job_title": "extracted from search_metadata",
+        "analysis_date": "2025-11-11",
+        "total_jobs_analyzed": "EXACT count from job_postings array",
+        "market_health": "strong if >30 jobs, moderate if 10-30, weak if <10"
       },
+      "salary_data": {
+        "average_salary": "CALCULATED average from all salary_range fields",
+        "salary_range": {
+          "min": "LOWEST salary found in all postings",
+          "max": "HIGHEST salary found in all postings"
+        },
+        "salary_distribution": {
+          "under_60k": "count of jobs",
+          "60k_to_80k": "count",
+          "80k_to_100k": "count",
+          "100k_to_150k": "count",
+          "over_150k": "count"
+        },
+        "jobs_with_salary_info": "count of jobs that have salary data",
+        "jobs_without_salary": "count of jobs missing salary"
+      },
+      "in_demand_skills": {
+        "top_skills": [
+          "LIST of top 15 skills extracted from job descriptions, ordered by frequency"
+        ],
+        "skill_frequency": {
+          "skill_name": "percentage of jobs mentioning this skill (e.g., '65%' if 26 out of 40 jobs)"
+        },
+        "technical_skills": ["Python", "SQL", "Java", "etc - ONLY if found in descriptions"],
+        "tools_and_platforms": ["Tableau", "Excel", "AWS", "etc - ONLY if found"],
+        "soft_skills": ["Communication", "Leadership", "etc - ONLY if found"],
+        "total_unique_skills_found": "count of distinct skills across all jobs"
+      },
+      "hiring_patterns": {
+        "top_hiring_companies": [
+          "EXACT company names from job postings, ordered by job count"
+        ],
+        "company_job_counts": {
+          "Company Name": "number of jobs posted"
+        },
+        "geographic_distribution": {
+          "high_demand_areas": [
+            "EXACT locations from job postings, ordered by frequency"
+          ],
+          "location_job_counts": {
+            "City, State": "number of jobs"
+          }
+        },
+        "remote_work_breakdown": {
+          "remote": "count of remote jobs",
+          "hybrid": "count of hybrid jobs",
+          "onsite": "count of onsite jobs",
+          "not_specified": "count where remote_option is empty"
+        }
+      },
+      "experience_level_requirements": {
+        "entry_level": "percentage (e.g., '20%' if 8 out of 40 jobs)",
+        "mid_level": "percentage",
+        "senior_level": "percentage",
+        "not_specified": "percentage of jobs without experience level",
+        "counts": {
+          "entry": "actual count",
+          "mid": "actual count",
+          "senior": "actual count"
+        }
+      },
+      "employment_type_breakdown": {
+        "full_time": "percentage and count",
+        "part_time": "percentage and count",
+        "contract": "percentage and count",
+        "internship": "percentage and count"
+      },
+      "job_posting_trends": {
+        "total_postings_found": "EXACT count from job_postings array",
+        "posting_freshness": {
+          "posted_last_7_days": "count from date_posted field",
+          "posted_last_30_days": "count",
+          "posted_over_30_days": "count"
+        },
+        "industries_represented": ["list of unique industries from job postings"],
+        "company_sizes": {
+          "small_0_50": "count",
+          "medium_51_500": "count",
+          "large_500_plus": "count"
+        }
+      },
+      "data_completeness": {
+        "jobs_with_salary": "percentage",
+        "jobs_with_skills": "percentage",
+        "jobs_with_description": "percentage",
+        "jobs_with_location": "percentage",
+        "average_data_quality": "percentage of fields populated"
+      }
+    }
 
 linkedin_verification_task:
   description: >

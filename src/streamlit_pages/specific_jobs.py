@@ -1086,7 +1086,7 @@ def render_market_overview_and_trends(market_trends_file):
             st.markdown("### 📊 Market Overview")
             overview = data["market_overview"]
             
-            cols = st.columns(3)
+            cols = st.columns(4)
             with cols[0]:
                 st.metric("🎯 Market Health", overview.get("market_health", "N/A").upper())
             with cols[1]:
@@ -1094,6 +1094,9 @@ def render_market_overview_and_trends(market_trends_file):
             with cols[2]:
                 job_title = overview.get("job_title", "N/A")
                 st.metric("💼 Job Title", job_title.title() if job_title != "N/A" else "N/A")
+            with cols[3]:
+                total_jobs = overview.get("total_jobs_analyzed", "N/A")
+                st.metric("📊 Jobs Analyzed", total_jobs)
             
             st.markdown("---")
         
@@ -1102,7 +1105,7 @@ def render_market_overview_and_trends(market_trends_file):
             st.markdown("### 💰 Salary Insights")
             salary = data["salary_data"]
             
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             with col1:
                 avg_salary = salary.get("average_salary", "N/A")
                 st.metric("📊 Average Salary", avg_salary)
@@ -1112,8 +1115,23 @@ def render_market_overview_and_trends(market_trends_file):
                     st.markdown(f"**Range:** {salary_range.get('min', 'N/A')} - {salary_range.get('max', 'N/A')}")
             
             with col2:
-                growth = salary.get("salary_growth", "N/A")
-                st.metric("📈 Salary Growth", growth)
+                jobs_with_salary = salary.get("jobs_with_salary_info", 0)
+                jobs_without = salary.get("jobs_without_salary", 0)
+                total = jobs_with_salary + jobs_without if isinstance(jobs_with_salary, int) else 0
+                if total > 0:
+                    pct = round((jobs_with_salary / total) * 100, 1)
+                    st.metric("📋 Jobs with Salary", f"{jobs_with_salary} ({pct}%)")
+                else:
+                    st.metric("� Jobs with Salary", str(jobs_with_salary))
+            
+            with col3:
+                # Salary distribution chart
+                if "salary_distribution" in salary:
+                    st.markdown("**Salary Distribution:**")
+                    dist = salary["salary_distribution"]
+                    for range_name, count in dist.items():
+                        range_label = range_name.replace('_', ' ').title()
+                        st.caption(f"{range_label}: {count} jobs")
             
             st.markdown("---")
         
@@ -1122,39 +1140,75 @@ def render_market_overview_and_trends(market_trends_file):
             st.markdown("### 🎯 In-Demand Skills")
             skills_data = data["in_demand_skills"]
             
+            # Display key metrics
+            col1, col2 = st.columns(2)
+            with col1:
+                total_skills = skills_data.get("total_unique_skills_found", "N/A")
+                st.metric("🔢 Unique Skills Found", total_skills)
+            with col2:
+                if "top_skills" in skills_data:
+                    top_count = len(skills_data["top_skills"])
+                    st.metric("⭐ Top Skills Tracked", top_count)
+            
+            # Display skills by category
+            if "technical_skills" in skills_data or "tools_and_platforms" in skills_data or "soft_skills" in skills_data:
+                st.markdown("**Skills by Category:**")
+                cat_col1, cat_col2, cat_col3 = st.columns(3)
+                
+                with cat_col1:
+                    if "technical_skills" in skills_data:
+                        st.markdown("🖥️ **Technical Skills:**")
+                        for skill in skills_data["technical_skills"][:10]:
+                            st.caption(f"• {skill}")
+                
+                with cat_col2:
+                    if "tools_and_platforms" in skills_data:
+                        st.markdown("🛠️ **Tools & Platforms:**")
+                        for tool in skills_data["tools_and_platforms"][:10]:
+                            st.caption(f"• {tool}")
+                
+                with cat_col3:
+                    if "soft_skills" in skills_data:
+                        st.markdown("💡 **Soft Skills:**")
+                        for skill in skills_data["soft_skills"][:10]:
+                            st.caption(f"• {skill}")
+                
+                st.markdown("")
+            
+            # Display top skills as badges
             if "top_skills" in skills_data:
                 top_skills = skills_data["top_skills"]
-                
-                # Display as badges
-                st.markdown("**Top Skills:**")
+                st.markdown("**Top In-Demand Skills:**")
                 skill_html = " ".join([
-                    f'<span style="background-color:#0066cc;color:white;padding:5px 15px;border-radius:15px;margin:5px;display:inline-block;">{skill}</span>'
-                    for skill in top_skills[:10]
+                    f'<span style="background-color:#0066cc;color:white;padding:5px 15px;border-radius:15px;margin:5px;display:inline-block;font-size:14px;">{skill}</span>'
+                    for skill in top_skills[:15]
                 ])
                 st.markdown(skill_html, unsafe_allow_html=True)
                 st.markdown("")
             
             # Skill frequency visualization
-            if "skill_frequency" in skills_data:
+            if "skill_frequency" in skills_data and PLOTLY_AVAILABLE:
                 skill_freq = skills_data["skill_frequency"]
                 
-                import plotly.graph_objects as go
+                # Sort by frequency and take top 15
+                sorted_skills = sorted(skill_freq.items(), key=lambda x: float(x[1].rstrip('%')), reverse=True)[:15]
                 
                 fig = go.Figure(data=[
                     go.Bar(
-                        x=list(skill_freq.keys()),
-                        y=[float(v.rstrip('%')) for v in skill_freq.values()],
+                        x=[skill[0] for skill in sorted_skills],
+                        y=[float(skill[1].rstrip('%')) for skill in sorted_skills],
                         marker_color='#0066cc',
-                        text=[v for v in skill_freq.values()],
+                        text=[skill[1] for skill in sorted_skills],
                         textposition='auto',
                     )
                 ])
                 
                 fig.update_layout(
-                    title="Skill Demand Frequency",
+                    title="Top Skills Demand Frequency",
                     xaxis_title="Skills",
-                    yaxis_title="Frequency (%)",
-                    height=400
+                    yaxis_title="Percentage of Jobs (%)",
+                    height=450,
+                    xaxis_tickangle=-45
                 )
                 
                 st.plotly_chart(fig, use_container_width=True)
@@ -1172,17 +1226,61 @@ def render_market_overview_and_trends(market_trends_file):
                 if "top_hiring_companies" in hiring:
                     st.markdown("**Top Hiring Companies:**")
                     companies = hiring["top_hiring_companies"]
-                    for i, company in enumerate(companies[:10], 1):
-                        st.markdown(f"{i}. {company}")
+                    
+                    # Show with job counts if available
+                    if "company_job_counts" in hiring:
+                        counts = hiring["company_job_counts"]
+                        for i, company in enumerate(companies[:10], 1):
+                            count = counts.get(company, "")
+                            st.markdown(f"{i}. **{company}** {f'({count} jobs)' if count else ''}")
+                    else:
+                        for i, company in enumerate(companies[:10], 1):
+                            st.markdown(f"{i}. {company}")
             
             with col2:
                 if "geographic_distribution" in hiring:
                     geo = hiring["geographic_distribution"]
                     if "high_demand_areas" in geo:
-                        st.markdown("**High Demand Areas:**")
+                        st.markdown("**High Demand Locations:**")
                         areas = geo["high_demand_areas"]
-                        for area in areas[:10]:
-                            st.markdown(f"📍 {area}")
+                        
+                        # Show with job counts if available
+                        if "location_job_counts" in geo:
+                            counts = geo["location_job_counts"]
+                            for i, area in enumerate(areas[:10], 1):
+                                count = counts.get(area, "")
+                                st.markdown(f"{i}. 📍 **{area}** {f'({count} jobs)' if count else ''}")
+                        else:
+                            for i, area in enumerate(areas[:10], 1):
+                                st.markdown(f"{i}. 📍 {area}")
+            
+            # Remote work breakdown
+            if "remote_work_breakdown" in hiring and PLOTLY_AVAILABLE:
+                st.markdown("---")
+                st.markdown("**Remote Work Options:**")
+                remote_data = hiring["remote_work_breakdown"]
+                
+                labels = []
+                values = []
+                for key, value in remote_data.items():
+                    if value and value != "0" and value != 0:
+                        labels.append(key.replace('_', ' ').title())
+                        values.append(int(value) if isinstance(value, str) and value.isdigit() else value)
+                
+                if labels and values:
+                    fig = go.Figure(data=[go.Pie(
+                        labels=labels,
+                        values=values,
+                        hole=.3,
+                        marker_colors=['#0066cc', '#4d94ff', '#99c2ff', '#cce0ff']
+                    )])
+                    
+                    fig.update_layout(
+                        title="Remote Work Distribution",
+                        height=350
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
             
             st.markdown("---")
         
@@ -1191,14 +1289,33 @@ def render_market_overview_and_trends(market_trends_file):
             st.markdown("### 📈 Job Posting Trends")
             trends = data["job_posting_trends"]
             
-            cols = st.columns(3)
+            cols = st.columns(4)
             with cols[0]:
-                st.metric("📊 Volume", trends.get("volume", "N/A"))
+                st.metric("📊 Total Postings", trends.get("total_postings_found", "N/A"))
             with cols[1]:
-                st.metric("📈 Growth Rate", trends.get("growth_rate", "N/A"))
+                if "posting_freshness" in trends:
+                    fresh = trends["posting_freshness"]
+                    st.metric("🆕 Last 7 Days", fresh.get("posted_last_7_days", "N/A"))
             with cols[2]:
-                st.markdown("**Seasonal Patterns:**")
-                st.caption(trends.get("seasonal_patterns", "N/A"))
+                if "posting_freshness" in trends:
+                    fresh = trends["posting_freshness"]
+                    st.metric("📅 Last 30 Days", fresh.get("posted_last_30_days", "N/A"))
+            with cols[3]:
+                if "industries_represented" in trends:
+                    industries = trends["industries_represented"]
+                    st.metric("🏭 Industries", len(industries) if isinstance(industries, list) else "N/A")
+            
+            # Company sizes if available
+            if "company_sizes" in trends:
+                st.markdown("**Company Size Distribution:**")
+                sizes = trends["company_sizes"]
+                size_col1, size_col2, size_col3 = st.columns(3)
+                with size_col1:
+                    st.caption(f"Small (0-50): {sizes.get('small_0_50', 0)} jobs")
+                with size_col2:
+                    st.caption(f"Medium (51-500): {sizes.get('medium_51_500', 0)} jobs")
+                with size_col3:
+                    st.caption(f"Large (500+): {sizes.get('large_500_plus', 0)} jobs")
         
         # Experience Level Requirements
         if "experience_level_requirements" in data:
@@ -1206,22 +1323,73 @@ def render_market_overview_and_trends(market_trends_file):
             st.markdown("### 👔 Experience Level Distribution")
             exp_levels = data["experience_level_requirements"]
             
-            import plotly.graph_objects as go
+            # Show counts if available
+            if "counts" in exp_levels:
+                counts = exp_levels["counts"]
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("🎓 Entry Level", f"{counts.get('entry', 0)} ({exp_levels.get('entry_level', 'N/A')})")
+                with col2:
+                    st.metric("💼 Mid Level", f"{counts.get('mid', 0)} ({exp_levels.get('mid_level', 'N/A')})")
+                with col3:
+                    st.metric("🏆 Senior Level", f"{counts.get('senior', 0)} ({exp_levels.get('senior_level', 'N/A')})")
             
-            labels = [k.replace('_', ' ').title() for k in exp_levels.keys()]
-            values = [float(v.rstrip('%')) for v in exp_levels.values()]
+            # Pie chart
+            if PLOTLY_AVAILABLE:
+                labels = []
+                values = []
+                for key, val in exp_levels.items():
+                    if key != "counts" and key != "not_specified" and val and val != "0%":
+                        label = key.replace('_', ' ').title().replace(' Level', '')
+                        try:
+                            pct = float(val.rstrip('%'))
+                            labels.append(label)
+                            values.append(pct)
+                        except:
+                            pass
+                
+                if labels and values:
+                    fig = go.Figure(data=[go.Pie(
+                        labels=labels,
+                        values=values,
+                        hole=.3,
+                        marker_colors=['#0066cc', '#4d94ff', '#99c2ff']
+                    )])
+                    
+                    fig.update_layout(
+                        title="Job Distribution by Experience Level",
+                        height=400
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+        
+        # Data Completeness
+        if "data_completeness" in data:
+            st.markdown("---")
+            st.markdown("### 📋 Data Quality Metrics")
+            completeness = data["data_completeness"]
             
-            fig = go.Figure(data=[go.Pie(
-                labels=labels,
-                values=values,
-                hole=.3,
-                marker_colors=['#0066cc', '#4d94ff', '#99c2ff']
-            )])
+            cols = st.columns(5)
+            metrics = [
+                ("💰 With Salary", "jobs_with_salary"),
+                ("🎯 With Skills", "jobs_with_skills"),
+                ("📝 With Description", "jobs_with_description"),
+                ("📍 With Location", "jobs_with_location"),
+                ("⭐ Avg Quality", "average_data_quality")
+            ]
             
-            fig.update_layout(
-                title="Job Distribution by Experience Level",
-                height=400
-            )
+            for col, (label, key) in zip(cols, metrics):
+                with col:
+                    value = completeness.get(key, "N/A")
+                    st.metric(label, value)
+            
+            st.markdown("---")
+        
+    except json.JSONDecodeError:
+        st.error("❌ Error: Invalid JSON format in market trends file")
+    except Exception as e:
+        st.error(f"❌ Error rendering market trends: {e}")
+        st.exception(e)
             
             st.plotly_chart(fig, use_container_width=True)
     
