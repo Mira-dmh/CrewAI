@@ -64,13 +64,8 @@ with st.sidebar:
         st.query_params.page = "Resume_Prep"
         st.rerun()
     
-    # Analytics & Settings section
-    st.markdown("### Analytics & Settings")
-    analytics_button_type = "primary" if current_page == "analytics" else "secondary"
-    if st.button("📊 Job Market Analytics", key="nav_analytics", use_container_width=True, type=analytics_button_type):
-        st.query_params.page = "analytics"
-        st.rerun()
-    
+    # Settings section
+    st.markdown("### Settings")
     settings_button_type = "primary" if current_page == "settings" else "secondary"
     if st.button("⚙️ Settings", key="nav_settings", use_container_width=True, type=settings_button_type):
         st.query_params.page = "settings"
@@ -85,8 +80,6 @@ def route_to_page():
         specific_jobs_page()
     elif current_page == "Resume_Prep":
         resume_prep_page()
-    elif current_page == "analytics":
-        analytics_page()
     elif current_page == "settings":
         settings_page()
     else:  # Default to home
@@ -143,7 +136,6 @@ def show_breadcrumb():
         "job_search": "🏠 Home > 🔍 Job Search Assistant", 
         "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
         "Resume_Prep": "🏠 Home > 📝 Resume Prep",
-        "analytics": "🏠 Home > 📊 Analytics",
         "settings": "🏠 Home > ⚙️ Settings"
     }
     
