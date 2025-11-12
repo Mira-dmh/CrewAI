@@ -7,7 +7,6 @@ import streamlit as st
 from streamlit_pages.home import home_page
 from streamlit_pages.job_search import job_search_page
 from streamlit_pages.analytics import analytics_page
-from streamlit_pages.settings import settings_page
 from streamlit_pages.specific_jobs import specific_jobs_page
 from streamlit_pages.resume_prep import resume_prep_page
 
@@ -63,13 +62,6 @@ with st.sidebar:
     if st.button("📝 Resume Prep", key="nav_resume", use_container_width=True, type=resume_button_type):
         st.query_params.page = "Resume_Prep"
         st.rerun()
-    
-    # Settings section
-    st.markdown("### Settings")
-    settings_button_type = "primary" if current_page == "settings" else "secondary"
-    if st.button("⚙️ Settings", key="nav_settings", use_container_width=True, type=settings_button_type):
-        st.query_params.page = "settings"
-        st.rerun()
 
 # Page routing function
 def route_to_page():
@@ -80,8 +72,6 @@ def route_to_page():
         specific_jobs_page()
     elif current_page == "Resume_Prep":
         resume_prep_page()
-    elif current_page == "settings":
-        settings_page()
     else:  # Default to home
         home_page()
 
@@ -135,8 +125,7 @@ def show_breadcrumb():
         "home": "🏠 Home",
         "job_search": "🏠 Home > 🔍 Job Search Assistant", 
         "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
-        "Resume_Prep": "🏠 Home > 📝 Resume Prep",
-        "settings": "🏠 Home > ⚙️ Settings"
+        "Resume_Prep": "🏠 Home > 📝 Resume Prep"
     }
     
     if current_url in breadcrumb_map:
