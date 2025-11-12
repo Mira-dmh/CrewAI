@@ -1,42 +1,51 @@
 {
-  "job_overview": "AI Engineers design, develop, and deploy artificial intelligence systems and models that enable machines to simulate human intelligence. They apply machine learning algorithms, deep learning frameworks, natural language processing, and computer vision techniques to create AI-powered applications across diverse sectors such as technology, finance, healthcare, and automotive. This role demands a strong foundation in programming, mathematics, and critical thinking to innovate and optimize AI solutions in an expanding market.",
-  "market_insights": "The demand for AI Engineers is rapidly increasing driven by expanding AI capabilities and enterprise adoption worldwide. Key industries hiring AI Engineers include technology firms, financial services, healthcare providers, and automotive companies. Leading locations for AI roles are major tech hubs in the United States, Europe, and Asia. Industry trends show a strong focus on cloud platform integration, real-time machine learning model deployment, and ethical AI development practices. Competition is growing, making advanced education and recognized certifications important to stand out.",
+  "job_overview": "Data Scientists analyze and interpret complex digital data to drive smarter business decisions. They utilize statistical techniques, machine learning, and programming to build predictive models and uncover actionable insights. Daily activities include data collection, cleaning, exploratory analysis, model development, and communication of findings to stakeholders. They typically work in technology, finance, healthcare, retail, and manufacturing sectors, often in office or hybrid work environments.",
+  
+  "market_insights": "The Data Scientist role continues to experience rapid growth, with a projected 34% increase in job opportunities from 2024 through 2034, fueled by advancements in AI, big data, and demand for data-driven business strategies. Key industry hotspots include San Francisco, New York, Seattle, Boston, London, Berlin, Amsterdam, Bangalore, Singapore, and Tokyo. Remote and hybrid work models are highly prevalent, offering flexibility. Leading sectors hiring Data Scientists are technology, finance, healthcare, retail, and consulting.",
+  
   "top_hiring_companies": [
     "Google",
-    "Microsoft",
     "Amazon",
-    "IBM",
+    "Microsoft",
     "Facebook (Meta)",
-    "NVIDIA",
-    "Tesla",
-    "Apple"
+    "Apple",
+    "IBM",
+    "Accenture",
+    "Salesforce",
+    "Airbnb",
+    "Stripe"
   ],
+  
   "skills_in_demand": [
-    "Proficient programming in Python, R, Java, and C++",
-    "Expertise with machine learning & deep learning frameworks: TensorFlow, PyTorch, Keras",
-    "Data analysis and manipulation using SQL, Pandas, NumPy",
-    "Natural Language Processing (NLP) capabilities",
-    "Computer vision techniques",
-    "Experience with cloud platforms: AWS, Google Cloud, Microsoft Azure",
-    "Model deployment, monitoring, and version control (Git)",
-    "Strong mathematical skills in linear algebra, probability, and statistics",
-    "Problem-solving and critical thinking"
+    "Programming Languages: Python, R, SQL",
+    "Data Manipulation: Pandas, NumPy",
+    "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
+    "Data Visualization Tools: Matplotlib, Seaborn, Tableau",
+    "Big Data Technologies: Spark, Hadoop",
+    "Cloud Platforms: AWS, Google Cloud Platform, Azure",
+    "Statistics and Probability",
+    "Data Wrangling and ETL processes",
+    "Problem-solving and critical thinking",
+    "Effective communication",
+    "Collaboration and teamwork",
+    "Business acumen and domain knowledge"
   ],
-  "salary_expectations": {
-    "entry_level": "$90,000 - $110,000 per year",
-    "mid_level": "$120,000 - $150,000 per year",
-    "senior_level": "$160,000 - $210,000+ per year",
-    "note": "Salaries vary based on location, company, and candidate experience. Rapid growth in AI demand is driving salary inflation, especially in top tech hubs."
-  },
-  "next_steps": {
-    "education": "Pursue a Bachelor’s degree in Computer Science, Data Science, Engineering, Mathematics, or related fields. Consider advanced degrees (Master’s or PhD) for competitive advantage.",
-    "certifications": [
-      "Certified Artificial Intelligence Practitioner",
-      "AWS Certified Machine Learning Specialty",
-      "Google Professional Machine Learning Engineer",
-      "Microsoft Certified: Azure AI Engineer Associate"
-    ],
-    "training": "Engage in online courses on platforms like Coursera, edX, and Udacity focusing on AI and machine learning. Participate in bootcamps and hands-on projects, including competitions on Kaggle to build practical skills.",
-    "career_advice": "Build a strong portfolio showcasing AI projects and collaborations. Stay updated on AI trends and continuously develop expertise in emerging tools and technologies. Network with professionals in top hiring companies and attend industry events."
-  }
+  
+  "salary_expectations": [
+    "Entry-Level: Approximately $83,000 annually in the U.S.",
+    "Mid-Level: Around $120,000 annually in the U.S.",
+    "Senior-Level: Up to $160,000 or more annually in the U.S.",
+    "Global averages can range from $35,000 for entry-level to $120,000 for senior roles.",
+    "Salaries increase with experience, expertise in high-demand skills, and leadership responsibilities."
+  ],
+  
+  "next_steps": [
+    "Pursue a Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related fields.",
+    "Develop core technical skills: Python, R, SQL, machine learning frameworks, data visualization tools.",
+    "Gain practical experience through internships, projects, or entry-level roles such as Data Analyst or Junior Data Scientist.",
+    "Consider professional certifications like Certified Data Scientist (DASCA), Google Professional Data Engineer, or AWS Certified Machine Learning Specialty.",
+    "Build a portfolio of projects demonstrating data analysis, modeling, and visualization capabilities.",
+    "Prepare for interviews by practicing common Data Scientist interview questions and mastering communication of technical concepts.",
+    "Follow industry trends such as AI adoption, AutoML, and explainable AI to stay competitive."
+  ]
 }

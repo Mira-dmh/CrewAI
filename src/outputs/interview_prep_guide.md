@@ -1,134 +1,70 @@
-# Interview Prep Guide – Data Scientist and Data Analyst
+## General + Behavioral Interview Questions
 
-## Technical Questions
+1. **Self-Introduction**  
+   *Framework:* Briefly summarize your background, key skills, and what you are passionate about.  
+   *Sample Answer:* "My name is Mengran Zhuang, currently pursuing a Bachelor of Science in Mathematics & Applied Mathematics at Arcadia University, with a strong interest in data science. I have experience in data analysis through projects like the Economic & Social Development Data Analysis, where I uncovered significant trends linking GDP with social indicators. I am passionate about using data to solve real-world problems and continuously improving my skills in programming and machine learning."
 
-**Question 1:** What is the difference between supervised and unsupervised learning?  
-**Framework:** Discuss the definitions and provide examples of each.  
-**Sample Answer:** Supervised learning involves training a model on labeled data, where the output is known, such as predicting house prices based on features like size and location. In contrast, unsupervised learning deals with unlabeled data, focusing on finding patterns or groupings, like clustering customers based on purchasing behavior.
+2. **Teamwork**  
+   *Framework:* Describe a time when you worked successfully in a team setting.  
+   *Sample Answer:* "In my AI-Assisted Human Memory Research project, I collaborated with a team of four to develop memory-assistive strategies. We divided tasks based on our strengths; I focused on data visualization. Our teamwork not only fostered diverse ideas but also led to a 25% increase in recall accuracy, demonstrating how effective collaboration can enhance project outcomes."
 
----
+3. **Conflict Resolution**  
+   *Framework:* Share an experience where you faced a conflict and how you resolved it.  
+   *Sample Answer:* "During my Economic & Social Development Data Analysis project, two team members disagreed on the data cleaning methods to use. I suggested we hold a meeting to discuss the pros and cons of each approach. By facilitating the conversation and highlighting the importance of each method in achieving our goals, we reached a consensus that improved our dataset quality."
 
-**Question 2:** Can you explain how you would handle missing data in a dataset?  
-**Framework:** Describe methods such as imputation, deletion, or using algorithms that support missing values.  
-**Sample Answer:** When I encounter missing data, I first analyze the extent and nature of the missingness. I might use imputation techniques like mean or median substitution for small amounts of missing values, or consider deleting rows with significant amounts of missing data if it doesn’t skew the dataset. Additionally, I would explore algorithms that can handle missing values directly, ensuring minimal impact on the analysis.
+4. **Leadership**  
+   *Framework:* Give an example of a time when you took the lead on a project.  
+   *Sample Answer:* "In my Dynamic Web Game Deployment project, I noticed that our progress was stalled due to unclear roles. I stepped up to organize our tasks, assign responsibilities, and set deadlines. This leadership enabled us to complete the project ahead of schedule, and we successfully achieved over 500 unique plays during testing."
 
----
+5. **Failure**  
+   *Framework:* Discuss a failure you experienced and the lesson you learned from it.  
+   *Sample Answer:* "In my first semester, I underestimated the workload for my math courses and ended up with a lower grade than I expected. This experience taught me the importance of time management and seeking help when needed. I've since developed a more structured study schedule and actively participate in study groups to enhance my understanding."
 
-**Question 3:** Describe a machine learning project you worked on. What was your approach?  
-**Framework:** Outline the project goal, methodology, and results.  
-**Sample Answer:** In my project with CrewAI, I developed a job search assistant using machine learning to analyze user data and improve engagement. I applied natural language processing techniques to understand user queries and built a recommendation system to suggest relevant jobs. This approach led to a 30% increase in user engagement, highlighting the effectiveness of data-driven solutions.
+6. **Growth / Learning**  
+   *Framework:* Describe a situation where you learned a new skill or concept.  
+   *Sample Answer:* "While working on the AI-Assisted Human Memory Research, I needed to learn how to use the OpenAI API effectively. I dedicated time to online tutorials and practiced coding with Python. This experience not only improved my programming skills but also allowed me to contribute significantly to our project outcomes."
 
----
+7. **STAR Behavioral - Situation**  
+   *Framework:* Explain a situation where you faced a significant challenge.  
+   *Sample Answer:* "In my Economic & Social Development project, we had to analyze complex datasets from the World Bank. The challenge was integrating data from multiple sources with varying formats."
 
-**Question 4:** What are some common metrics for evaluating a machine learning model?  
-**Framework:** List important metrics and explain their significance.  
-**Sample Answer:** Common metrics include accuracy, precision, recall, F1 score, and AUC-ROC. For instance, accuracy measures the overall correctness of the model, while precision and recall provide insights into the model’s performance on specific classes, which is crucial when dealing with imbalanced datasets.
+8. **STAR Behavioral - Task**  
+   *Framework:* Describe your responsibility in that situation.  
+   *Sample Answer:* "My responsibility was to oversee the data cleaning and ensure that the final dataset was reliable and comprehensive. I created a systematic approach for data integration and cleaning."
 
----
+9. **STAR Behavioral - Action**  
+   *Framework:* Describe the actions you took to resolve the challenge.  
+   *Sample Answer:* "I wrote R scripts to automate data cleaning processes, allowing us to handle large datasets more efficiently. I also organized a team meeting to review our progress and share insights."
 
-**Question 5:** How do you ensure the validity of your data analysis?  
-**Framework:** Discuss validation techniques and the importance of reproducibility.  
-**Sample Answer:** To ensure validity, I follow a systematic approach that includes data cleaning and validation checks, such as checking for outliers and ensuring data integrity. I also document my analysis process thoroughly, allowing for reproducibility, which is essential for verifying results and building trust in the findings.
+10. **STAR Behavioral - Result**  
+    *Framework:* Share the outcome of your actions.  
+    *Sample Answer:* "As a result, we successfully compiled a comprehensive dataset of over 150 countries, and our analysis revealed a 40% correlation between GDP and social indicators, which we presented at a conference."
 
----
+11. **Adaptability**  
+    *Framework:* Tell me about a time when you had to adjust to a significant change.  
+    *Sample Answer:* "During the transition to remote learning, I had to adapt my study habits to online platforms. I quickly learned to use digital tools effectively for collaboration, which allowed me to stay on top of my coursework."
 
-**Question 6:** Explain a regression model and its applications.  
-**Framework:** Define regression and provide a real-world application.  
-**Sample Answer:** A regression model predicts a continuous outcome variable based on one or more predictor variables. For example, during my Data Analytics Project, I created a regression model to analyze the relationship between educational investments and GDP, demonstrating a 15% increase, which could guide policymakers in resource allocation.
+12. **Motivation**  
+    *Framework:* What motivates you to pursue a career in data science?  
+    *Sample Answer:* "I'm motivated by the potential of data to drive impactful decisions. The ability to analyze complex datasets and derive meaningful insights that can improve lives is what fuels my passion for data science."
 
----
+13. **Influence**  
+    *Framework:* Describe a situation where you influenced someone's decision.  
+    *Sample Answer:* "In my group project, I convinced my peers to adopt a more rigorous methodology for our data analysis. I presented evidence of how this approach would enhance our credibility, ultimately leading to better results in our findings."
 
-**Question 7:** What tools do you prefer for data visualization and why?  
-**Framework:** Discuss your preferred tools and their advantages.  
-**Sample Answer:** I prefer using Tableau for data visualization due to its user-friendly interface and ability to create interactive dashboards quickly. This allows stakeholders to explore the data themselves, which I find enhances decision-making and engagement with the insights presented.
+14. **Time Management**  
+    *Framework:* How do you prioritize your tasks when you have multiple deadlines?  
+    *Sample Answer:* "I use a combination of digital tools and a priority matrix to organize my tasks. I assess deadlines and importance, focusing on high-impact tasks first. This strategy has helped me consistently meet deadlines without compromising quality."
 
----
-
-**Question 8:** How do you approach feature selection for a machine learning model?  
-**Framework:** Explain methods you use for selecting relevant features.  
-**Sample Answer:** My approach to feature selection involves techniques like correlation analysis to identify relationships between features and the target variable. I also use methods like Recursive Feature Elimination (RFE) and model-based approaches to ensure I retain only the most impactful features, optimizing model performance.
-
----
-
-**Question 9:** What is overfitting, and how can it be prevented?  
-**Framework:** Define overfitting and discuss strategies to mitigate it.  
-**Sample Answer:** Overfitting occurs when a model learns the noise in the training data rather than the underlying pattern, resulting in poor performance on unseen data. To prevent it, I use techniques such as cross-validation, simplifying the model, and employing regularization methods to maintain generalization.
-
----
-
-**Question 10:** How do you handle large datasets?  
-**Framework:** Outline techniques such as data sampling, aggregation, or using big data technologies.  
-**Sample Answer:** When working with large datasets, I often use data sampling to perform initial analyses, which allows for faster computations. For extensive datasets, I leverage big data tools like AWS or utilize SQL for efficient querying and aggregation to focus on the most relevant data points for analysis.
-
----
-
-## Behavioral Questions
-
-**Question 1:** Describe a time when you worked in a team to complete a project.  
-**Framework:** Use the STAR method to outline the situation, task, action, and result.  
-**Sample Answer:** During my time in the Arcadia AI Club, we collaborated on a hackathon project aimed at developing a predictive model for student success. My role involved data analysis and feature selection. We collectively developed a solution that won second place, demonstrating the power of teamwork and diverse skill sets.
-
----
-
-**Question 2:** Tell me about a conflict you had with a team member and how you resolved it.  
-**Framework:** Use the STAR method to describe the conflict, your approach, and the outcome.  
-**Sample Answer:** In a group project, a team member and I disagreed on the analysis methodology. I initiated a discussion to understand their perspective and presented my research supporting my approach. By finding common ground and integrating both methods, we enhanced our project’s robustness and learned from each other.
-
----
-
-**Question 3:** How do you handle feedback on your work?  
-**Framework:** Discuss your openness to feedback and how you implement it.  
-**Sample Answer:** I view feedback as an opportunity for growth. For example, after receiving constructive criticism on my data visualization project, I took the time to understand the suggestions and incorporated them into my work. This led to an improved presentation that resonated better with our audience.
-
----
-
-**Question 4:** Describe a time when you had to learn a new skill quickly.  
-**Framework:** Detail the situation, your learning approach, and the results.  
-**Sample Answer:** When I started using Streamlit for the CrewAI project, I had limited experience with it. I dedicated time to online tutorials and applied what I learned by building small prototypes. This rapid learning allowed me to efficiently develop the job search assistant, significantly enhancing user experience.
-
----
-
-**Question 5:** Can you give an example of a time you took initiative?  
-**Framework:** Use the STAR method to explain the context and your actions.  
-**Sample Answer:** During my internship, I noticed that our data reporting process was manual and time-consuming. I took the initiative to automate the process using Python scripts, which reduced reporting time by 50% and allowed the team to focus on more strategic tasks.
-
----
-
-## Scenario Questions
-
-**Question 1:** Imagine you are given a dataset with numerous variables. How would you start your analysis?  
-**Framework:** Outline your initial steps in exploring and cleaning the data.  
-**Sample Answer:** I would start by loading the data and performing exploratory data analysis (EDA) to understand the structure and identify any missing values or outliers. This initial assessment helps me determine the appropriate cleaning methods and sets the stage for deeper analysis.
-
----
-
-**Question 2:** If a stakeholder requests a last-minute change to a project, how would you handle it?  
-**Framework:** Discuss your approach to managing scope changes and stakeholder communication.  
-**Sample Answer:** I would first assess the impact of the requested change on the project timeline and scope. After understanding its implications, I would communicate with the stakeholder to discuss options, explaining any potential delays while ensuring their needs are met without compromising quality.
-
----
-
-**Question 3:** You find a significant error in your analysis just before presenting it. What do you do?  
-**Framework:** Explain your approach to addressing errors and maintaining professionalism.  
-**Sample Answer:** If I discover a significant error, I would immediately verify my findings and correct the analysis. I would then inform my team about the error and adjust my presentation accordingly, ensuring I present accurate and reliable information to stakeholders.
-
----
-
-**Question 4:** How would you prioritize multiple data requests from different departments?  
-**Framework:** Discuss your criteria for prioritization and communication strategies.  
-**Sample Answer:** I would assess the urgency and potential impact of each request, considering factors like deadlines and business needs. I would communicate with each department to clarify their priorities and manage expectations, ensuring that I allocate my time effectively and transparently.
-
----
-
-**Question 5:** If you were asked to explain a complex data concept to a non-technical audience, how would you approach it?  
-**Framework:** Outline your strategy for simplifying complex information.  
-**Sample Answer:** I would start by breaking down the concept into simple terms and using relatable analogies to explain it. Visual aids, such as graphs or charts, would help illustrate key points, ensuring that the audience can grasp the concept without overwhelming them with technical jargon.
-
----
+15. **Vision for Future**  
+    *Framework:* Where do you see yourself in five years, professionally?  
+    *Sample Answer:* "In five years, I envision myself as a data scientist working on innovative projects that harness machine learning to solve real-world problems. I hope to contribute to advancements in AI while continuing to grow my technical and analytical skills."
 
 ## Questions to Ask the Interviewer
-- Can you describe the typical projects a data scientist or analyst would work on in this role?  
-- What tools and technologies does your team currently use for data analysis and visualization?  
-- How does this organization support the professional development of its data team?  
-- What challenges is the team currently facing that this position would help address?  
-- How does the company prioritize data privacy and ethical considerations in its analytics work?  
+
+1. "Can you describe the team I would be working with and how they collaborate on data projects?"
+2. "What are some of the biggest challenges the data science team is currently facing?"
+3. "How does the company prioritize professional development and continued learning for its data scientists?"
+4. "Can you share examples of projects that the data science team has successfully completed in the past year?"
+5. "What tools and technologies does your team primarily use for data analysis and visualization?"
+6. "How does the company measure success for its data science initiatives?"

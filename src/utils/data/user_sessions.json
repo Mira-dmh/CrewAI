@@ -1,6 +1,18 @@
 {
   "sessions": [
     {
+      "id": "session_15c5fa0b",
+      "timestamp": "2025-11-12T17:42:04.273971",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
       "id": "session_daf2249c",
       "timestamp": "2025-11-06T14:08:12.410245",
       "type": "navigation",
@@ -122,8 +134,8 @@
     }
   ],
   "metadata": {
-    "last_updated": "2025-11-06T14:08:12.410606",
-    "total_sessions": 10,
+    "last_updated": "2025-11-12T17:42:04.274550",
+    "total_sessions": 11,
     "version": "1.0"
   }
 }
