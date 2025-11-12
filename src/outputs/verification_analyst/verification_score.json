@@ -1,5 +1,5 @@
 {
-  "claim_text": "The AI Engineer job research summary is factually accurate, logically consistent, well-aligned with O*NET schema, uses valid and relevant sources, and is recently updated.",
+  "claim_text": "The Data Scientist job research summary is factually accurate, logically consistent, and aligns well with authoritative occupational data from multiple sources.",
   "verification_confidence_score": 0.955,
-  "reasoning": "All source URLs checked out as valid and relevant, core job data points on skills, education, salary, and outlook closely match trusted external sources and O*NET 15-1221.00 occupation schema. The summary is internally consistent with current market trends and industry standards. It uses recent data updated in mid-2024 with reference to O*NET 2025 data. Overall, the research summary's content is highly reliable."
+  "reasoning": "Link validity is perfect with all URLs active and from reputable domains (score 1.0). Strong cross-source agreement across diverse credible sources confirms factual overlap (approximated as 1.0). Schema alignment with O*NET data shows high congruence, earning a 0.9 score. Recency is fully met with all sources dated 2024 (score 1.0). Logical consistency checks validate internal coherence with minimal discrepancies (score 0.95). Slight deductions in schema alignment and logical consistency lead to an overall high confidence score of 0.955."
 }
