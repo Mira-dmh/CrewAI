@@ -9,6 +9,7 @@ from streamlit_pages.info_page import info_page
 from streamlit_pages.analytics import analytics_page
 from streamlit_pages.specific_jobs import specific_jobs_page
 from streamlit_pages.resume_prep import resume_prep_page
+from streamlit_pages.job_search import job_search_page  # Added missing import for Career Research page
 
 # Configure the main app
 st.set_page_config(
@@ -99,7 +100,11 @@ with st.sidebar:
 # Page routing function
 def route_to_page():
     """Route to the appropriate page based on URL parameter"""
-    if current_page == "info_page":
+    if current_page == "job_search":
+        # Career Research restored
+        job_search_page()
+    elif current_page == "info_page":
+        # Legacy info page (alternate research interface)
         info_page()
     elif current_page == "Specific_Jobs":
         specific_jobs_page()
