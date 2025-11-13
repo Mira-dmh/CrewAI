@@ -1,6 +1,7 @@
 {
   "sessions": [
     {
+<<<<<<< HEAD
       "id": "session_2b9c9d61",
       "timestamp": "2025-11-10T16:08:45.943903",
       "type": "navigation",
@@ -39,6 +40,14 @@
     {
       "id": "session_72f1a7f2",
       "timestamp": "2025-11-10T16:07:58.416844",
+=======
+<<<<<<< HEAD
+      "id": "session_1fa769da",
+      "timestamp": "2025-11-11T21:30:13.544377",
+=======
+      "id": "session_15c5fa0b",
+      "timestamp": "2025-11-12T17:42:04.273971",
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
       "type": "navigation",
       "title": "Analytics Visited",
       "details": "User visited Analytics page",
@@ -75,6 +84,7 @@
     {
       "id": "session_f2d94f9d",
       "timestamp": "2025-11-06T13:46:31.875161",
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
       "type": "navigation",
       "title": "Settings Visited",
       "details": "User visited Settings page",
@@ -85,8 +95,13 @@
       "status": "completed"
     },
     {
+<<<<<<< HEAD
+      "id": "session_f0eb6ac5",
+      "timestamp": "2025-11-11T21:05:34.218755",
+=======
       "id": "session_6a5854c5",
       "timestamp": "2025-11-06T13:46:30.147365",
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
       "type": "navigation",
       "title": "Analytics Visited",
       "details": "User visited Analytics page",
@@ -97,8 +112,37 @@
       "status": "completed"
     },
     {
+<<<<<<< HEAD
+      "id": "session_8096e36c",
+      "timestamp": "2025-11-10T16:08:56.297766",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_ac4be66a",
+      "timestamp": "2025-11-10T15:49:49.775956",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_db68f751",
+      "timestamp": "2025-11-10T15:37:34.773708",
+=======
       "id": "session_abc86ec6",
       "timestamp": "2025-11-06T13:46:28.582703",
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
       "type": "navigation",
       "title": "Settings Visited",
       "details": "User visited Settings page",
@@ -109,8 +153,13 @@
       "status": "completed"
     },
     {
+<<<<<<< HEAD
+      "id": "session_5fc34acc",
+      "timestamp": "2025-11-10T15:37:22.798873",
+=======
       "id": "session_99c25cb4",
       "timestamp": "2025-11-06T13:46:25.766219",
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
       "type": "navigation",
       "title": "Analytics Visited",
       "details": "User visited Analytics page",
@@ -170,8 +219,18 @@
     }
   ],
   "metadata": {
+<<<<<<< HEAD
     "last_updated": "2025-11-10T16:08:45.945306",
     "total_sessions": 14,
+=======
+<<<<<<< HEAD
+    "last_updated": "2025-11-11T21:30:13.544595",
+    "total_sessions": 10,
+=======
+    "last_updated": "2025-11-12T17:42:04.274550",
+    "total_sessions": 11,
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     "version": "1.0"
   }
 }

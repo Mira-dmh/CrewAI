@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "claim_text": {
     "job_title": "Project Manager",
     "summary": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources and communicate with stakeholders.",
@@ -7,4 +8,9 @@
   },
   "verification_confidence_score": 1.0,
   "reasoning": "The job research summary on Project Managers is well-supported by valid sources, shows strong cross-source agreement, aligns with O*NET schema, is current, and presents logically consistent claims."
+=======
+  "claim_text": "The Data Scientist job research summary is factually accurate, logically consistent, and aligns well with authoritative occupational data from multiple sources.",
+  "verification_confidence_score": 0.955,
+  "reasoning": "Link validity is perfect with all URLs active and from reputable domains (score 1.0). Strong cross-source agreement across diverse credible sources confirms factual overlap (approximated as 1.0). Schema alignment with O*NET data shows high congruence, earning a 0.9 score. Recency is fully met with all sources dated 2024 (score 1.0). Logical consistency checks validate internal coherence with minimal discrepancies (score 0.95). Slight deductions in schema alignment and logical consistency lead to an overall high confidence score of 0.955."
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
 }

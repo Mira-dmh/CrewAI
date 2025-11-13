@@ -1,14 +1,23 @@
 {
-  "job_overview": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources, and communicate with stakeholders. Key responsibilities include defining project scope and objectives, managing the project team, tracking project performance, and maintaining communication with stakeholders. Project Managers typically work in various industries, including Information Technology, Construction, Healthcare, Telecommunications, and Finance.",
-  "market_insights": "The job outlook for Project Managers is promising, with a projected growth rate of 6% from 2024 to 2034. Recent trends indicate an increasing demand for those familiar with Agile methodologies and advanced project management software. Companies are seeking Project Managers who can adapt to changing project requirements and utilize emerging technologies to improve project efficiency. Geographic hotspots for Project Manager roles include San Francisco, CA, and New York, NY, with a notable rise in remote work opportunities.",
+  "job_overview": "Data Scientists analyze and interpret complex digital data to drive smarter business decisions. They utilize statistical techniques, machine learning, and programming to build predictive models and uncover actionable insights. Daily activities include data collection, cleaning, exploratory analysis, model development, and communication of findings to stakeholders. They typically work in technology, finance, healthcare, retail, and manufacturing sectors, often in office or hybrid work environments.",
+  
+  "market_insights": "The Data Scientist role continues to experience rapid growth, with a projected 34% increase in job opportunities from 2024 through 2034, fueled by advancements in AI, big data, and demand for data-driven business strategies. Key industry hotspots include San Francisco, New York, Seattle, Boston, London, Berlin, Amsterdam, Bangalore, Singapore, and Tokyo. Remote and hybrid work models are highly prevalent, offering flexibility. Leading sectors hiring Data Scientists are technology, finance, healthcare, retail, and consulting.",
+  
   "top_hiring_companies": [
-    "Amazon",
     "Google",
+    "Amazon",
+    "Microsoft",
+    "Facebook (Meta)",
+    "Apple",
     "IBM",
-    "Deloitte",
-    "Accenture"
+    "Accenture",
+    "Salesforce",
+    "Airbnb",
+    "Stripe"
   ],
+  
   "skills_in_demand": [
+<<<<<<< HEAD
     "Agile methodologies",
     "Leadership",
     "Communication",
@@ -24,5 +33,37 @@
     "Consider pursuing PMP certification to enhance credentials.",
     "Stay updated with the latest project management tools and methodologies.",
     "Engage in professional networks and forums to expand connections and resources."
+=======
+    "Programming Languages: Python, R, SQL",
+    "Data Manipulation: Pandas, NumPy",
+    "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
+    "Data Visualization Tools: Matplotlib, Seaborn, Tableau",
+    "Big Data Technologies: Spark, Hadoop",
+    "Cloud Platforms: AWS, Google Cloud Platform, Azure",
+    "Statistics and Probability",
+    "Data Wrangling and ETL processes",
+    "Problem-solving and critical thinking",
+    "Effective communication",
+    "Collaboration and teamwork",
+    "Business acumen and domain knowledge"
+  ],
+  
+  "salary_expectations": [
+    "Entry-Level: Approximately $83,000 annually in the U.S.",
+    "Mid-Level: Around $120,000 annually in the U.S.",
+    "Senior-Level: Up to $160,000 or more annually in the U.S.",
+    "Global averages can range from $35,000 for entry-level to $120,000 for senior roles.",
+    "Salaries increase with experience, expertise in high-demand skills, and leadership responsibilities."
+  ],
+  
+  "next_steps": [
+    "Pursue a Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related fields.",
+    "Develop core technical skills: Python, R, SQL, machine learning frameworks, data visualization tools.",
+    "Gain practical experience through internships, projects, or entry-level roles such as Data Analyst or Junior Data Scientist.",
+    "Consider professional certifications like Certified Data Scientist (DASCA), Google Professional Data Engineer, or AWS Certified Machine Learning Specialty.",
+    "Build a portfolio of projects demonstrating data analysis, modeling, and visualization capabilities.",
+    "Prepare for interviews by practicing common Data Scientist interview questions and mastering communication of technical concepts.",
+    "Follow industry trends such as AI adoption, AutoML, and explainable AI to stay competitive."
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
   ]
 }

@@ -10,6 +10,15 @@ import json
 from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
+from io import BytesIO
+import pandas as pd
+
+# Try to import plotly for analytics visualizations
+try:
+    import plotly.graph_objects as go
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    PLOTLY_AVAILABLE = False
 
 # Load environment variables
 env_path = Path(__file__).parent.parent.parent / '.env'
@@ -27,131 +36,195 @@ except (ImportError, Exception) as e:
     IMPORT_ERROR = str(e)
 
 
-# ============================================================================
-# UTILITY FUNCTIONS
-# ============================================================================
-
-def get_latest_session_folder() -> str:
-    """
-    Get the most recent session folder from LinkedIn outputs.
-    
-    Returns:
-        Path to the latest session folder, or None if no sessions exist
-    """
-    linkedin_output_dir = "src/outputs/linkedin"
-    
-    # Check if output directory exists
-    if not os.path.exists(linkedin_output_dir):
-        return None
-    
-    # Get all subdirectories (session folders)
-    session_folders = [
-        f for f in os.listdir(linkedin_output_dir)
-        if os.path.isdir(os.path.join(linkedin_output_dir, f))
-    ]
-    
-    if not session_folders:
-        return None
-    
-    # Get the most recently modified folder
-    session_paths = [os.path.join(linkedin_output_dir, f) for f in session_folders]
-    latest_session = max(session_paths, key=os.path.getmtime)
-    
-    return latest_session
-
-
-def clean_markdown_json(content: str) -> str:
-    """
-    Clean markdown-wrapped JSON content from CrewAI agent output.
-    Removes markdown code blocks and agent thoughts.
-    
-    Args:
-        content: Raw file content that may contain markdown wrappers
-        
-    Returns:
-        Clean JSON string
-    """
-    import re
-    
-    # If content is already valid JSON, return as is
+# ----------------------------------------------------------------------------
+# Helpers: JSON safe loading and salary parsing
+# ----------------------------------------------------------------------------
+def safe_load_json(path: str):
+    """Safely load JSON, returning None on empty/invalid files with guardrails."""
     try:
-        json.loads(content)
-        return content
-    except:
-        pass
-    
-    # Remove markdown code blocks
-    # Pattern 1: ````json ... ````
-    content = re.sub(r'````json\s*', '', content)
-    content = re.sub(r'````\s*$', '', content)
-    
-    # Pattern 2: ```json ... ```
-    content = re.sub(r'```json\s*', '', content)
-    content = re.sub(r'```\s*$', '', content)
-    
-    # Pattern 3: ``` ... ```
-    content = re.sub(r'^```\s*', '', content)
-    content = re.sub(r'```\s*$', '', content)
-    
-    # Remove agent thoughts and commentary
-    # Pattern: Thought: ... (at beginning)
-    lines = content.split('\n')
-    cleaned_lines = []
-    in_json = False
-    brace_count = 0
-    
-    for line in lines:
-        # Skip thought lines
-        if line.strip().startswith('Thought:') or line.strip().startswith('Final Answer:'):
+        if not os.path.exists(path):
+            return None
+        if os.path.getsize(path) == 0:
+            return None
+        with open(path, 'r', encoding='utf-8') as f:
+            txt = f.read().strip()
+            if not txt:
+                return None
+            return json.loads(txt)
+    except Exception:
+        return None
+
+
+def _parse_money_to_int(value):
+    """Parse money string like "$156,000" to int 156000; pass-through for numbers."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str):
+        # Remove currency symbols and commas, then parse
+        cleaned = value.replace('$', '').replace(',', '').strip()
+        # Handle cases like "120k" or "120K"
+        try:
+            if cleaned.lower().endswith('k'):
+                return int(float(cleaned[:-1]) * 1000)
+            return int(float(cleaned))
+        except Exception:
+            return None
+    return None
+
+
+def _parse_range_to_midpoint(range_str):
+    """Parse a range string like "$120,000 - $165,000" to midpoint integer."""
+    if not isinstance(range_str, str):
+        return None
+    parts = [p.strip() for p in range_str.split('-')]
+    if len(parts) != 2:
+        return None
+    lo = _parse_money_to_int(parts[0])
+    hi = _parse_money_to_int(parts[1])
+    if lo is None or hi is None:
+        return None
+    return int((lo + hi) / 2)
+
+
+def _extract_salary_points(data: dict):
+    """Extract numeric salary points from a market_trends JSON with flexible schema."""
+    if not data:
+        return {}
+    # Two possible schemas observed: top-level salary_data OR under market_overview
+    salary = None
+    if 'salary_data' in data and isinstance(data['salary_data'], dict):
+        salary = data['salary_data']
+    elif 'market_overview' in data and isinstance(data['market_overview'], dict):
+        mo = data['market_overview']
+        salary = mo.get('salary_data') if isinstance(mo.get('salary_data'), dict) else None
+
+    result = {}
+    if not salary:
+        # Alternate schema used in earlier UI: data['salary_trends']['salary_ranges'] with numeric dict
+        st_ranges = data.get('salary_trends', {}).get('salary_ranges', {}) if isinstance(data.get('salary_trends'), dict) else {}
+        for level in ['entry_level', 'mid_level', 'senior_level']:
+            info = st_ranges.get(level)
+            if isinstance(info, dict):
+                # expects {min, max, average}
+                avg = info.get('average')
+                if avg is not None:
+                    result[f'{level}_avg'] = _parse_money_to_int(avg)
+        return result
+
+    # Common fields
+    result['average_salary'] = _parse_money_to_int(salary.get('average_salary'))
+
+    # Salary ranges may be strings (e.g., "$120,000 - $165,000") or dicts
+    ranges = salary.get('salary_ranges')
+    if isinstance(ranges, dict):
+        for level in ['entry_level', 'mid_level', 'senior_level']:
+            val = ranges.get(level)
+            if isinstance(val, str):
+                result[f'{level}_mid'] = _parse_range_to_midpoint(val)
+            elif isinstance(val, dict):
+                # expects numbers under {min, max, average}
+                avg = val.get('average')
+                if avg is not None:
+                    result[f'{level}_mid'] = _parse_money_to_int(avg)
+
+    return result
+
+
+def _collect_session_salary_snapshots():
+    """Scan session folders under outputs/linkedin and collect salary snapshots."""
+    base = "src/outputs/linkedin"
+    if not os.path.isdir(base):
+        return []
+    snapshots = []
+    for name in os.listdir(base):
+        session_dir = os.path.join(base, name)
+        if not os.path.isdir(session_dir):
             continue
-        
-        # Track JSON start
-        if '{' in line:
-            in_json = True
-            brace_count += line.count('{')
-            brace_count -= line.count('}')
-            cleaned_lines.append(line)
-        elif in_json:
-            brace_count += line.count('{')
-            brace_count -= line.count('}')
-            cleaned_lines.append(line)
-            
-            # Check if JSON is complete
-            if brace_count == 0:
-                break
-    
-    cleaned_content = '\n'.join(cleaned_lines)
-    
-    # Final validation
-    try:
-        json.loads(cleaned_content)
-        return cleaned_content
-    except:
-        # If still invalid, try to extract JSON between first { and last }
-        first_brace = content.find('{')
-        last_brace = content.rfind('}')
-        
-        if first_brace != -1 and last_brace != -1 and last_brace > first_brace:
-            extracted = content[first_brace:last_brace+1]
+        mt_path = os.path.join(session_dir, 'market_trends.json')
+        data = safe_load_json(mt_path)
+        if not data:
+            continue
+        # Prefer analysis date from market_overview; fallback to folder mtime
+        analysis_date = None
+        if 'market_overview' in data and isinstance(data['market_overview'], dict):
+            analysis_date = data['market_overview'].get('analysis_date')
+        created = None
+        # Try session_info.json for created_at
+        si = safe_load_json(os.path.join(session_dir, 'session_info.json'))
+        if si and isinstance(si, dict):
+            created = si.get('created_at') or created
+        # Parse dates
+        dt = None
+        for candidate in [analysis_date, created]:
+            if candidate:
+                try:
+                    # handle YYYY-MM-DD or ISO format
+                    dt = datetime.fromisoformat(candidate)
+                    break
+                except Exception:
+                    try:
+                        dt = datetime.strptime(candidate, '%Y-%m-%d')
+                        break
+                    except Exception:
+                        pass
+        # Fallback to filesystem mtime
+        if dt is None:
             try:
-                json.loads(extracted)
-                return extracted
-            except:
-                pass
-        
-        # Return original if all cleaning attempts fail
-        return content
+                dt = datetime.fromtimestamp(os.path.getmtime(session_dir))
+            except Exception:
+                dt = None
+
+        salaries = _extract_salary_points(data)
+        if not salaries:
+            continue
+        snapshots.append({
+            'session_id': name,
+            'date': dt,
+            **salaries
+        })
+
+    # Sort by date if available
+    snapshots.sort(key=lambda x: x['date'] or datetime.min)
+    return snapshots
 
 
 # ============================================================================
 # MAIN PAGE
 # ============================================================================
 
+def get_latest_session_folder():
+    """Get the most recent session folder from LinkedIn outputs"""
+    linkedin_output_dir = "src/outputs/linkedin"
+    
+    if not os.path.exists(linkedin_output_dir):
+        return None
+    
+    # Get all subdirectories (session folders)
+    try:
+        session_folders = [
+            f for f in os.listdir(linkedin_output_dir)
+            if os.path.isdir(os.path.join(linkedin_output_dir, f))
+        ]
+        
+        if not session_folders:
+            return None
+        
+        # Get the most recently modified folder
+        session_paths = [os.path.join(linkedin_output_dir, f) for f in session_folders]
+        latest_session = max(session_paths, key=os.path.getmtime)
+        
+        return latest_session
+    except Exception:
+        return None
+
+
 def specific_jobs_page():
     """Main entry point for the specific jobs search page"""
     
     # Page Header
-    st.markdown("# 🎯 LinkedIn Job Search")
+    st.markdown("#  LinkedIn Job Search")
     st.markdown("*AI-powered job discovery with real-time market analysis*")
     st.markdown("---")
     
@@ -163,15 +236,19 @@ def specific_jobs_page():
         return
     
     # Main tabs for organized content
-    tab1, tab2 = st.tabs([
-        "🎯 Advanced Search",
-        "📚 Search History"
+    tab1, tab2, tab3 = st.tabs([
+        " Advanced Search",
+        " Job Market Analytics",
+        " Search History"
     ])
     
     with tab1:
         render_advanced_search()
     
     with tab2:
+        render_job_market_analytics()
+    
+    with tab3:
         render_search_history()
     
     # Footer
@@ -195,10 +272,10 @@ def check_system_status():
 
 def display_system_error(error_msg):
     """Display system configuration errors with setup instructions"""
-    st.error("⚠️ **System Configuration Required**")
+    st.error(" **System Configuration Required**")
     st.error(error_msg)
     
-    with st.expander("🔧 Setup Instructions", expanded=True):
+    with st.expander(" Setup Instructions", expanded=True):
         if "CrewAI" in error_msg:
             st.markdown("""
             ### Install CrewAI Dependencies
@@ -220,18 +297,18 @@ def display_system_error(error_msg):
             """)
     
     # Diagnostic info
-    with st.expander("🔍 Diagnostic Information"):
+    with st.expander(" Diagnostic Information"):
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("**CrewAI Status:**")
-            st.markdown(f"- Available: {'✅' if CREWAI_AVAILABLE else '❌'}")
+            st.markdown(f"- Available: {'' if CREWAI_AVAILABLE else ''}")
             if IMPORT_ERROR:
                 st.code(IMPORT_ERROR, language="text")
         
         with col2:
             st.markdown("**Environment Variables:**")
-            st.markdown(f"- OPENAI_API_KEY: {'✅ Set' if os.getenv('OPENAI_API_KEY') else '❌ Not set'}")
-            st.markdown(f"- SERPER_API_KEY: {'✅ Set' if os.getenv('SERPER_API_KEY') else '⚠️ Optional'}")
+            st.markdown(f"- OPENAI_API_KEY: {' Set' if os.getenv('OPENAI_API_KEY') else ' Not set'}")
+            st.markdown(f"- SERPER_API_KEY: {' Set' if os.getenv('SERPER_API_KEY') else ' Optional'}")
 
 
 # ============================================================================
@@ -240,13 +317,13 @@ def display_system_error(error_msg):
 
 def render_advanced_search():
     """Render the advanced search form with all filters"""
-    st.markdown("### 🎯 Advanced Search Options")
+    st.markdown("###  Advanced Search Options")
     st.markdown("*Use detailed filters for precise job discovery*")
     st.markdown("")
     
     with st.form("advanced_search_form"):
         # Basic info section
-        st.markdown("#### 📋 Basic Information")
+        st.markdown("####  Basic Information")
         col1, col2 = st.columns(2)
         
         with col1:
@@ -262,18 +339,22 @@ def render_advanced_search():
         with col2:
             location = st.text_input(
                 "Location",
-                placeholder="Search by city, state, or zip code"
+                placeholder="e.g., New York, Remote"
+            )
+            experience = st.selectbox(
+                "Experience Level",
+                ["Any", "Entry Level", "Mid Level", "Senior Level", "Executive"]
             )
         
         # Filters section
         st.markdown("---")
-        st.markdown("#### 🔧 Additional Filters")
-        col3, col4, col5, col6 = st.columns(4)
+        st.markdown("####  Additional Filters")
+        col3, col4, col5 = st.columns(3)
         
         with col3:
             job_type = st.selectbox(
                 "Job Type",
-                ["Any", "Full-time", "Part-time", "Internship", "Contract", "Temporary"]
+                ["Any", "Full-time", "Part-time", "Contract", "Freelance"]
             )
         
         with col4:
@@ -283,75 +364,40 @@ def render_advanced_search():
             )
         
         with col5:
-            date_posted = st.selectbox(
-                "Date Posted",
-                ["Any time", "Past 24 hours", "Past week", "Past month"]
-            )
-        
-        with col6:
-            work_auth = st.selectbox(
-                "Work Authorization",
-                [
-                    "Any",
-                    "US Visa Sponsorship",
-                    "OPT (F-1 Graduates)",
-                    "CPT (F-1 Students)",
-                    "No Authorization Required",
-                    "Unknown"
-                ],
-                help="OPT: Optional Practical Training for F-1 visa graduates\nCPT: Curricular Practical Training for F-1 visa students"
+            industry = st.selectbox(
+                "Industry",
+                ["Any", "Technology", "Finance", "Healthcare", "Marketing", "Education"]
             )
         
         # Submit button
         st.markdown("---")
         submitted = st.form_submit_button(
-            "🔍 Search with Filters",
+            " Search with Filters",
             use_container_width=True,
             type="primary"
         )
-    
-    # Process form submission OUTSIDE the form context
-    if submitted:
-        if not job_title:
-            st.error("❌ Job title is required")
-        else:
-            # Store search params in session state
-            st.session_state['pending_search'] = {
-                "job_title": job_title,
-                "location": location,
-                "company": company,
-                "search_params": {
+        
+        if submitted:
+            if not job_title:
+                st.error(" Job title is required")
+            else:
+                # Build search params
+                search_params = {
                     "company": company,
+                    "experience_level": experience,
                     "job_type": job_type,
                     "remote_option": remote_option,
-                    "date_posted": date_posted,
-                    "work_authorization": work_auth
+                    "industry": industry
                 }
-            }
-            st.rerun()
-    
-    # Execute pending search outside form
-    if 'pending_search' in st.session_state:
-        search_data = st.session_state.pop('pending_search')  # Remove immediately to prevent rerun issues
-        
-        # Show search summary
-        st.markdown("---")
-        st.markdown("#### 📊 Your Search Criteria:")
-        display_search_summary(
-            search_data['job_title'],
-            search_data['location'],
-            search_data['company'],
-            search_data['search_params']
-        )
-        
-        # Execute search with all parameters
-        st.markdown("---")
-        execute_linkedin_search(
-            search_data['job_title'],
-            search_data['location'],
-            search_data['company'],
-            search_data['search_params']
-        )
+                
+                # Show search summary
+                st.markdown("---")
+                st.markdown("####  Your Search Criteria:")
+                display_search_summary(job_title, location, search_params)
+                
+                # Execute search
+                st.markdown("---")
+                execute_linkedin_search(job_title, location, search_params)
 
 
 # ============================================================================
@@ -360,7 +406,7 @@ def render_advanced_search():
 
 def render_search_history():
     """Render the search history interface"""
-    st.markdown("### 📚 Your Search History")
+    st.markdown("###  Your Search History")
     st.markdown("*View and reload previous LinkedIn searches*")
     st.markdown("")
     
@@ -368,28 +414,28 @@ def render_search_history():
     all_results = LinkedInSearchCrew.get_all_search_results()
     
     if not all_results:
-        st.info("📝 No search history yet. Run a search to get started!")
+        st.info(" No search history yet. Run a search to get started!")
         return
     
     # Display metrics
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("📊 Total Searches", len(all_results))
+        st.metric(" Total Searches", len(all_results))
     
     with col2:
         latest = LinkedInSearchCrew.load_latest_search_results()
         if latest:
             metadata = latest.get("search_metadata", {})
-            st.metric("🔍 Latest Search", metadata.get("job_title", "N/A"))
+            st.metric(" Latest Search", metadata.get("job_title", "N/A"))
     
     with col3:
-        if st.button("🔄 Refresh History", use_container_width=True):
+        if st.button(" Refresh History", use_container_width=True):
             st.rerun()
     
     # Display search history
     st.markdown("---")
-    st.markdown("#### 📋 Recent Searches")
+    st.markdown("####  Recent Searches")
     
     for i, file_path in enumerate(all_results[:10], 1):
         results = LinkedInSearchCrew.load_search_results_by_file(file_path)
@@ -414,19 +460,19 @@ def display_search_history_item(index, file_path, results):
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            st.markdown(f"**📋 Position:** {job_title}")
-            st.markdown(f"**📍 Location:** {location}")
+            st.markdown(f"** Position:** {job_title}")
+            st.markdown(f"** Location:** {location}")
             st.markdown(f"**⏰ Time:** {display_time}")
         
         with col2:
             filename = os.path.basename(file_path)
-            st.markdown(f"**📄 File:** `{filename}`")
+            st.markdown(f"** File:** `{filename}`")
             
-            if st.button(f"📂 Load Results", key=f"view_{index}", use_container_width=True):
+            if st.button(f" Load Results", key=f"view_{index}", use_container_width=True):
                 st.markdown("---")
                 crew_output = results.get("crew_output", "No data available")
                 output_str = str(crew_output)
-                st.markdown("### 📊 Search Results:")
+                st.markdown("###  Search Results:")
                 if len(output_str) > 1000:
                     st.text(output_str[:1000] + "...")
                     with st.expander("View Full Output"):
@@ -439,10 +485,10 @@ def display_search_history_item(index, file_path, results):
 # SEARCH EXECUTION
 # ============================================================================
 
-def execute_linkedin_search(job_title, location="", company="", search_params=None):
-    """Execute the LinkedIn search with AI agents and all user filters"""
+def execute_linkedin_search(job_title, location="", search_params=None):
+    """Execute the LinkedIn search with AI agents"""
     
-    st.markdown("### 🤖 AI Search in Progress")
+    st.markdown("###  AI Search in Progress")
     st.markdown("")
     
     progress_bar = st.progress(0)
@@ -450,33 +496,34 @@ def execute_linkedin_search(job_title, location="", company="", search_params=No
     
     try:
         # Initialize
-        status_text.text("🔧 Initializing AI agents...")
+        status_text.text(" Initializing AI agents...")
         progress_bar.progress(20)
         
         llm = LLM(model="gpt-4o-mini", temperature=0.7)
         linkedin_crew = LinkedInSearchCrew(llm=llm)
         
         # Start search
-        status_text.text(f"🌐 Searching LinkedIn for '{job_title}'...")
+        status_text.text(f" Searching LinkedIn for '{job_title}'...")
         progress_bar.progress(40)
         
-        # Execute with all parameters
-        status_text.text("🤖 AI agents analyzing job market with your filters...")
+        # Execute
+        status_text.text(" AI agents analyzing job market...")
         progress_bar.progress(60)
         
-        # Call search_jobs with all parameters
-        result = linkedin_crew.search_jobs(
-            job_title=job_title,
-            location=location,
-            company=company,
-            job_type=search_params.get("job_type", "Any") if search_params else "Any",
-            remote_option=search_params.get("remote_option", "Any") if search_params else "Any",
-            date_posted=search_params.get("date_posted", "Any time") if search_params else "Any time",
-            work_authorization=search_params.get("work_authorization", "Any") if search_params else "Any"
-        )
+        if search_params:
+            result = linkedin_crew.search_jobs(
+                job_title=job_title,
+                location=location,
+                **search_params
+            )
+        else:
+            result = linkedin_crew.search_jobs(
+                job_title=job_title,
+                location=location
+            )
         
         # Complete
-        status_text.text("✅ Analysis complete! Found real LinkedIn job postings!")
+        status_text.text(" Analysis complete!")
         progress_bar.progress(100)
         
         # Clear progress
@@ -491,10 +538,10 @@ def execute_linkedin_search(job_title, location="", company="", search_params=No
         progress_bar.empty()
         status_text.empty()
         
-        st.error(f"❌ **Search Error:** {str(e)}")
+        st.error(f" **Search Error:** {str(e)}")
         st.error(f"**Error Type:** {type(e).__name__}")
         
-        with st.expander("🔍 View Error Details"):
+        with st.expander(" View Error Details"):
             import traceback
             st.code(traceback.format_exc(), language="python")
         
@@ -508,14 +555,14 @@ def execute_linkedin_search(job_title, location="", company="", search_params=No
 def display_search_results(job_title, location, result):
     """Display formatted search results in organized tabs"""
     
-    st.success(f"✅ **Search Complete:** {job_title}" + (f" in {location}" if location else ""))
+    st.success(f" **Search Complete:** {job_title}" + (f" in {location}" if location else ""))
     
     # Results tabs
     tabs = st.tabs([
-        "💼 Job Postings",
-        "📈 Market Trends",
-        "✅ Verification",
-        "📄 Raw Data"
+        " Job Postings",
+        " Market Trends",
+        " Verification",
+        " Raw Data"
     ])
     
     with tabs[0]:
@@ -528,7 +575,7 @@ def display_search_results(job_title, location, result):
         display_verification_section()
     
     with tabs[3]:
-        st.markdown("### 🤖 Complete AI Output")
+        st.markdown("###  Complete AI Output")
         st.text_area("Raw Result", str(result), height=400)
     
     # Metrics footer
@@ -551,107 +598,27 @@ def display_job_postings_section(result=None):
         # Try to extract postings from crew result
         if isinstance(result, dict):
             postings = result.get("job_postings")
-        elif hasattr(result, 'tasks_output'):
-            # CrewAI output object with multiple tasks
-            # Task 0: Input processing
-            # Task 1: LinkedIn scraping (THIS IS WHAT WE WANT!)
-            # Task 2: Market trends
-            # Task 3: Verification
-            try:
-                scraping_task = result.tasks_output[1] if len(result.tasks_output) > 1 else None
-                if scraping_task:
-                    raw_output = scraping_task.raw if hasattr(scraping_task, 'raw') else str(scraping_task)
-                    # Clean markdown wrappers
-                    raw_output = clean_markdown_json(raw_output)
-                    raw_data = json.loads(raw_output) if isinstance(raw_output, str) else raw_output
-                    postings = raw_data.get("job_postings") if isinstance(raw_data, dict) else None
-            except Exception as e:
-                st.warning(f"⚠️ Could not extract postings from crew result: {e}")
         elif hasattr(result, 'raw'):
-            # Single task output
+            # CrewAI output object
             try:
                 raw_data = json.loads(result.raw) if isinstance(result.raw, str) else result.raw
                 postings = raw_data.get("job_postings") if isinstance(raw_data, dict) else None
             except:
                 pass
     
-    # Priority 2: Fallback to saved JSON file from latest session
-    latest_session = get_latest_session_folder()
-    job_file = f"{latest_session}/job_postings.json" if latest_session else "src/outputs/linkedin/job_postings.json"
-    linkedin_url = None  # Track LinkedIn search URL
-    search_metadata = None  # Track search metadata
-    
+    # Priority 2: Fallback to saved JSON file
+    job_file = "src/outputs/linkedin/job_postings.json"
     if postings is None and os.path.exists(job_file):
         try:
             with open(job_file, 'r', encoding='utf-8') as f:
-                content = f.read()
-                
-            # Clean markdown-wrapped JSON if present
-            content = clean_markdown_json(content)
-            
-            data = json.loads(content)
+                data = json.load(f)
             postings = data.get("job_postings") if isinstance(data, dict) else None
-            linkedin_url = data.get("linkedin_search_url")  # Extract LinkedIn URL
-            search_metadata = data.get("search_metadata")  # Extract metadata
         except Exception as e:
-            st.error(f"❌ Error loading job postings: {e}")
-            st.error(f"File content preview: {content[:200] if 'content' in locals() else 'N/A'}")
+            st.error(f" Error loading job postings: {e}")
             return
     
-    # Debug info if no postings found
     if not postings:
-        # Show LinkedIn direct search URL if available
-        if linkedin_url:
-            st.success("🔗 **Direct LinkedIn Search URL Generated!**")
-            st.markdown(f"### [Click here to view live LinkedIn job postings]({linkedin_url})")
-            st.info("""
-            👆 Click the link above to see real-time LinkedIn jobs with your filters applied!
-            
-            **Why use the direct LinkedIn URL?**
-            - ✅ See 100% accurate, live job listings
-            - ✅ All your search filters are pre-applied
-            - ✅ Click 'Easy Apply' directly on LinkedIn
-            - ✅ Get full job descriptions and company details
-            - ✅ No scraping limitations or API restrictions
-            """)
-            
-            # Show search parameters
-            if search_metadata:
-                with st.expander("🔍 View Search Parameters"):
-                    st.json(search_metadata)
-            
-            # Show how to use instructions
-            with st.expander("📖 How to Use This URL"):
-                st.markdown("""
-                1. **Click the LinkedIn URL** above
-                2. You'll see live job postings matching your criteria
-                3. Each job shows:
-                   - Full job description
-                   - Company information
-                   - Salary range (if available)
-                   - 'Easy Apply' or 'Apply' button
-                4. Job URLs are in format: `linkedin.com/jobs/view/[JOB_ID]`
-                """)
-            return
-        
-        st.warning("⚠️ No job postings found. This could mean:")
-        st.markdown("""
-        1. 🔍 **Search filters too strict** - Try using fewer filters (set more to "Any")
-        2. 📅 **Date range too narrow** - "Past 24 hours" might have zero results
-        3. 🌍 **Location too specific** - Try broader location (e.g., "Pennsylvania" instead of zip code)
-        4. 🔐 **Work authorization filter** - Removes most jobs
-        
-        **Tip**: Start with simple search (Job Title + Location only), then filter results manually
-        """)
-        
-        # Show what was searched
-        if result and hasattr(result, 'tasks_output') and len(result.tasks_output) > 0:
-            with st.expander("🔍 Debug: View Crew Output"):
-                st.write("**Number of tasks:**", len(result.tasks_output))
-                for i, task in enumerate(result.tasks_output):
-                    st.write(f"**Task {i}:**", task.name if hasattr(task, 'name') else f"Task {i}")
-                    if hasattr(task, 'raw'):
-                        st.text_area(f"Raw Output {i}", str(task.raw)[:500], height=150)
+        st.info(" Job postings will appear here after the search completes")
         return
     
     # Sort by date (latest first) and limit to 50
@@ -677,14 +644,14 @@ def display_job_postings_section(result=None):
     except:
         sorted_postings = list(postings)
     
-    # Limit to top 40 latest for file export
-    limited_postings = sorted_postings[:40]
+    # Limit to top 50 latest for file export
+    limited_postings = sorted_postings[:50]
     
     # Default display: top 10
     display_count = st.session_state.get('job_display_count', 10)
     display_postings = limited_postings[:display_count]
     
-    st.markdown(f"### 📋 Job Listings (Showing {len(display_postings)} of {len(limited_postings)})")
+    st.markdown(f"###  Job Listings (Showing {len(display_postings)} of {len(limited_postings)})")
     st.markdown("")
     
     # Export buttons and display controls
@@ -694,11 +661,11 @@ def display_job_postings_section(result=None):
         if len(limited_postings) > 0:
             try:
                 import pandas as pd
-                # Prepare data for export (all 40 jobs)
+                # Prepare data for export (all 50 jobs)
                 df = pd.DataFrame(limited_postings)
                 csv = df.to_csv(index=False, encoding='utf-8-sig')
                 st.download_button(
-                    "📥 Download CSV (40 jobs)",
+                    " Download CSV (50 jobs)",
                     csv,
                     file_name=f"linkedin_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                     mime="text/csv",
@@ -712,14 +679,14 @@ def display_job_postings_section(result=None):
             try:
                 import pandas as pd
                 from io import BytesIO
-                # Prepare Excel export (all 40 jobs)
+                # Prepare Excel export (all 50 jobs)
                 df = pd.DataFrame(limited_postings)
                 buffer = BytesIO()
                 with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
                     df.to_excel(writer, index=False, sheet_name='LinkedIn Jobs')
                 buffer.seek(0)
                 st.download_button(
-                    "📊 Download Excel (40 jobs)",
+                    " Download Excel (50 jobs)",
                     buffer,
                     file_name=f"linkedin_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -730,7 +697,7 @@ def display_job_postings_section(result=None):
     
     with col3:
         # Display count selector
-        count_options = [10, 20, 30, 40]
+        count_options = [10, 20, 30, 50]
         selected = st.selectbox(
             "Display",
             count_options,
@@ -742,13 +709,13 @@ def display_job_postings_section(result=None):
             st.rerun()
     
     with col4:
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button(" Refresh", use_container_width=True):
             st.rerun()
     
     st.markdown("---")
     
     # AI Assistant Chat Box
-    with st.expander("💬 AI Assistant - Ask for custom analysis or exports", expanded=False):
+    with st.expander(" AI Assistant - Ask for custom analysis or exports", expanded=False):
         st.markdown("**Ask the AI to help you with:**")
         st.markdown("""
         - Filter jobs by specific criteria
@@ -767,14 +734,14 @@ def display_job_postings_section(result=None):
         
         col_a, col_b = st.columns([1, 4])
         with col_a:
-            execute_btn = st.button("🚀 Execute", type="primary", use_container_width=True)
+            execute_btn = st.button(" Execute", type="primary", use_container_width=True)
         with col_b:
             if execute_btn and user_instruction:
-                st.info("🤖 AI Assistant is processing your request...")
+                st.info(" AI Assistant is processing your request...")
                 # Process AI instruction
                 process_ai_instruction(user_instruction, limited_postings)
             elif execute_btn:
-                st.warning("⚠️ Please enter an instruction first")
+                st.warning(" Please enter an instruction first")
     
     st.markdown("---")
     
@@ -789,39 +756,29 @@ def display_job_postings_section(result=None):
             location = job.get('location') or job.get('job_location') or 'Location'
             posted = job.get('date_posted') or job.get('posted') or 'Recent'
             employment_type = job.get('employment_type')
-            work_arrangement = job.get('work_arrangement') or job.get('remote_option')
             experience_level = job.get('experience_level')
-            job_url = job.get('application_url') or job.get('job_url') or job.get('url') or job.get('link')
-            job_id = job.get('job_id')
+            job_url = job.get('job_url') or job.get('url') or job.get('link')
             
             # Date information - distinguish original post vs repost
             is_repost = job.get('is_repost', False)
             repost_date = job.get('repost_date')
             date_info_raw = job.get('date_info_raw')
             
-            # Additional comprehensive fields
-            salary_range = job.get('salary_range')
-            benefits = job.get('benefits')
-            qualifications = job.get('qualifications')
-            work_authorization = job.get('work_authorization')
-            applicant_count = job.get('applicant_count')
-            company_url = job.get('company_url')
-            
             # Build date display string
             date_display = ""
             if is_repost:
                 if posted and repost_date:
-                    date_display = f"📅 Originally: {posted} | 🔄 Reposted: {repost_date}"
+                    date_display = f" Originally: {posted} |  Reposted: {repost_date}"
                 elif repost_date:
-                    date_display = f"🔄 Reposted: {repost_date}"
+                    date_display = f" Reposted: {repost_date}"
                 elif date_info_raw:
-                    date_display = f"🔄 {date_info_raw}"
+                    date_display = f" {date_info_raw}"
                 else:
-                    date_display = f"🔄 Reposted: {posted}"
+                    date_display = f" Reposted: {posted}"
             else:
-                date_display = f"📅 Posted: {posted}"
+                date_display = f" Posted: {posted}"
             
-            # Enhanced information for job seekers
+            # NEW: Enhanced information for job seekers
             # 1. Short intro/summary
             short_intro = job.get('short_intro') or job.get('summary')
             if not short_intro and job_title and company:
@@ -839,89 +796,50 @@ def display_job_postings_section(result=None):
             
             with col1:
                 st.markdown(f"#### {i}. {job_title}")
-                
-                # Company with LinkedIn profile link if available
-                if company_url:
-                    st.markdown(f"🏢 **Company:** [{company}]({company_url})")
-                else:
-                    st.markdown(f"🏢 **Company:** {company}")
-                
-                st.markdown(f"📍 **Location:** {location}")
+                st.markdown(f" **Company:** {company}")
+                st.markdown(f" **Location:** {location}")
                 
                 # Display employment info in one line
                 info_parts = []
                 if employment_type:
-                    info_parts.append(f"💼 {employment_type}")
-                if work_arrangement:
-                    info_parts.append(f"🌐 {work_arrangement}")
+                    info_parts.append(f" {employment_type}")
                 if experience_level:
-                    info_parts.append(f"⭐ {experience_level}")
+                    info_parts.append(f" {experience_level}")
                 if info_parts:
                     st.caption(" | ".join(info_parts))
                 
-                # Show salary if available
-                if salary_range:
-                    st.markdown(f"💰 **Salary:** {salary_range}")
-                
-                # Show applicant count if available
-                if applicant_count:
-                    st.caption(f"👥 {applicant_count} applicants")
-                
-                # Show work authorization if specified
-                if work_authorization and work_authorization != "Unknown":
-                    st.caption(f"🛂 {work_authorization}")
-                
-                # Short intro
+                # NEW: Short intro
                 if short_intro:
-                    st.markdown(f"**📝 Summary:** {short_intro}")
+                    st.markdown(f"** Summary:** {short_intro}")
                 
-                # Company business intro (truncated for readability)
+                # NEW: Company business intro (truncated for readability)
                 if company_desc:
                     desc_preview = (company_desc[:300] + '...') if len(str(company_desc)) > 300 else company_desc
-                    with st.expander("🏢 About Company"):
+                    with st.expander(" About Company"):
                         st.write(desc_preview)
                 
-                # Job role description (truncated for readability)
+                # NEW: Job role description (truncated for readability)
                 if job_desc:
                     role_preview = (job_desc[:500] + '...') if len(str(job_desc)) > 500 else job_desc
-                    with st.expander("💼 Role Details"):
+                    with st.expander(" Role Details"):
                         st.write(role_preview)
-                
-                # Qualifications if available
-                if qualifications:
-                    qual_preview = (qualifications[:400] + '...') if len(str(qualifications)) > 400 else qualifications
-                    with st.expander("✅ Requirements"):
-                        st.write(qual_preview)
-                
-                # Benefits if available
-                if benefits:
-                    ben_preview = (benefits[:300] + '...') if len(str(benefits)) > 300 else benefits
-                    with st.expander("🎁 Benefits"):
-                        st.write(ben_preview)
             
             with col2:
                 st.markdown(f"**{date_display}**")
-                
-                # Job ID for reference
-                if job_id:
-                    st.caption(f"ID: {job_id}")
-                
-                # Apply button
                 if job_url:
-                    st.link_button("🔗 Apply Now", job_url, use_container_width=True, type="primary")
+                    st.link_button(" View Job", job_url, use_container_width=True, type="primary")
                 else:
-                    st.caption("🔗 Link unavailable")
+                    st.caption(" Link unavailable")
             
             st.divider()
 
 
 def display_market_trends_section():
     """Load and display market trends from JSON"""
-    latest_session = get_latest_session_folder()
-    trends_file = f"{latest_session}/market_trends.json" if latest_session else "src/outputs/linkedin/market_trends.json"
+    trends_file = "src/outputs/linkedin/market_trends.json"
     
     if not os.path.exists(trends_file):
-        st.info("💡 Market trends will appear here after the search completes")
+        st.info(" Market trends will appear here after the search completes")
         return
     
     try:
@@ -930,22 +848,22 @@ def display_market_trends_section():
         
         # Market overview
         if "market_overview" in data:
-            st.markdown("### 📊 Market Overview")
+            st.markdown("###  Market Overview")
             overview = data["market_overview"]
             
             cols = st.columns(3)
             with cols[0]:
-                st.metric("🎯 Market Health", overview.get("market_health", "N/A").upper())
+                st.metric(" Market Health", overview.get("market_health", "N/A").upper())
             with cols[1]:
-                st.metric("📅 Analysis Date", overview.get("analysis_date", "N/A"))
+                st.metric(" Analysis Date", overview.get("analysis_date", "N/A"))
             with cols[2]:
-                st.metric("💼 Position", overview.get("job_title", "N/A"))
+                st.metric(" Position", overview.get("job_title", "N/A"))
             
             st.markdown("")
         
         # Salary trends
         if "salary_trends" in data and "salary_ranges" in data["salary_trends"]:
-            st.markdown("### 💰 Salary Ranges")
+            st.markdown("###  Salary Ranges")
             salary_data = data["salary_trends"]["salary_ranges"]
             
             cols = st.columns(3)
@@ -958,14 +876,14 @@ def display_market_trends_section():
                         level_name = level.replace('_', ' ').title()
                         st.markdown(f"**{level_name}**")
                         if isinstance(info, dict):
-                            st.markdown(f"💵 ${info.get('min', 0):,} - ${info.get('max', 0):,}")
-                            st.markdown(f"📊 Avg: ${info.get('average', 0):,}")
+                            st.markdown(f" ${info.get('min', 0):,} - ${info.get('max', 0):,}")
+                            st.markdown(f" Avg: ${info.get('average', 0):,}")
             
             st.markdown("")
         
         # Top skills
         if "skills_analysis" in data:
-            st.markdown("### 💡 Top In-Demand Skills")
+            st.markdown("###  Top In-Demand Skills")
             skills = data["skills_analysis"].get("top_demanded_skills", [])
             
             if skills:
@@ -979,18 +897,17 @@ def display_market_trends_section():
                             st.markdown(f"• {skill}")
         
     except json.JSONDecodeError as e:
-        st.warning(f"⚠️ JSON parsing error: {e}")
+        st.warning(f" JSON parsing error: {e}")
     except Exception as e:
-        st.error(f"❌ Error loading market trends: {e}")
+        st.error(f" Error loading market trends: {e}")
 
 
 def display_verification_section():
     """Load and display verification report from JSON"""
-    latest_session = get_latest_session_folder()
-    verify_file = f"{latest_session}/verification_report.json" if latest_session else "src/outputs/linkedin/verification_report.json"
+    verify_file = "src/outputs/linkedin/verification_report.json"
     
     if not os.path.exists(verify_file):
-        st.info("💡 Verification report will appear here after the search completes")
+        st.info(" Verification report will appear here after the search completes")
         return
     
     try:
@@ -1002,16 +919,16 @@ def display_verification_section():
         
         with cols[0]:
             status = data.get("verification_status", "unknown")
-            emoji = "✅" if status == "verified" else "⚠️"
-            st.metric("📋 Status", f"{emoji} {status.upper()}")
+            emoji = "" if status == "verified" else ""
+            st.metric(" Status", f"{emoji} {status.upper()}")
         
         with cols[1]:
-            st.metric("📊 Accuracy", data.get("accuracy_score", "N/A"))
+            st.metric(" Accuracy", data.get("accuracy_score", "N/A"))
         
         with cols[2]:
             confidence = data.get("confidence_level", "N/A")
-            emoji_conf = "🟢" if confidence == "high" else "🟡" if confidence == "medium" else "🔴"
-            st.metric("🎯 Confidence", f"{emoji_conf} {str(confidence).upper()}")
+            emoji_conf = "🟢" if confidence == "high" else "🟡" if confidence == "medium" else ""
+            st.metric(" Confidence", f"{emoji_conf} {str(confidence).upper()}")
         
         st.markdown("")
         
@@ -1019,17 +936,17 @@ def display_verification_section():
         if "verified_fields" in data:
             verified = data["verified_fields"]
             if verified:
-                st.markdown("### ✅ Verified Data Points")
+                st.markdown("###  Verified Data Points")
                 cols = st.columns(3)
                 for idx, field in enumerate(verified):
                     with cols[idx % 3]:
-                        st.markdown(f"✓ {field}")
+                        st.markdown(f" {field}")
         
         # Issues
         if "flagged_issues" in data:
             issues = data["flagged_issues"]
             if issues:
-                st.markdown("### ⚠️ Flagged Issues")
+                st.markdown("###  Flagged Issues")
                 for issue in issues:
                     st.warning(issue)
         
@@ -1037,59 +954,39 @@ def display_verification_section():
         if "corrections" in data:
             corrections = data["corrections"]
             if corrections:
-                st.markdown("### 🔧 Suggested Corrections")
+                st.markdown("###  Suggested Corrections")
                 for correction in corrections:
                     st.info(correction)
         
     except json.JSONDecodeError as e:
-        st.warning(f"⚠️ JSON parsing error: {e}")
+        st.warning(f" JSON parsing error: {e}")
     except Exception as e:
-        st.error(f"❌ Error loading verification: {e}")
+        st.error(f" Error loading verification: {e}")
 
 
 # ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
 
-def display_search_summary(job_title, location, company, search_params):
+def display_search_summary(job_title, location, search_params):
     """Display a formatted search summary"""
-    cols = st.columns(6)
+    cols = st.columns(4)
     
     with cols[0]:
-        st.markdown("**📋 Position**")
+        st.markdown("** Position**")
         st.markdown(job_title)
     
     with cols[1]:
-        st.markdown("**🏢 Company**")
-        st.markdown(company or "All Companies")
-    
-    with cols[2]:
-        st.markdown("**📍 Location**")
+        st.markdown("** Location**")
         st.markdown(location or "Any")
     
+    with cols[2]:
+        st.markdown("** Experience**")
+        st.markdown(search_params.get("experience_level", "Any"))
+    
     with cols[3]:
-        st.markdown("**💼 Type**")
+        st.markdown("** Type**")
         st.markdown(search_params.get("job_type", "Any"))
-    
-    with cols[4]:
-        st.markdown("**🌐 Work Mode**")
-        st.markdown(search_params.get("remote_option", "Any"))
-    
-    with cols[5]:
-        st.markdown("**🛂 Work Auth**")
-        work_auth = search_params.get("work_authorization", "Any")
-        # Shorten the display text if needed
-        if "OPT" in work_auth:
-            display_auth = "OPT"
-        elif "CPT" in work_auth:
-            display_auth = "CPT"
-        elif "Visa Sponsorship" in work_auth:
-            display_auth = "Visa Sponsor"
-        elif "No Authorization" in work_auth:
-            display_auth = "No Auth Req"
-        else:
-            display_auth = work_auth
-        st.markdown(display_auth)
 
 
 def render_search_metrics():
@@ -1097,27 +994,27 @@ def render_search_metrics():
     cols = st.columns(4)
     
     with cols[0]:
-        st.metric("🤖 AI Agents", "4 Active")
+        st.metric(" AI Agents", "4 Active")
     
     with cols[1]:
-        st.metric("🌐 Data Source", "LinkedIn")
+        st.metric(" Data Source", "LinkedIn")
     
     with cols[2]:
-        st.metric("⚡ Analysis", "Real-time")
+        st.metric(" Analysis", "Real-time")
     
     with cols[3]:
-        st.metric("💾 Output", "JSON")
+        st.metric(" Output", "JSON")
 
 
 def display_troubleshooting_tips():
     """Display troubleshooting information"""
-    st.markdown("### 💡 Troubleshooting Tips")
+    st.markdown("###  Troubleshooting Tips")
     st.markdown("""
-    - ✅ Verify your OpenAI API key has available credits
-    - ✅ Check SERPER_API_KEY is configured in .env
-    - ✅ Ensure stable internet connection
-    - ✅ Try with a simpler job title first
-    - ✅ Check the terminal output for detailed logs
+    -  Verify your OpenAI API key has available credits
+    -  Check SERPER_API_KEY is configured in .env
+    -  Ensure stable internet connection
+    -  Try with a simpler job title first
+    -  Check the terminal output for detailed logs
     """)
 
 
@@ -1138,7 +1035,7 @@ def process_ai_instruction(instruction: str, job_postings: list):
         # Use OpenAI to interpret the instruction
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            st.error("❌ OpenAI API key not found. Please configure it in .env file.")
+            st.error(" OpenAI API key not found. Please configure it in .env file.")
             return
         
         client = openai.OpenAI(api_key=api_key)
@@ -1166,7 +1063,7 @@ def process_ai_instruction(instruction: str, job_postings: list):
         
         Return ONLY the Python code, no explanations."""
         
-        with st.spinner("🤖 AI is analyzing your request..."):
+        with st.spinner(" AI is analyzing your request..."):
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
@@ -1187,7 +1084,7 @@ def process_ai_instruction(instruction: str, job_postings: list):
             code = code.strip()
             
             # Display generated code
-            with st.expander("🔍 Generated Processing Code", expanded=False):
+            with st.expander(" Generated Processing Code", expanded=False):
                 st.code(code, language="python")
             
             # Execute the code in a safe environment
@@ -1207,24 +1104,24 @@ def process_ai_instruction(instruction: str, job_postings: list):
                 
                 # Display results
                 if display_message:
-                    st.success(f"✅ {display_message}")
+                    st.success(f" {display_message}")
                 else:
-                    st.success(f"✅ Processed {len(filtered_jobs)} jobs")
+                    st.success(f" Processed {len(filtered_jobs)} jobs")
                 
                 # Show preview
                 if filtered_jobs:
-                    st.markdown("#### 📊 Results Preview (First 5)")
+                    st.markdown("####  Results Preview (First 5)")
                     df = pd.DataFrame(filtered_jobs[:5])
                     st.dataframe(df, use_container_width=True)
                     
                     # Offer export
-                    st.markdown("#### 💾 Download Results")
+                    st.markdown("####  Download Results")
                     col1, col2 = st.columns(2)
                     
                     with col1:
                         csv = pd.DataFrame(filtered_jobs).to_csv(index=False, encoding='utf-8-sig')
                         st.download_button(
-                            "📥 Download as CSV",
+                            " Download as CSV",
                             csv,
                             file_name=f"filtered_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                             mime="text/csv",
@@ -1238,7 +1135,7 @@ def process_ai_instruction(instruction: str, job_postings: list):
                                 pd.DataFrame(filtered_jobs).to_excel(writer, index=False, sheet_name='Filtered Jobs')
                             buffer.seek(0)
                             st.download_button(
-                                "📊 Download as Excel",
+                                " Download as Excel",
                                 buffer,
                                 file_name=f"filtered_jobs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -1247,41 +1144,951 @@ def process_ai_instruction(instruction: str, job_postings: list):
                         except:
                             st.caption("Excel export requires openpyxl")
                 else:
-                    st.warning("⚠️ No jobs matched your criteria")
+                    st.warning(" No jobs matched your criteria")
                     
             except Exception as exec_error:
-                st.error(f"❌ Error executing generated code: {exec_error}")
+                st.error(f" Error executing generated code: {exec_error}")
                 st.code(code, language="python")
                 
     except Exception as e:
-        st.error(f"❌ Error processing instruction: {e}")
+        st.error(f" Error processing instruction: {e}")
         st.markdown("**Please try:**")
         st.markdown("- Being more specific with your request")
         st.markdown("- Using simpler filtering criteria")
         st.markdown("- Checking that your OpenAI API key is valid")
 
 
+# ============================================================================
+# JOB MARKET ANALYTICS TAB
+# ============================================================================
+
+def render_job_market_analytics():
+    """Render job market analytics based on LinkedIn search results"""
+    st.markdown("###  Job Market Analytics")
+    st.markdown("*Insights from your LinkedIn job search results*")
+    st.markdown("")
+    
+    # Get latest session data
+    latest_session = get_latest_session_folder()
+    
+    if not latest_session:
+        st.info(" No search data available yet. Run a job search first to see market analytics.")
+        st.markdown("""
+        **To get started:**
+        1. Go to the " Advanced Search" tab
+        2. Enter your job criteria and run a search
+        3. Come back here to view analytics based on your results
+        """)
+        return
+    
+    # Load session files
+    job_postings_file = f"{latest_session}/job_postings.json"
+    market_trends_file = f"{latest_session}/market_trends.json"
+    verification_file = f"{latest_session}/verification_report.json"
+    
+    # Display session info
+    try:
+        with open(f"{latest_session}/session_info.json", 'r') as f:
+            session_info = json.load(f)
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(" Session ID", session_info.get("session_id", "N/A"))
+        with col2:
+            created_at = session_info.get("created_at", "")
+            if created_at:
+                dt = datetime.fromisoformat(created_at)
+                st.metric(" Search Date", dt.strftime("%Y-%m-%d %H:%M"))
+            else:
+                st.metric(" Search Date", "N/A")
+        with col3:
+            st.metric(" Status", session_info.get("status", "completed"))
+        
+        st.markdown("---")
+    except:
+        pass
+    
+    # Create sub-tabs for different analytics sections
+    analytics_tab1, analytics_tab2, analytics_tab3 = st.tabs([
+        " Overview & Trends",
+        " Job Postings Analysis", 
+        " Data Quality Report"
+    ])
+    
+    with analytics_tab1:
+        render_market_overview_and_trends(market_trends_file)
+        st.markdown("")
+        st.markdown("###  Salary Change Across Sessions")
+        render_salary_change_across_sessions()
+    
+    with analytics_tab2:
+        render_job_postings_analytics(job_postings_file)
+    
+    with analytics_tab3:
+        render_verification_report(verification_file)
+
+
+def render_market_overview_and_trends(market_trends_file):
+    """Render market overview and trends from market_trends.json"""
+    if not os.path.exists(market_trends_file):
+        st.info(" Market trends data not available for this session")
+        return
+    
+    try:
+        data = safe_load_json(market_trends_file)
+        if not data:
+            st.info(" Market trends file is empty or invalid for this session")
+            return
+        
+        # Market Overview Section
+        if "market_overview" in data:
+            st.markdown("###  Market Overview")
+            overview = data["market_overview"]
+            
+            cols = st.columns(4)
+            with cols[0]:
+                st.metric(" Market Health", overview.get("market_health", "N/A").upper())
+            with cols[1]:
+                st.metric(" Analysis Date", overview.get("analysis_date", "N/A"))
+            with cols[2]:
+                job_title = overview.get("job_title", "N/A")
+                st.metric(" Job Title", job_title.title() if job_title != "N/A" else "N/A")
+            with cols[3]:
+                total_jobs = overview.get("total_jobs_analyzed", "N/A")
+                st.metric(" Jobs Analyzed", total_jobs)
+            
+            st.markdown("---")
+        
+        # Salary Data Section
+        if "salary_data" in data:
+            st.markdown("###  Salary Insights")
+            salary = data["salary_data"]
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                avg_salary = salary.get("average_salary", "N/A")
+                st.metric(" Average Salary", avg_salary)
+                
+                if "salary_range" in salary:
+                    salary_range = salary["salary_range"]
+                    st.markdown(f"**Range:** {salary_range.get('min', 'N/A')} - {salary_range.get('max', 'N/A')}")
+            
+            with col2:
+                jobs_with_salary = salary.get("jobs_with_salary_info", 0)
+                jobs_without = salary.get("jobs_without_salary", 0)
+                total = jobs_with_salary + jobs_without if isinstance(jobs_with_salary, int) else 0
+                if total > 0:
+                    pct = round((jobs_with_salary / total) * 100, 1)
+                    st.metric(" Jobs with Salary", f"{jobs_with_salary} ({pct}%)")
+                else:
+                    st.metric(" Jobs with Salary", str(jobs_with_salary))
+            
+            with col3:
+                # Salary distribution chart
+                if "salary_distribution" in salary:
+                    st.markdown("**Salary Distribution:**")
+                    dist = salary["salary_distribution"]
+                    for range_name, count in dist.items():
+                        range_label = range_name.replace('_', ' ').title()
+                        st.caption(f"{range_label}: {count} jobs")
+            
+            st.markdown("---")
+        
+        # Skills Demand Section
+        if "in_demand_skills" in data:
+            st.markdown("###  In-Demand Skills")
+            skills_data = data["in_demand_skills"]
+            
+            # Display key metrics
+            col1, col2 = st.columns(2)
+            with col1:
+                total_skills = skills_data.get("total_unique_skills_found", "N/A")
+                st.metric(" Unique Skills Found", total_skills)
+            with col2:
+                if "top_skills" in skills_data:
+                    top_count = len(skills_data["top_skills"])
+                    st.metric(" Top Skills Tracked", top_count)
+            
+            # Display skills by category
+            if "technical_skills" in skills_data or "tools_and_platforms" in skills_data or "soft_skills" in skills_data:
+                st.markdown("**Skills by Category:**")
+                cat_col1, cat_col2, cat_col3 = st.columns(3)
+                
+                with cat_col1:
+                    if "technical_skills" in skills_data:
+                        st.markdown(" **Technical Skills:**")
+                        for skill in skills_data["technical_skills"][:10]:
+                            st.caption(f"• {skill}")
+                
+                with cat_col2:
+                    if "tools_and_platforms" in skills_data:
+                        st.markdown(" **Tools & Platforms:**")
+                        for tool in skills_data["tools_and_platforms"][:10]:
+                            st.caption(f"• {tool}")
+                
+                with cat_col3:
+                    if "soft_skills" in skills_data:
+                        st.markdown(" **Soft Skills:**")
+                        for skill in skills_data["soft_skills"][:10]:
+                            st.caption(f"• {skill}")
+                
+                st.markdown("")
+            
+            # Display top skills as badges
+            if "top_skills" in skills_data:
+                top_skills = skills_data["top_skills"]
+                st.markdown("**Top In-Demand Skills:**")
+                skill_html = " ".join([
+                    f'<span style="background-color:#0066cc;color:white;padding:5px 15px;border-radius:15px;margin:5px;display:inline-block;font-size:14px;">{skill}</span>'
+                    for skill in top_skills[:15]
+                ])
+                st.markdown(skill_html, unsafe_allow_html=True)
+                st.markdown("")
+            
+            # Skill frequency visualization
+            if "skill_frequency" in skills_data and PLOTLY_AVAILABLE:
+                skill_freq = skills_data["skill_frequency"]
+                
+                # Sort by frequency and take top 15
+                sorted_skills = sorted(skill_freq.items(), key=lambda x: float(x[1].rstrip('%')), reverse=True)[:15]
+                
+                fig = go.Figure(data=[
+                    go.Bar(
+                        x=[skill[0] for skill in sorted_skills],
+                        y=[float(skill[1].rstrip('%')) for skill in sorted_skills],
+                        marker_color='#0066cc',
+                        text=[skill[1] for skill in sorted_skills],
+                        textposition='auto',
+                    )
+                ])
+                
+                fig.update_layout(
+                    title="Top Skills Demand Frequency",
+                    xaxis_title="Skills",
+                    yaxis_title="Percentage of Jobs (%)",
+                    height=450,
+                    xaxis_tickangle=-45
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+            
+            st.markdown("---")
+        
+        # Hiring Patterns Section
+        if "hiring_patterns" in data:
+            st.markdown("###  Hiring Patterns")
+            hiring = data["hiring_patterns"]
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if "top_hiring_companies" in hiring:
+                    st.markdown("**Top Hiring Companies:**")
+                    companies = hiring["top_hiring_companies"]
+                    
+                    # Show with job counts if available
+                    if "company_job_counts" in hiring:
+                        counts = hiring["company_job_counts"]
+                        for i, company in enumerate(companies[:10], 1):
+                            count = counts.get(company, "")
+                            st.markdown(f"{i}. **{company}** {f'({count} jobs)' if count else ''}")
+                    else:
+                        for i, company in enumerate(companies[:10], 1):
+                            st.markdown(f"{i}. {company}")
+            
+            with col2:
+                if "geographic_distribution" in hiring:
+                    geo = hiring["geographic_distribution"]
+                    if "high_demand_areas" in geo:
+                        st.markdown("**High Demand Locations:**")
+                        areas = geo["high_demand_areas"]
+                        
+                        # Show with job counts if available
+                        if "location_job_counts" in geo:
+                            counts = geo["location_job_counts"]
+                            for i, area in enumerate(areas[:10], 1):
+                                count = counts.get(area, "")
+                                st.markdown(f"{i}.  **{area}** {f'({count} jobs)' if count else ''}")
+                        else:
+                            for i, area in enumerate(areas[:10], 1):
+                                st.markdown(f"{i}.  {area}")
+            
+            # Remote work breakdown
+            if "remote_work_breakdown" in hiring and PLOTLY_AVAILABLE:
+                st.markdown("---")
+                st.markdown("**Remote Work Options:**")
+                remote_data = hiring["remote_work_breakdown"]
+                
+                labels = []
+                values = []
+                for key, value in remote_data.items():
+                    if value and value != "0" and value != 0:
+                        labels.append(key.replace('_', ' ').title())
+                        values.append(int(value) if isinstance(value, str) and value.isdigit() else value)
+                
+                if labels and values:
+                    fig = go.Figure(data=[go.Pie(
+                        labels=labels,
+                        values=values,
+                        hole=.3,
+                        marker_colors=['#0066cc', '#4d94ff', '#99c2ff', '#cce0ff']
+                    )])
+                    
+                    fig.update_layout(
+                        title="Remote Work Distribution",
+                        height=350
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+            
+            st.markdown("---")
+        
+        # Job Posting Trends
+        if "job_posting_trends" in data:
+            st.markdown("###  Job Posting Trends")
+            trends = data["job_posting_trends"]
+            
+            cols = st.columns(4)
+            with cols[0]:
+                st.metric(" Total Postings", trends.get("total_postings_found", "N/A"))
+            with cols[1]:
+                if "posting_freshness" in trends:
+                    fresh = trends["posting_freshness"]
+                    st.metric(" Last 7 Days", fresh.get("posted_last_7_days", "N/A"))
+            with cols[2]:
+                if "posting_freshness" in trends:
+                    fresh = trends["posting_freshness"]
+                    st.metric(" Last 30 Days", fresh.get("posted_last_30_days", "N/A"))
+            with cols[3]:
+                if "industries_represented" in trends:
+                    industries = trends["industries_represented"]
+                    st.metric(" Industries", len(industries) if isinstance(industries, list) else "N/A")
+            
+            # Company sizes if available
+            if "company_sizes" in trends:
+                st.markdown("**Company Size Distribution:**")
+                sizes = trends["company_sizes"]
+                size_col1, size_col2, size_col3 = st.columns(3)
+                with size_col1:
+                    st.caption(f"Small (0-50): {sizes.get('small_0_50', 0)} jobs")
+                with size_col2:
+                    st.caption(f"Medium (51-500): {sizes.get('medium_51_500', 0)} jobs")
+                with size_col3:
+                    st.caption(f"Large (500+): {sizes.get('large_500_plus', 0)} jobs")
+        
+        # Experience Level Requirements
+        if "experience_level_requirements" in data:
+            st.markdown("---")
+            st.markdown("###  Experience Level Distribution")
+            exp_levels = data["experience_level_requirements"]
+            
+            # Show counts if available
+            if "counts" in exp_levels:
+                counts = exp_levels["counts"]
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric(" Entry Level", f"{counts.get('entry', 0)} ({exp_levels.get('entry_level', 'N/A')})")
+                with col2:
+                    st.metric(" Mid Level", f"{counts.get('mid', 0)} ({exp_levels.get('mid_level', 'N/A')})")
+                with col3:
+                    st.metric(" Senior Level", f"{counts.get('senior', 0)} ({exp_levels.get('senior_level', 'N/A')})")
+            
+            # Pie chart
+            if PLOTLY_AVAILABLE:
+                labels = []
+                values = []
+                for key, val in exp_levels.items():
+                    if key != "counts" and key != "not_specified" and val and val != "0%":
+                        label = key.replace('_', ' ').title().replace(' Level', '')
+                        try:
+                            pct = float(val.rstrip('%'))
+                            labels.append(label)
+                            values.append(pct)
+                        except:
+                            pass
+                
+                if labels and values:
+                    fig = go.Figure(data=[go.Pie(
+                        labels=labels,
+                        values=values,
+                        hole=.3,
+                        marker_colors=['#0066cc', '#4d94ff', '#99c2ff']
+                    )])
+                    
+                    fig.update_layout(
+                        title="Job Distribution by Experience Level",
+                        height=400
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+        
+        # Data Completeness
+        if "data_completeness" in data:
+            st.markdown("---")
+            st.markdown("###  Data Quality Metrics")
+            completeness = data["data_completeness"]
+            
+            cols = st.columns(5)
+            metrics = [
+                (" With Salary", "jobs_with_salary"),
+                (" With Skills", "jobs_with_skills"),
+                (" With Description", "jobs_with_description"),
+                (" With Location", "jobs_with_location"),
+                (" Avg Quality", "average_data_quality")
+            ]
+            
+            for col, (label, key) in zip(cols, metrics):
+                with col:
+                    value = completeness.get(key, "N/A")
+                    st.metric(label, value)
+            
+            st.markdown("---")
+        
+    except json.JSONDecodeError:
+        st.error(" Error: Invalid JSON format in market trends file")
+    except Exception as e:
+        st.error(f" Error rendering market trends: {e}")
+        st.exception(e)
+
+
+def render_job_postings_analytics(job_postings_file):
+    """Render analytics from job_postings.json"""
+    if not os.path.exists(job_postings_file):
+        st.info(" Job postings data not available for this session")
+        return
+    
+    try:
+        data = safe_load_json(job_postings_file)
+        if not data:
+            st.warning(" Job postings file is empty or invalid JSON for this session")
+            return
+        
+        postings = data.get("job_postings", [])
+        metadata = data.get("search_metadata", {})
+        
+        if not postings:
+            st.warning(" No job postings found in this session")
+            return
+        
+        # Search Summary
+        st.markdown("###  Search Summary")
+        cols = st.columns(4)
+        with cols[0]:
+            st.metric(" Total Jobs", len(postings))
+        with cols[1]:
+            st.metric(" Job Title", metadata.get("job_title", "N/A").title())
+        with cols[2]:
+            st.metric(" Location", metadata.get("location", "Any"))
+        with cols[3]:
+            search_date = metadata.get("search_date", "")
+            if search_date:
+                try:
+                    dt = datetime.fromisoformat(search_date)
+                    st.metric(" Search Date", dt.strftime("%Y-%m-%d"))
+                except:
+                    st.metric(" Search Date", "N/A")
+            else:
+                st.metric(" Search Date", "N/A")
+        
+        st.markdown("---")
+        
+        # Company Distribution
+        st.markdown("###  Top Companies Hiring")
+        company_counts = {}
+        for job in postings:
+            company = job.get("company_name", "Unknown")
+            company_counts[company] = company_counts.get(company, 0) + 1
+        
+        sorted_companies = sorted(company_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+        
+        import plotly.graph_objects as go
+        
+        fig = go.Figure(data=[
+            go.Bar(
+                x=[count for _, count in sorted_companies],
+                y=[company for company, _ in sorted_companies],
+                orientation='h',
+                marker_color='#0066cc',
+                text=[count for _, count in sorted_companies],
+                textposition='auto',
+            )
+        ])
+        
+        fig.update_layout(
+            title="Top 10 Companies by Job Postings",
+            xaxis_title="Number of Postings",
+            yaxis_title="Company",
+            height=400,
+            yaxis={'categoryorder':'total ascending'}
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.markdown("---")
+        
+        # Location Distribution
+        st.markdown("###  Geographic Distribution")
+        location_counts = {}
+        for job in postings:
+            location = job.get("location", "Unknown")
+            location_counts[location] = location_counts.get(location, 0) + 1
+        
+        sorted_locations = sorted(location_counts.items(), key=lambda x: x[1], reverse=True)[:8]
+        
+        fig = go.Figure(data=[go.Pie(
+            labels=[loc for loc, _ in sorted_locations],
+            values=[count for _, count in sorted_locations],
+            hole=.3
+        )])
+        
+        fig.update_layout(
+            title="Job Distribution by Location",
+            height=400
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.markdown("---")
+        
+        # Salary Analysis Section - Using REAL data from market_trends.json
+        st.markdown("###  💰 Salary Analysis (Real Market Data)")
+        
+        # Load market trends for salary benchmarks
+        latest_session = get_latest_session_folder()
+        market_trends_data = None
+        if latest_session:
+            mt_file = f"{latest_session}/market_trends.json"
+            market_trends_data = safe_load_json(mt_file)
+        
+        # Extract and parse salary information from actual job postings
+        salary_data = []
+        jobs_with_salary = 0
+        
+        for job in postings:
+            salary_range = job.get("salary_range")
+            if salary_range and salary_range not in [None, "null", "Not mentioned", ""] and str(salary_range).strip():
+                jobs_with_salary += 1
+                # Try to parse salary range
+                try:
+                    # Handle formats like "$100k - $150k", "$100,000 - $150,000", etc.
+                    import re
+                    numbers = re.findall(r'\$?([\d,]+)k?', str(salary_range).replace(',', ''))
+                    if len(numbers) >= 2:
+                        # Extract min and max
+                        min_sal = float(numbers[0])
+                        max_sal = float(numbers[1])
+                        # Handle 'k' notation
+                        if 'k' in str(salary_range).lower():
+                            min_sal *= 1000
+                            max_sal *= 1000
+                        avg_sal = (min_sal + max_sal) / 2
+                        salary_data.append({
+                            'min': min_sal,
+                            'max': max_sal,
+                            'avg': avg_sal,
+                            'company': job.get('company_name', 'Unknown'),
+                            'title': job.get('job_title', 'Unknown')
+                        })
+                    elif len(numbers) == 1:
+                        # Single salary value
+                        sal = float(numbers[0])
+                        if 'k' in str(salary_range).lower():
+                            sal *= 1000
+                        salary_data.append({
+                            'min': sal,
+                            'max': sal,
+                            'avg': sal,
+                            'company': job.get('company_name', 'Unknown'),
+                            'title': job.get('job_title', 'Unknown')
+                        })
+                except Exception:
+                    continue
+        
+        # Display metrics
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(" Jobs with Salary Listed", 
+                     f"{jobs_with_salary} / {len(postings)}",
+                     delta=f"{(jobs_with_salary/len(postings)*100):.1f}%" if len(postings) > 0 else "0%")
+        
+        # Show market benchmark from market_trends.json (REAL DATA)
+        if market_trends_data and isinstance(market_trends_data, dict):
+            salary_info = market_trends_data.get('salary_data') or market_trends_data.get('market_overview', {}).get('salary_data')
+            if salary_info and isinstance(salary_info, dict):
+                avg_salary_str = salary_info.get('average_salary', '')
+                salary_range_info = salary_info.get('salary_range') or salary_info.get('salary_ranges')
+                
+                with col2:
+                    if avg_salary_str:
+                        st.metric(" Market Average (Real Data)", avg_salary_str, 
+                                 help="From verified market trends data")
+                    else:
+                        st.caption("Market average not available")
+                
+                with col3:
+                    if salary_range_info:
+                        if isinstance(salary_range_info, dict):
+                            min_sal = salary_range_info.get('min', '')
+                            max_sal = salary_range_info.get('max', '')
+                            if min_sal and max_sal:
+                                st.metric(" Market Range", 
+                                         f"{min_sal} - {max_sal}",
+                                         help="Industry benchmark range")
+                        elif isinstance(salary_range_info, str):
+                            st.metric(" Market Range", salary_range_info)
+        
+        # If we have actual salary data from postings, show distribution
+        if salary_data:
+            st.markdown("---")
+            st.markdown("**📊 Actual Posted Salaries Distribution:**")
+            
+            avg_posted = sum(s['avg'] for s in salary_data) / len(salary_data)
+            st.info(f"💡 Average from posted salaries: **${avg_posted:,.0f}** (based on {len(salary_data)} jobs with salary info)")
+            
+            # Salary distribution visualization
+            if PLOTLY_AVAILABLE:
+                fig = go.Figure()
+                
+                # Add box plot for distribution
+                fig.add_trace(go.Box(
+                    y=[s['avg'] for s in salary_data],
+                    name='Posted Salaries',
+                    marker_color='#0066cc',
+                    boxmean='sd',
+                    hovertext=[f"{s['company']}: {s['title']}" for s in salary_data],
+                    hoverinfo='y+text'
+                ))
+                
+                fig.update_layout(
+                    title="Salary Distribution from Actual Job Postings",
+                    yaxis_title="Annual Salary (USD)",
+                    height=400,
+                    showlegend=False
+                )
+                
+                fig.update_yaxis(tickformat="$,.0f")
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Salary by company (top companies with salary data)
+                if len(salary_data) >= 3:
+                    st.markdown("**💼 Average Salary by Company (Real Postings):**")
+                    
+                    # Group by company
+                    company_salaries = {}
+                    for s in salary_data:
+                        comp = s['company']
+                        if comp not in company_salaries:
+                            company_salaries[comp] = []
+                        company_salaries[comp].append(s['avg'])
+                    
+                    # Calculate average per company
+                    company_avg = {
+                        comp: sum(sals) / len(sals) 
+                        for comp, sals in company_salaries.items()
+                    }
+                    
+                    # Sort and take top 8
+                    sorted_companies = sorted(company_avg.items(), key=lambda x: x[1], reverse=True)[:8]
+                    
+                    if sorted_companies:
+                        fig2 = go.Figure(data=[
+                            go.Bar(
+                                x=[sal for _, sal in sorted_companies],
+                                y=[comp for comp, _ in sorted_companies],
+                                orientation='h',
+                                marker_color='#28a745',
+                                text=[f'${sal:,.0f}' for _, sal in sorted_companies],
+                                textposition='auto',
+                            )
+                        ])
+                        
+                        fig2.update_layout(
+                            title="Companies by Average Posted Salary",
+                            xaxis_title="Average Salary (USD)",
+                            yaxis_title="Company",
+                            height=350,
+                            yaxis={'categoryorder':'total ascending'}
+                        )
+                        
+                        fig2.update_xaxis(tickformat="$,.0f")
+                        st.plotly_chart(fig2, use_container_width=True)
+        else:
+            # No direct salary data in postings, show market benchmark
+            st.markdown("---")
+            if market_trends_data and salary_info:
+                st.info("💡 **Note**: Most LinkedIn postings don't list salary ranges directly. See market benchmark data above from verified sources.")
+                
+                # Show detailed market salary breakdown if available
+                if 'salary_ranges' in salary_info:
+                    st.markdown("**📈 Market Salary Benchmarks by Experience Level:**")
+                    ranges = salary_info['salary_ranges']
+                    
+                    if isinstance(ranges, dict):
+                        exp_cols = st.columns(3)
+                        levels = [
+                            ('entry_level', 'Entry Level', 0),
+                            ('mid_level', 'Mid Level', 1),
+                            ('senior_level', 'Senior Level', 2)
+                        ]
+                        
+                        for key, label, idx in levels:
+                            if key in ranges:
+                                with exp_cols[idx]:
+                                    val = ranges[key]
+                                    if isinstance(val, str):
+                                        st.metric(label, val)
+                                    elif isinstance(val, dict):
+                                        avg = val.get('average', val.get('avg', ''))
+                                        st.metric(label, avg if avg else f"{val.get('min', '')} - {val.get('max', '')}")
+            else:
+                st.info("💡 **Tip**: Salary data will appear here when jobs include compensation information. Check the Market Trends tab for industry benchmarks.")
+        
+        st.markdown("---")
+        
+        # Recent vs Older Postings
+        st.markdown("###  📅 Posting Freshness")
+        recent_count = sum(1 for job in postings if job.get("date_posted") == "Recent")
+        older_count = len(postings) - recent_count
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric(" Recent Postings", recent_count, 
+                     delta=f"{(recent_count/len(postings)*100):.1f}%")
+        with col2:
+            st.metric(" Older Postings", older_count,
+                     delta=f"{(older_count/len(postings)*100):.1f}%")
+    
+    except json.JSONDecodeError as e:
+        st.error(f" Error analyzing job postings: invalid JSON ({e})")
+    except Exception as e:
+        st.error(f" Error analyzing job postings: {e}")
+
+
+def render_verification_report(verification_file):
+    """Render verification report from verification_report.json"""
+    if not os.path.exists(verification_file):
+        st.info(" Verification report not available for this session")
+        return
+    
+    try:
+        with open(verification_file, 'r') as f:
+            data = json.load(f)
+        
+        # Verification Summary
+        st.markdown("###  Data Quality Report")
+        
+        if "verification_summary" in data:
+            summary = data["verification_summary"]
+            
+            cols = st.columns(4)
+            with cols[0]:
+                st.metric(" Total Jobs Verified", summary.get("total_jobs_verified", 0))
+            with cols[1]:
+                avg_score = summary.get("average_confidence_score", 0)
+                st.metric(" Avg Confidence", f"{avg_score:.2f}")
+            with cols[2]:
+                high_conf = summary.get("high_confidence_jobs", 0)
+                st.metric(" High Confidence", high_conf)
+            with cols[3]:
+                flagged = summary.get("flagged_for_review", 0)
+                st.metric(" Flagged", flagged)
+            
+            st.markdown("---")
+            
+            # Confidence Distribution
+            st.markdown("###  Confidence Distribution")
+            
+            high = summary.get("high_confidence_jobs", 0)
+            medium = summary.get("medium_confidence_jobs", 0)
+            low = summary.get("low_confidence_jobs", 0)
+            
+            import plotly.graph_objects as go
+            
+            fig = go.Figure(data=[
+                go.Bar(
+                    x=['High', 'Medium', 'Low'],
+                    y=[high, medium, low],
+                    marker_color=['#28a745', '#ffc107', '#dc3545'],
+                    text=[high, medium, low],
+                    textposition='auto',
+                )
+            ])
+            
+            fig.update_layout(
+                title="Job Confidence Levels",
+                xaxis_title="Confidence Level",
+                yaxis_title="Number of Jobs",
+                height=400
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+        
+        # Ground Truth Sources
+        if "ground_truth_sources_used" in data:
+            st.markdown("---")
+            st.markdown("###  Verification Sources")
+            sources = data["ground_truth_sources_used"]
+            
+            source_html = " ".join([
+                f'<span style="background-color:#28a745;color:white;padding:5px 12px;border-radius:12px;margin:5px;display:inline-block;font-size:0.9em;"> {source}</span>'
+                for source in sources
+            ])
+            st.markdown(source_html, unsafe_allow_html=True)
+        
+        # Data Quality Assessment
+        if "overall_data_quality" in data:
+            st.markdown("---")
+            st.markdown("###  Overall Data Quality")
+            quality = data["overall_data_quality"]
+            
+            quality_colors = {
+                "HIGH": "#28a745",
+                "MEDIUM": "#ffc107",
+                "LOW": "#dc3545"
+            }
+            
+            color = quality_colors.get(quality, "#6c757d")
+            st.markdown(f'<h2 style="color:{color};text-align:center;">{quality}</h2>', 
+                       unsafe_allow_html=True)
+        
+        # User Recommendations
+        if "user_recommendations" in data:
+            st.markdown("---")
+            st.markdown("###  Recommendations")
+            recommendations = data["user_recommendations"]
+            
+            for i, rec in enumerate(recommendations, 1):
+                st.markdown(f"{i}. {rec}")
+    
+    except Exception as e:
+        st.error(f" Error loading verification report: {e}")
+
+
 def render_page_footer():
     """Render page footer with helpful information"""
     st.markdown("---")
     
-    with st.expander("ℹ️ How to Use This Page"):
+    with st.expander("ℹ How to Use This Page"):
         st.markdown("""
-        ### 🎯 Advanced Search
+        ###  Advanced Search
         - Use detailed filters for precise job discovery
         - Filter by experience level, job type, remote options, industry
         - Enter job title and optionally specify location
         - Results appear with company and job descriptions
         
-        ### 📚 Search History
+        ###  Search History
         - View all your previous searches
         - Reload and compare past results
         - Track your job search journey over time
         
-        ### 💾 Automatic Saving
+        ###  Automatic Saving
         - All search results are automatically saved as JSON files
         - Find them in `src/outputs/linkedin/`
         - Easy to share, analyze, or process further
         """)
     
     st.caption("Powered by CrewAI + OpenAI GPT-4o | LinkedIn Job Search Engine")
+
+
+# ----------------------------------------------------------------------------
+# Salary change visualization across session IDs
+# ----------------------------------------------------------------------------
+def render_salary_change_across_sessions():
+    """Compute and visualize salary changes from session-based market_trends.json files.
+
+    - Scans src/outputs/linkedin/<session_id>/market_trends.json
+    - Extracts average salary and level midpoints
+    - Lets user pick baseline and comparison session IDs
+    - Shows deltas and a line chart over time
+    """
+    snapshots = _collect_session_salary_snapshots()
+    if not snapshots:
+        st.info("No session-based salary snapshots found yet.")
+        return
+
+    # Build options for selection
+    options = [f"{s['session_id']} | {s['date'].strftime('%Y-%m-%d %H:%M') if s['date'] else 'unknown'}" for s in snapshots]
+    latest_idx = len(options) - 1
+    baseline_idx = max(0, latest_idx - 1)
+
+    col_sel1, col_sel2 = st.columns(2)
+    with col_sel1:
+        selected_baseline = st.selectbox("Baseline Session", options, index=baseline_idx, key="salary_baseline")
+    with col_sel2:
+        selected_compare = st.selectbox("Compare To", options, index=latest_idx, key="salary_compare")
+
+    def opt_to_snapshot(opt_label):
+        sid = opt_label.split('|')[0].strip()
+        for s in snapshots:
+            if s['session_id'] == sid:
+                return s
+        return None
+
+    base = opt_to_snapshot(selected_baseline)
+    comp = opt_to_snapshot(selected_compare)
+
+    if not base or not comp or base['session_id'] == comp['session_id']:
+        st.caption("Select two different sessions to compare.")
+        return
+
+    # Helper for delta formatting
+    def fmt_delta(new, old):
+        if new is None or old is None:
+            return "N/A"
+        try:
+            delta = new - old
+            pct = (delta / old) * 100 if old else 0
+            sign = "+" if delta >= 0 else ""
+            return f"{sign}${delta:,} ({pct:+.1f}%)"
+        except Exception:
+            return "N/A"
+
+    # Show metrics
+    st.markdown("#### Comparison Metrics")
+    mcols = st.columns(4)
+    with mcols[0]:
+        st.metric("Average Salary",
+                  f"${(comp.get('average_salary') or 0):,}",
+                  delta=fmt_delta(comp.get('average_salary'), base.get('average_salary')))
+    with mcols[1]:
+        st.metric("Entry Level Mid",
+                  f"${(comp.get('entry_level_mid') or comp.get('entry_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('entry_level_mid') or comp.get('entry_level_avg'),
+                                  base.get('entry_level_mid') or base.get('entry_level_avg')))
+    with mcols[2]:
+        st.metric("Mid Level Mid",
+                  f"${(comp.get('mid_level_mid') or comp.get('mid_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('mid_level_mid') or comp.get('mid_level_avg'),
+                                  base.get('mid_level_mid') or base.get('mid_level_avg')))
+    with mcols[3]:
+        st.metric("Senior Level Mid",
+                  f"${(comp.get('senior_level_mid') or comp.get('senior_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('senior_level_mid') or comp.get('senior_level_avg'),
+                                  base.get('senior_level_mid') or base.get('senior_level_avg')))
+
+    # Line chart over time (if Plotly available)
+    if PLOTLY_AVAILABLE:
+        import plotly.graph_objects as go
+        times = [s['date'] for s in snapshots]
+        avg_series = [s.get('average_salary') for s in snapshots]
+        entry_series = [s.get('entry_level_mid') or s.get('entry_level_avg') for s in snapshots]
+        mid_series = [s.get('mid_level_mid') or s.get('mid_level_avg') for s in snapshots]
+        senior_series = [s.get('senior_level_mid') or s.get('senior_level_avg') for s in snapshots]
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=times, y=avg_series, mode='lines+markers', name='Average'))
+        if any(entry_series):
+            fig.add_trace(go.Scatter(x=times, y=entry_series, mode='lines+markers', name='Entry Mid'))
+        if any(mid_series):
+            fig.add_trace(go.Scatter(x=times, y=mid_series, mode='lines+markers', name='Mid Mid'))
+        if any(senior_series):
+            fig.add_trace(go.Scatter(x=times, y=senior_series, mode='lines+markers', name='Senior Mid'))
+
+        fig.update_layout(title="Salary Over Time by Session",
+                          xaxis_title="Session Time",
+                          yaxis_title="USD",
+                          height=420)
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Helper hint for session-specific lookup
+    st.caption("Tip: Data comes from src/outputs/linkedin/<session_id>/market_trends.json")
