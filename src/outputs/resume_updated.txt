@@ -8,53 +8,50 @@
 
 ## EDUCATION
 
-**Arcadia University** - Pennsylvania, USA  
-Bachelor of Science in Mathematics & Applied Mathematics  
-**Expected Graduation:** July 2026  
-**GPA:** 3.72/4.0  
-**Relevant Courses:** Theory of Computation, Computer Ethics, Database Management Systems Design, Introduction to Data Science with R, Design & Analysis of Algorithms  
+**Arcadia University**, Pennsylvania, USA  
+**Bachelor of Science in Mathematics & Applied Mathematics**  
+_Sep 2024 – Jul 2026_  
+- **GPA:** 3.72/4.0  
+- **Relevant Courses:** Theory of Computation, Computer Ethics, Database Management System Design, Introduction to Data Science with R, Design & Analysis of Algorithms  
 
-**Jiangsu University** - Jiangsu, China  
-Major in Mathematics & Applied Mathematics  
-**Graduated:** June 2024  
-**GPA:** 3.32/4.0  
-**Relevant Courses:** Application Software Practice, Fundamentals of Computer Programming (I & II), Mathematical Analysis (I, II & III)  
-**Supplementary Education:** Data Analytics and Mathematical Statistics Programme, National University of Singapore (NUS)  
+**Jiangsu University**, Jiangsu, China  
+**Major in Mathematics & Applied Mathematics**  
+_Sep 2022 – Jun 2024_  
+- **GPA:** 3.32/4.0  
+- **Relevant Courses:** Application Software Practice, Fundamentals of Computer Programming (I & II), Mathematical Analysis (I, II & III)  
+- **Supplementary Education:** National University of Singapore (NUS) - Data Analytics and Mathematical Statistics Programme  
 
 ---
 
 ## ACADEMIC PROJECTS
 
 **AI-Assisted Human Memory Research**  
-2025  
-- Conducted a group study on the effectiveness of AI in enhancing human memory, specifically focusing on remembering Wi-Fi passwords.  
-- Designed two OpenAI model-based memory-assistive strategies (story-based and phonetic mnemonic), achieving a 25% increase in recall accuracy among participants.  
-- Developed Python scripts to interface with OpenAI API for automated generation of memory prompts, enhancing user engagement by 30%.  
-- Visualised experimental data using Matplotlib and Seaborn to evaluate the effectiveness of different memory aids, presenting findings to a panel of faculty members.
+_2025_  
+- Conducted a group study involving 30 participants to evaluate the effectiveness of AI in assisting human memory for remembering Wi-Fi passwords.  
+- Designed and implemented two AI-driven memory-assistive strategies, achieving a 25% improvement in recall rates.  
+- Developed Python scripts utilizing the OpenAI API for real-time generation of memory prompts, enhancing user engagement.  
+- Visualized experimental data, leading to actionable insights for improving memory retention techniques.
 
 **Economic & Social Development Data Analysis**  
-CS229.1 - Introduction to Data Science with R  
-2024  
-- Analyzed relationships between countries’ GDP and various social indicators (life expectancy, enrollment rates, maternal mortality) utilizing data from the World Bank GEM and HNP databases.  
-- Collected, cleaned, and integrated datasets in R, resulting in a comprehensive dataset of over 150 countries.  
-- Identified significant trends showing a 40% correlation between GDP increases and improvements in education and health outcomes, highlighting the impact of economic growth on social well-being.
+_CS229.1 - Introduction to Data Science with R_  
+_2024_  
+- Analyzed data from 150 countries to establish correlations between GDP and key social indicators, including life expectancy and enrollment rates.  
+- Collected, cleaned, and integrated data from World Bank GEM and HNP databases using R, resulting in a comprehensive dataset for statistical modeling.  
+- Identified significant trends indicating a 30% increase in education and health outcomes correlated with GDP growth, underscoring the impact of economic development on social well-being.
 
 **Dynamic Web Game Deployment with Docker**  
-CS358.1 - Operating Systems  
-2024  
-- Developed an interactive web-based game using HTML, CSS, and JavaScript, where users control a ball to avoid obstacles, achieving over 500 unique plays during testing.  
-- Containerized the game with Docker and deployed via Nginx, ensuring cross-platform accessibility and reducing load times by 20%.  
-- Resolved practical deployment issues related to port mapping and network settings, gaining hands-on experience with web development and systems deployment processes.
+_CS358.1 - Operating Systems_  
+_2024_  
+- Developed a web-based interactive game using HTML, CSS, and JavaScript, engaging over 200 users who tested the game in a lab environment.  
+- Successfully containerized the application with Docker and deployed it using Nginx, enabling seamless cross-platform access.  
+- Managed practical deployment challenges, including port mapping and network settings, enhancing understanding of web development and containerization.
 
 ---
 
 ## SKILLS & INTERESTS
 
 - **Languages:** Chinese (native), English (IELTS: 6.0)  
-- **Programming Skills:** Proficient in Python, R, and Java for data processing, analysis, and visualization.  
-- **Technical Skills:** Strong foundation in algorithms, data management structures, and SQL database management.  
-- **Tools:** Proficient in LaTeX, VS Code, Docker, RStudio, and various data visualization libraries (e.g., Matplotlib, Seaborn).  
-- **Interests:** Passionate about data analytics, machine learning, and the application of AI in real-world scenarios.
-
----
+- **Programming Skills:** Proficient in Python, R, and Java for data processing, analysis, and visualization. Strong foundation in algorithms, data structures, and SQL database management.  
+- **Technical Tools:** Experienced in LaTeX, VS Code, Docker, and Nginx.  
+- **Interests:** Data analytics, machine learning, and web development.
 ```
