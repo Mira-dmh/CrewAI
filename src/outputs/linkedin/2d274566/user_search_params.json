@@ -1,0 +1,16 @@
+{
+  "request_type": "linkedin_job_search",
+  "search_parameters": {
+    "job_title": "data science",
+    "location": "",
+    "company": "",
+    "job_type": "Full-time",
+    "remote_option": "Any",
+    "date_posted": "Any time",
+    "work_authorization": "Any"
+  },
+  "routing_recommendation": "linkedin_scraper",
+  "processed_query": "data science jobs full-time remote or hybrid or on-site any time any authorization",
+  "validation_status": "valid",
+  "validation_errors": []
+}

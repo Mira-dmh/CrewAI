@@ -1,0 +1,16 @@
+{
+  "request_type": "linkedin_job_search",
+  "search_parameters": {
+    "job_title": "data science",
+    "location": "19038",
+    "company": "",
+    "job_type": "Full-time",
+    "remote_option": "Any",
+    "date_posted": "Any time",
+    "work_authorization": "Any"
+  },
+  "routing_recommendation": "linkedin_scraper",
+  "processed_query": "data science jobs in 19038, Full-time, Any remote option, Any time posted, Any work authorization",
+  "validation_status": "valid",
+  "validation_errors": []
+}

@@ -248,3 +248,8 @@ interview_coach_task:
       2. Model answers
       3. Preparation tips
       4. Scoring rubric or feedback criteria
+
+resume_rewrite_task:
+  description: "Rewrite and enhance the resume based on job market research"
+  expected_output: "A rewritten resume in Markdown or PDF"
+  agent: resume_editor
