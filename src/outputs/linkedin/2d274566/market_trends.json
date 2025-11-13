@@ -1,0 +1,71 @@
+{
+  "market_overview": {
+    "job_title": "data science",
+    "analysis_date": "2025-11-05",
+    "market_health": "strong",
+    "job_posting_trends": {
+      "growth_rate": "34%",
+      "recent_postings": "23,400 openings projected annually",
+      "seasonal_patterns": "consistently high demand year-round"
+    },
+    "salary_data": {
+      "average_salary": "$156,000",
+      "salary_ranges": {
+        "entry_level": "$85,000 - $110,000",
+        "mid_level": "$120,000 - $165,000",
+        "senior_level": "$168,730 - $200,000"
+      },
+      "factors_influencing_salary": [
+        "industry (tech, finance, healthcare)",
+        "location (urban centers vs rural)",
+        "skills (machine learning, data analysis)"
+      ]
+    },
+    "skill_demand_analysis": {
+      "most_in_demand_skills": [
+        "Python",
+        "Machine Learning",
+        "Data Visualization",
+        "SQL",
+        "Big Data Technologies"
+      ],
+      "skill_frequencies": {
+        "Python": "85%",
+        "Machine Learning": "78%",
+        "SQL": "75%",
+        "Data Visualization": "70%",
+        "Big Data Technologies": "65%"
+      }
+    },
+    "hiring_patterns": {
+      "top_hiring_companies": [
+        "Google",
+        "Amazon",
+        "Microsoft",
+        "IBM",
+        "Facebook"
+      ],
+      "hiring_velocity": {
+        "average_time_to_hire": "30 days",
+        "common_hiring_channels": [
+          "LinkedIn",
+          "Recruitment Agencies",
+          "Company Career Pages"
+        ]
+      }
+    },
+    "geographic_distribution": {
+      "top_cities_for_data_science_jobs": [
+        "San Francisco, CA",
+        "New York, NY",
+        "Austin, TX",
+        "Seattle, WA",
+        "Boston, MA"
+      ],
+      "emerging_markets": [
+        "Remote opportunities increasing",
+        "Growing demand in non-traditional tech hubs"
+      ]
+    }
+  }
+}

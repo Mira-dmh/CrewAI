@@ -5,7 +5,7 @@ Main entry point for the multipage app with integrated CrewAI agents and tasks
 
 import streamlit as st
 from streamlit_pages.home import home_page
-from streamlit_pages.job_search import job_search_page
+from streamlit_pages.info_page import info_page
 from streamlit_pages.analytics import analytics_page
 from streamlit_pages.specific_jobs import specific_jobs_page
 from streamlit_pages.resume_prep import resume_prep_page
@@ -57,17 +57,26 @@ with st.sidebar:
     st.markdown("## Navigation")
     
     # Main section
+<<<<<<< HEAD
     st.markdown("### Main Dashboard")
+=======
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
     home_button_type = "primary" if current_page == "home" else "secondary"
     if st.button("Home", key="nav_home", use_container_width=True, type=home_button_type):
         st.query_params.page = "home"
         st.rerun()
     
     # Services section
+<<<<<<< HEAD
     st.markdown("### Services")   
     job_search_button_type = "primary" if current_page == "job_search" else "secondary"
     if st.button("Career Research", key="nav_info_page", use_container_width=True, type=job_search_button_type):
         st.query_params.page = "job_search"
+=======
+    job_search_button_type = "primary" if current_page == "info_page" else "secondary"
+    if st.button("🔍 Job Research Assistant", key="nav_info_page", use_container_width=True, type=job_search_button_type):
+        st.query_params.page = "info_page"
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
         st.rerun()
     
     specific_button_type = "primary" if current_page == "Specific_Jobs" else "secondary"
@@ -80,6 +89,7 @@ with st.sidebar:
         st.query_params.page = "Resume_Prep"
         st.rerun()
     
+<<<<<<< HEAD
     # Footer info
     st.markdown("---")
     st.markdown("""
@@ -95,12 +105,25 @@ with st.sidebar:
         </p>
     </div>
     """, unsafe_allow_html=True)
+=======
+    # Analytics & Settings section
+
+    analytics_button_type = "primary" if current_page == "analytics" else "secondary"
+    if st.button("📊 Job Market Analytics", key="nav_analytics", use_container_width=True, type=analytics_button_type):
+        st.query_params.page = "analytics"
+        st.rerun()
+    
+    settings_button_type = "primary" if current_page == "settings" else "secondary"
+    if st.button("⚙️ Settings", key="nav_settings", use_container_width=True, type=settings_button_type):
+        st.query_params.page = "settings"
+        st.rerun()
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
 
 # Page routing function
 def route_to_page():
     """Route to the appropriate page based on URL parameter"""
-    if current_page == "job_search":
-        job_search_page()
+    if current_page == "info_page":
+        info_page()
     elif current_page == "Specific_Jobs":
         specific_jobs_page()
     elif current_page == "Resume_Prep":
@@ -322,10 +345,11 @@ with st.container():
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Add breadcrumb navigation
-def show_breadcrumb():
-    """Display breadcrumb navigation"""
-    current_url = st.query_params.get("page", "home")
+# def show_breadcrumb():
+#     """Display breadcrumb navigation"""
+#     current_url = st.query_params.get("page", "home")
     
+<<<<<<< HEAD
     breadcrumb_map = {
         "home": "Home",
         "job_search": "Home > Career Research", 
@@ -335,8 +359,22 @@ def show_breadcrumb():
     
     if current_url in breadcrumb_map:
         st.markdown(f'<div class="breadcrumb"><strong>{breadcrumb_map[current_url]}</strong></div>', unsafe_allow_html=True)
+=======
+#     breadcrumb_map = {
+#         "home": "🏠 Home",
+#         "info_page": "🏠 Home > 🔍 Job Search Assistant", 
+#         "Specific_Jobs": "🏠 Home > 🎯 Specific Jobs",
+#         "Resume_Prep": "🏠 Home > 📝 Resume Prep",
+#         "analytics": "🏠 Home > 📊 Analytics",
+#         "settings": "🏠 Home > ⚙️ Settings"
+#     }
+    
+#     if current_url in breadcrumb_map:
+#         st.markdown(f"**{breadcrumb_map[current_url]}**")
+#         st.markdown("---")
+>>>>>>> 58d078e2dec31e2f60cedf000ab88b0a4ecc51bd
 
-show_breadcrumb()
+# show_breadcrumb()
 
 # Run the selected page
 route_to_page()
