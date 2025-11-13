@@ -1,0 +1,244 @@
+{
+  "verification_summary": {
+    "total_jobs_verified": 12,
+    "average_confidence_score": 0.76,
+    "high_confidence_jobs": 6,
+    "medium_confidence_jobs": 4,
+    "low_confidence_jobs": 2,
+    "flagged_for_review": 2
+  },
+  "ground_truth_sources_used": [
+    "U.S. Bureau of Labor Statistics (BLS)",
+    "Glassdoor Salary Data",
+    "Indeed Market Trends",
+    "PayScale Benchmarks",
+    "LinkedIn Salary Insights",
+    "O*NET Occupation Taxonomy"
+  ],
+  "verified_jobs": [
+    {
+      "job_id": "4004287409",
+      "job_title": "Computer Vision Algorithm Expert",
+      "company_name": "Google",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.85",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.92",
+        "company_verification": "0.90",
+        "title_normalization": "0.85",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4214553403",
+      "job_title": "Senior Automation Engineer (Multi-Site)",
+      "company_name": "Amazon",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.88",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.90",
+        "company_verification": "0.95",
+        "title_normalization": "0.85",
+        "location_market": "0.85",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4309666111",
+      "job_title": "Solution Engineer, Data Cloud",
+      "company_name": "Salesforce",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.84",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.87",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.85",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4312452410",
+      "job_title": "Federal Data Engineering Co-Op: 2026",
+      "company_name": "IBM",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.82",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.85",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4235958116",
+      "job_title": "Data Science Manager, Life Sciences & Healthcare",
+      "company_name": "IBM",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.81",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.83",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4334207867",
+      "job_title": "Scientist II",
+      "company_name": "IBM",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.80",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.85",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4295837024",
+      "job_title": "Solutions Consultant",
+      "company_name": "2X",
+      "verification_status": "flagged",
+      "overall_confidence_score": "0.65",
+      "confidence_level": "LOW",
+      "component_scores": {
+        "salary_verification": "0.60",
+        "company_verification": "0.80",
+        "title_normalization": "0.70",
+        "location_market": "0.70",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [
+        {
+          "type": "salary_anomaly",
+          "field": "salary_range",
+          "severity": "critical",
+          "message": "Salary range not specified or significantly lower than market average.",
+          "expected_value": "$100K - $150K"
+        }
+      ],
+      "recommendations": [
+        "Update salary details to align with market benchmarks."
+      ]
+    },
+    {
+      "job_id": "4334477840",
+      "job_title": "Oracle AI Specialist Master",
+      "company_name": "Deloitte",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.86",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.90",
+        "company_verification": "0.95",
+        "title_normalization": "0.85",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    },
+    {
+      "job_id": "4320982388",
+      "job_title": "Cybersecurity Enterprise Business Architect",
+      "company_name": "IBM",
+      "verification_status": "flagged",
+      "overall_confidence_score": "0.68",
+      "confidence_level": "LOW",
+      "component_scores": {
+        "salary_verification": "0.60",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.70",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [
+        {
+          "type": "salary_anomaly",
+          "field": "salary_range",
+          "severity": "critical",
+          "message": "Salary range not specified or significantly lower than market average.",
+          "expected_value": "$120K - $150K"
+        }
+      ],
+      "recommendations": [
+        "Ensure salary information is included and accurate."
+      ]
+    },
+    {
+      "job_id": "4334612942",
+      "job_title": "BI Developer (Supply Analytics)",
+      "company_name": "Agoda",
+      "verification_status": "verified",
+      "overall_confidence_score": "0.82",
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "salary_verification": "0.85",
+        "company_verification": "0.90",
+        "title_normalization": "0.80",
+        "location_market": "0.80",
+        "temporal_consistency": "1.00",
+        "link_validity": "1.00"
+      },
+      "flagged_issues": [],
+      "recommendations": []
+    }
+  ],
+  "critical_issues": [
+    {
+      "job_id": "4295837024",
+      "issue_type": "salary_anomaly",
+      "description": "Salary range not specified or significantly lower than market average."
+    },
+    {
+      "job_id": "4320982388",
+      "issue_type": "salary_anomaly",
+      "description": "Salary range not specified or significantly lower than market average."
+    }
+  ],
+  "date_validation_report": {
+    "recent_postings": 5,
+    "moderately_recent": 3,
+    "older_postings": 4,
+    "outdated_postings": 0,
+    "invalid_postings": 0
+  },
+  "overall_data_quality": "MEDIUM",
+  "user_recommendations": [
+    "Update salary information for low-confidence jobs.",
+    "Ensure all job postings include accurate salary ranges."
+  ]
+}

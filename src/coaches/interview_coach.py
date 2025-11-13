@@ -1,6 +1,7 @@
 """
-Interview Coach (Resume-Aware Version)
-Generates interview questions and answers based on both job research data and updated resume.
+Interview Coach - Multi-Category Resume-Aware Interview Guide
+Generates questions across multiple categories (General / Industry / Competency / Admissions / Government / Veterans)
+and outputs personalized sample answers based on the candidate's resume + job description.
 """
 
 import json
@@ -16,6 +17,7 @@ JOB_DATA_PATH = BASE_DIR / "outputs" / "lead_research_analyst" / "research_data.
 RESUME_PATH = BASE_DIR / "outputs" / "resume_updated.txt"
 OUT_PATH = BASE_DIR / "outputs" / "interview_prep_guide.md"
 
+
 def load_job_data():
     """Load job research JSON."""
     if not JOB_DATA_PATH.exists():
@@ -23,96 +25,136 @@ def load_job_data():
     with open(JOB_DATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
+
 def load_updated_resume():
-    """Load the updated resume text."""
+    """Load updated resume text."""
     if not RESUME_PATH.exists():
         raise FileNotFoundError(f"❌ Missing resume file at {RESUME_PATH}")
     with open(RESUME_PATH, "r", encoding="utf-8") as f:
         return f.read()
 
+
 def build_prompt(job_data, resume_text):
-    """Build prompt combining job research + updated resume."""
+    """Generate prompt to produce multi-category interview prep."""
     job_title = job_data.get("job_title", "Data Scientist")
     job_description = job_data.get("job_description", "")
     skills = ", ".join(job_data.get("required_skills", []))
 
-    prompt = f"""
-You are an expert Interview Coach preparing a candidate for a **{job_title}** role.
+    return f"""
+You are a highly experienced Interview Coach. Prepare a full interview prep guide for a candidate applying for **{job_title}**.
 
-Below is the **Job Description**:
+=============================
+📌 JOB DESCRIPTION
 {job_description}
 
-Required Skills: {skills}
+📌 REQUIRED SKILLS
+{skills}
 
-And here is the candidate's **Updated Resume**:
----
+📌 UPDATED RESUME
 {resume_text}
+=============================
+
+Generate a **comprehensive interview guide**, with all answers personalized to this resume.
+
+The guide must include **six categories**:
+
 ---
 
-Your task:
-Generate a detailed **Interview Preparation Guide** that:
-1. Uses the resume details to personalize all example answers.
-2. Includes **three sections**:
-   - Technical Questions (**at least 10**, mix conceptual + applied)
-   - Behavioral (STAR) Questions (**at least 5**, covering teamwork, leadership, conflict, learning)
-   - Scenario Questions (**at least 5**, realistic job-related scenarios)
-3. For each question:
-   - Provide a 1-sentence **Answering Framework**
-   - Provide a **Sample Answer**, personalized based on the resume (use first-person “I”)
-4. End with a section “Questions to Ask the Interviewer”.
-5. Make it realistic, professional, and aligned with the resume’s tone.
+# 1. GENERAL INTERVIEW QUESTIONS  
+(These cover 80% of standard interview questions.)  
+Provide:  
+- **10 questions**  
+- 1-sentence **Answering Framework**  
+- **Personalized Sample Answer**  
 
-Output in clean Markdown format:
+---
 
-# Interview Prep Guide – {job_title}
+# 2. INDUSTRY-SPECIFIC QUESTIONS  
+(Tailored to the exact job title + industry.)  
+Provide:  
+- **8 questions**  
+- Framework + Personalized Sample Answer  
 
-## Technical Questions
-**Question:**  
+---
+
+# 3. COMPETENCY / SKILLSET QUESTIONS  
+(Assess soft skills + technical competencies.)  
+Provide:  
+- **8 questions**  
+- Use STAR where appropriate  
+- Framework + Personalized Sample Answer  
+
+---
+
+# 4. ADMISSIONS-STYLE QUESTIONS  
+(If the candidate might apply for grad programs, fellowships, or research roles.)  
+Provide:  
+- **6 questions**  
+- Framework + Personalized Sample Answer  
+
+---
+
+# 5. GOVERNMENT / POLICY QUESTIONS  
+(If the job touches public data, compliance, ethics, policy, privacy, or regulation.)  
+Provide:  
+- **5 questions**  
+- Framework + Personalized Sample Answer  
+
+---
+
+# 6. VETERANS / CAREER TRANSITION QUESTIONS  
+(General career transition questions that apply to ANYONE switching fields.)  
+Provide:  
+- **5 questions**  
+- Framework + Personalized Sample Answer  
+
+---
+
+# Final Section: QUESTIONS TO ASK THE INTERVIEWER  
+Provide **8 thoughtful, high-quality questions** tailored to the job and resume.
+
+---
+
+📌 FORMAT REQUIREMENTS  
+Return the final output in clean Markdown:
+
+## Category Name
+### Question 1
 **Framework:**  
-**Sample Answer:**  
+**Answer:** (personalized using resume)
 
-## Behavioral Questions
-**Question:**  
-**Framework:**  
-**Sample Answer:**  
-
-## Scenario Questions
-**Question:**  
-**Framework:**  
-**Sample Answer:**  
-
-## Questions to Ask the Interviewer
-- ...
-- ...
-- ...
+Do NOT shorten. Make answers realistic, polished, and job-aligned.
 """
-    return prompt
 
 def run_llm(prompt):
-    """Run the CrewAI LLM."""
+    """Run LLM through CrewAI."""
     llm = LLM(model="gpt-4o-mini", temperature=0.7)
-    print("🤖 Generating resume-aware interview guide...")
+    print("🤖 Generating categorized interview guide...")
     return llm.call(prompt)
 
+
 def write_output(content):
-    """Write generated content to markdown."""
+    """Save markdown output."""
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(content)
     return str(OUT_PATH)
 
+
 def run_interview_coach():
-    """Main function to generate personalized interview prep."""
+    """Main workflow."""
     job_data = load_job_data()
     resume_text = load_updated_resume()
     prompt = build_prompt(job_data, resume_text)
+
     result = run_llm(prompt)
     path = write_output(result)
 
     return {
         "guide_path": str(path),
-        "message": "✅ Interview guide generated based on updated resume!",
+        "message": "✅ Multi-category interview guide created!",
         "preview": result[:700] + "..."
     }
+
 
 if __name__ == "__main__":
     output = run_interview_coach()
