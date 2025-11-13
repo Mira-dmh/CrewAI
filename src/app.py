@@ -5,7 +5,7 @@ Main entry point for the multipage app with integrated CrewAI agents and tasks
 
 import streamlit as st
 from streamlit_pages.home import home_page
-from streamlit_pages.job_search import job_search_page
+from streamlit_pages.info_page import info_page
 from streamlit_pages.analytics import analytics_page
 from streamlit_pages.specific_jobs import specific_jobs_page
 from streamlit_pages.resume_prep import resume_prep_page
@@ -99,8 +99,8 @@ with st.sidebar:
 # Page routing function
 def route_to_page():
     """Route to the appropriate page based on URL parameter"""
-    if current_page == "job_search":
-        job_search_page()
+    if current_page == "info_page":
+        info_page()
     elif current_page == "Specific_Jobs":
         specific_jobs_page()
     elif current_page == "Resume_Prep":
@@ -322,21 +322,21 @@ with st.container():
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Add breadcrumb navigation
-def show_breadcrumb():
-    """Display breadcrumb navigation"""
-    current_url = st.query_params.get("page", "home")
+# def show_breadcrumb():
+#     """Display breadcrumb navigation"""
+#     current_url = st.query_params.get("page", "home")
     
-    breadcrumb_map = {
-        "home": "Home",
-        "job_search": "Home > Career Research", 
-        "Specific_Jobs": "Home > Job Search",
-        "Resume_Prep": "Home > Career Preparation"
-    }
+#     breadcrumb_map = {
+#         "home": "Home",
+#         "job_search": "Home > Career Research", 
+#         "Specific_Jobs": "Home > Job Search",
+#         "Resume_Prep": "Home > Career Preparation"
+#     }
     
-    if current_url in breadcrumb_map:
-        st.markdown(f'<div class="breadcrumb"><strong>{breadcrumb_map[current_url]}</strong></div>', unsafe_allow_html=True)
+#     if current_url in breadcrumb_map:
+#         st.markdown(f'<div class="breadcrumb"><strong>{breadcrumb_map[current_url]}</strong></div>', unsafe_allow_html=True)
 
-show_breadcrumb()
+# show_breadcrumb()
 
 # Run the selected page
 route_to_page()

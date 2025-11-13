@@ -1,130 +1,367 @@
 {
-  "job_title": "AI Engineer",
-  "last_updated": "2024-06-27",
+  "job_title": "Data Scientist",
+  "last_updated": "2024-06",
   "sources": [
-    "https://blog.theinterviewguys.com/the-great-ai-salary-bubble/",
-    "https://interviewkickstart.com/blogs/articles/ai-engineer-salary",
-    "https://www.interviewquery.com/p/the-2024-data-science-report",
-    "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
-    "https://www.dewintergroup.com/how-to-stand-out-as-an-ai-engineer-in-a-competitive-job-market",
-    "https://www.cbsnews.com/news/ai-job-postings-brookings-lightcast/"
+    {
+      "title": "Data Scientists : Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Science Salaries & Job Market Analysis: From 2024 to 2025",
+      "url": "https://www.kdnuggets.com/data-science-salaries-job-market-analysis-2024-2025",
+      "publisher": "KDnuggets",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
+      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "2024 Data Scientist Interview Questions",
+      "url": "https://365datascience.com/career-advice/job-interview-tips/data-scientist-interview-questions/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Science Salaries 2024 - Kaggle Dataset",
+      "url": "https://www.kaggle.com/datasets/sazidthe1/data-science-salaries",
+      "publisher": "Kaggle",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Top Data Scientist Interview Questions and Answers (2025)",
+      "url": "https://www.interviewbit.com/data-science-interview-questions/",
+      "publisher": "InterviewBit",
+      "date_accessed": "2024"
+    }
   ],
-  "overview": "AI Engineers design, develop, and deploy artificial intelligence systems and models that enable machines to simulate human intelligence. They work with machine learning algorithms, deep learning frameworks, natural language processing, computer vision, and data analysis to create AI-powered applications in various sectors such as technology, finance, healthcare, and automotive. The demand for AI Engineers is growing rapidly due to the expansion of AI capabilities and enterprise adoption.",
-  "skills": [
-    "Proficiency in programming languages: Python, R, Java, C++",
-    "Machine Learning and Deep Learning frameworks (TensorFlow, PyTorch, Keras)",
-    "Data manipulation and analysis (SQL, Pandas, NumPy)",
-    "Natural language processing (NLP)",
-    "Computer vision techniques",
-    "Cloud platforms (AWS, Google Cloud, Microsoft Azure)",
-    "Model deployment and monitoring",
-    "Version control (Git)",
-    "Strong mathematical foundation in linear algebra, probability, and statistics",
-    "Problem-solving and critical thinking"
-  ],
-  "education_and_training": {
-    "minimum_education": "Bachelor's degree in Computer Science, Data Science, Engineering, Mathematics, or related field",
-    "preferred_education": "Master's degree or PhD in AI, Machine Learning, Computer Science or related fields",
+
+  "overview": {
+    "summary": "Data scientists analyze and interpret complex digital data to help organizations make informed business decisions. They leverage statistical methods, machine learning, data mining, and programming skills to build predictive models and uncover insights.",
+    "key_responsibilities": [
+      "Collect, clean, and validate data from various sources.",
+      "Perform exploratory data analysis to identify trends and patterns.",
+      "Develop and deploy machine learning models and algorithms.",
+      "Communicate findings to stakeholders through visualizations and reports.",
+      "Collaborate with business units to define data-driven strategies.",
+      "Maintain data pipelines and ensure data quality."
+    ],
+    "daily_tasks": [
+      "Data collection, cleaning, and preprocessing.",
+      "Exploratory data analysis and visualization.",
+      "Model development, training, and testing.",
+      "Collaborating with teams to understand business needs.",
+      "Reporting insights and recommendations to stakeholders."
+    ],
+    "work_environment": "Often works in office settings within technology, finance, healthcare, or consulting companies. Increasingly supports remote or hybrid work arrangements.",
+    "industries": [
+      "Technology",
+      "Finance and Insurance",
+      "Healthcare and Biopharma",
+      "Retail and E-commerce",
+      "Manufacturing",
+      "Telecommunications"
+    ]
+  },
+
+  "skills": {
+    "technical_skills": [
+      "Programming Languages: Python, R, SQL",
+      "Data Manipulation and Analysis: Pandas, NumPy",
+      "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
+      "Data Visualization: Matplotlib, Seaborn, Plotly, Tableau",
+      "Big Data Technologies: Spark, Hadoop",
+      "Cloud Platforms: AWS, GCP, Azure",
+      "Statistics and Probability",
+      "Data Wrangling and ETL processes",
+      "Database Management"
+    ],
+    "soft_skills": [
+      "Problem-solving and critical thinking",
+      "Effective communication of complex data insights",
+      "Collaboration and teamwork",
+      "Time management and project planning",
+      "Business acumen and domain knowledge"
+    ],
+    "tools_and_technologies": [
+      "Python",
+      "R",
+      "SQL",
+      "scikit-learn",
+      "TensorFlow",
+      "PyTorch",
+      "Matplotlib",
+      "Seaborn",
+      "Tableau",
+      "Spark",
+      "Hadoop",
+      "AWS",
+      "GCP",
+      "Azure"
+    ],
     "certifications": [
-      "Certified Artificial Intelligence Practitioner",
-      "AWS Certified Machine Learning Specialty",
-      "Google Professional Machine Learning Engineer",
-      "Microsoft Certified: Azure AI Engineer Associate"
-    ],
-    "recommended_training": [
-      "Online platforms: Coursera, edX, Udacity AI and ML specialization courses",
-      "Bootcamps focused on AI and machine learning",
-      "Hands-on projects and Kaggle competitions"
+      "Certified Data Scientist (DASCA)",
+      "Google Professional Data Engineer",
+      "Microsoft Certified: Azure Data Scientist Associate",
+      "IBM Data Science Professional Certificate",
+      "AWS Certified Machine Learning - Specialty"
     ]
   },
-  "career_path": [
-    "Junior AI Engineer / AI Developer",
-    "AI Engineer / Machine Learning Engineer",
-    "Senior AI Engineer / Research Scientist",
-    "AI Architect / Lead AI Engineer",
-    "AI Engineering Manager / Director of AI",
-    "Chief AI Officer / Head of AI"
-  ],
+
+  "education_and_training": {
+    "minimum_education": "Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related fields.",
+    "common_degrees": [
+      "Computer Science",
+      "Statistics",
+      "Mathematics",
+      "Engineering",
+      "Data Science",
+      "Artificial Intelligence"
+    ],
+    "recommended_courses": [
+      "Machine Learning",
+      "Data Mining",
+      "Statistical Analysis",
+      "Big Data Analytics",
+      "Deep Learning"
+    ],
+    "professional_certifications": [
+      "Certified Data Scientist (DASCA)",
+      "Google Professional Data Engineer",
+      "Microsoft Certified: Azure Data Scientist Associate",
+      "IBM Data Science Professional Certificate",
+      "AWS Certified Machine Learning - Specialty"
+    ]
+  },
+
+  "career_path": {
+    "entry_level_positions": [
+      "Data Analyst",
+      "Junior Data Scientist",
+      "Business Intelligence Analyst"
+    ],
+    "mid_level_positions": [
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "Data Engineer"
+    ],
+    "senior_positions": [
+      "Senior Data Scientist",
+      "Lead Data Scientist",
+      "Data Science Manager",
+      "Chief Data Officer"
+    ],
+    "advancement_opportunities": "Progress from entry-level roles focused on data preparation and analysis to mid-level roles building models and handling data infrastructure, ultimately advancing to senior roles that involve strategic decision making and team leadership.",
+    "related_roles": [
+      "Data Engineer",
+      "Machine Learning Engineer",
+      "Business Intelligence Analyst",
+      "Data Analyst"
+    ]
+  },
+
   "salary_and_outlook": {
-    "entry_level_salary_usd": 115458,
-    "median_salary_usd": 153490,
-    "experienced_salary_usd": 203812,
-    "top_market_salary_usd": 300600,
-    "salary_premium_percentage": 56,
-    "job_growth_rate_percent_per_year": 40,
-    "job_openings_global": 500000,
-    "market_trends": "Strong demand driven by AI adoption. Salary premiums for AI skills are increasing rapidly. Growth is fueled by industries including tech, finance, healthcare, and e-commerce."
+    "average_salary": {
+      "us": {
+        "entry_level": "$83,000",
+        "mid_level": "$120,000",
+        "senior_level": "$160,000"
+      },
+      "international": [
+        {
+          "region": "Global Average",
+          "entry_level": "$35,000",
+          "mid_level": "$70,000",
+          "senior_level": "$120,000"
+        }
+      ],
+      "by_experience_level": {
+        "entry_level": "$83,000",
+        "mid_level": "$120,000",
+        "senior_level": "$160,000"
+      }
+    },
+    "job_outlook": {
+      "growth_rate": "34% (2024-2034)",
+      "future_trends": "Expansion driven by data availability, AI adoption, and demand for data-driven business insights."
+    }
   },
+
   "employment_data": {
-    "key_employers": [
+    "top_employers": [
       "Google",
-      "Microsoft",
-      "Meta",
-      "IBM",
       "Amazon",
+      "Microsoft",
+      "Facebook (Meta)",
       "Apple",
-      "Netflix",
-      "Infosys",
-      "TCS",
-      "Flipkart"
+      "IBM",
+      "Accenture",
+      "Salesforce",
+      "Airbnb",
+      "Stripe"
     ],
-    "employment_locations": [
-      "United States (Silicon Valley, Seattle, New York)",
-      "India (Bangalore, Hyderabad)",
-      "Europe (London, Berlin)",
-      "China (Beijing, Shanghai)"
+    "geographic_hotspots": [
+      "San Francisco Bay Area, USA",
+      "New York City, USA",
+      "Seattle, USA",
+      "Boston, USA",
+      "London, UK",
+      "Berlin, Germany",
+      "Amsterdam, Netherlands",
+      "Bangalore, India",
+      "Singapore",
+      "Tokyo, Japan"
+    ],
+    "remote_vs_in_person": "High prevalence of remote and hybrid roles, with increased flexibility post-pandemic."
+  },
+
+  "tools_and_software": {
+    "common_tools": [
+      "Python",
+      "R",
+      "SQL",
+      "scikit-learn",
+      "TensorFlow",
+      "PyTorch",
+      "Tableau",
+      "Power BI",
+      "Matplotlib",
+      "Seaborn",
+      "Apache Spark",
+      "Hadoop",
+      "Kafka",
+      "AWS",
+      "Google Cloud Platform",
+      "Microsoft Azure"
+    ],
+    "emerging_tools": [
+      "Automated Machine Learning (AutoML) platforms",
+      "Explainable AI tools",
+      "Edge computing analytics platforms"
+    ],
+    "software_categories": [
+      "Programming Languages",
+      "Machine Learning Frameworks",
+      "Data Visualization Software",
+      "Big Data Platforms",
+      "Cloud Computing Services",
+      "Data Storage Solutions"
     ]
   },
-  "tools_and_software": [
-    "TensorFlow",
-    "PyTorch",
-    "Keras",
-    "Scikit-learn",
-    "Jupyter Notebook",
-    "SQL databases",
-    "Docker",
-    "Kubernetes",
-    "AWS SageMaker",
-    "Google AI Platform"
-  ],
+
   "interview_and_hiring": {
-    "common_interview_themes": [
-      "Algorithm and data structure proficiency",
-      "Machine learning concepts and coding exercises",
-      "System design and scalability of AI applications",
-      "Statistical analysis and problem-solving scenarios",
-      "Behavioral questions assessing teamwork and communication",
-      "Portfolio review of AI projects and research"
+    "common_interview_questions": [
+      "Programming and coding questions (Python, SQL)",
+      "Statistics and probability questions",
+      "Machine learning algorithms and theory",
+      "Data wrangling and cleaning exercises",
+      "System design and scalability questions",
+      "Behavioral questions on teamwork, communication, and project management",
+      "Business case analysis and data storytelling"
     ],
-    "recommended_preparation": [
-      "Practice coding problems on platforms like LeetCode and HackerRank",
-      "Deep dive into ML algorithms and math foundations",
-      "Prepare explanations on past AI/ML projects",
-      "Mock interviews focusing on system design and AI cases",
-      "Stay updated on industry AI trends and advancements"
+    "assessment_types": [
+      "Technical phone/video interviews",
+      "Coding challenges",
+      "Data science case studies and presentations",
+      "Onsite technical and behavioral interviews"
     ],
-    "hiring_trends": "Increasing use of AI skill assessments, practical coding tests, and project-based interviews. Companies value candidates with diverse, hands-on experience across AI subfields."
+    "recruitment_process": "Typically includes resume screening, HR screening call, technical interviews, data challenges, onsite interviews, and final offer & negotiation."
   },
-  "industry_trends": [
-    "Rapid growth with AI skill demand increasing over 600% in job listings over the last decade",
-    "Higher salary premiums for roles requiring AI compared to non-AI roles",
-    "Shift towards hybrid and on-site roles in major tech hubs",
-    "Expanded AI adoption in sectors beyond traditional tech: healthcare, finance, manufacturing",
-    "Increased focus on ethical AI and explainability impacting hiring criteria"
-  ],
-  "additional_resources": [
-    "Coursera AI For Everyone by Andrew Ng",
-    "Udacity Machine Learning Nanodegree",
-    "AI and Machine Learning tutorial series on YouTube channels like Two Minute Papers",
-    "Kaggle competitions for practical ML experience",
-    "Books: 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow' by Aurélien Géron"
-  ],
+
+  "industry_trends": {
+    "emerging_technologies": [
+      "Generative AI and large language models",
+      "Automated machine learning (AutoML)",
+      "Explainable AI and model interpretability",
+      "Edge computing and real-time analytics",
+      "Integration of AI with Internet of Things (IoT)"
+    ],
+    "market_demand_drivers": [
+      "Increasing data availability and complexity",
+      "Demand for actionable business insights",
+      "Growth of AI and ML adoption across sectors",
+      "Regulatory compliance and data privacy concerns",
+      "Need for competitive advantage through data innovation"
+    ],
+    "regulatory_factors": [
+      "GDPR and similar data privacy regulations impacting data handling",
+      "Emerging ethical AI frameworks as part of corporate governance"
+    ],
+    "future_opportunities": [
+      "Expansion of AI-driven product offerings",
+      "Increased focus on data ethics and transparency",
+      "Growth of cloud-based and edge analytics",
+      "Broader adoption of automated data science tools"
+    ]
+  },
+
+  "additional_resources": {
+    "professional_associations": [
+      "Data Science Association",
+      "Association for Computing Machinery (ACM) SIGKDD",
+      "The Data Science Council of America (DASCA)",
+      "International Machine Learning Society (IMLS)"
+    ],
+    "online_communities": [
+      "Kaggle",
+      "r/datascience on Reddit",
+      "Stack Overflow Data Science tags",
+      "Data Science Central"
+    ],
+    "recommended_readings": [
+      "'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow' by Aurélien Géron",
+      "'Python for Data Analysis' by Wes McKinney",
+      "'Data Science for Business' by Foster Provost and Tom Fawcett"
+    ],
+    "training_platforms": [
+      "Coursera",
+      "edX",
+      "DataCamp",
+      "Udacity",
+      "LinkedIn Learning"
+    ]
+  },
+
   "citations": [
-    "https://blog.theinterviewguys.com/the-great-ai-salary-bubble/",
-    "https://interviewkickstart.com/blogs/articles/ai-engineer-salary",
-    "https://www.interviewquery.com/p/the-2024-data-science-report",
-    "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
-    "https://www.dewintergroup.com/how-to-stand-out-as-an-ai-engineer-in-a-competitive-job-market",
-    "https://www.cbsnews.com/news/ai-job-postings-brookings-lightcast/"
+    {
+      "title": "Data Scientists : Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Science Salaries & Job Market Analysis: From 2024 to 2025",
+      "url": "https://www.kdnuggets.com/data-science-salaries-job-market-analysis-2024-2025",
+      "publisher": "KDnuggets",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
+      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "2024 Data Scientist Interview Questions",
+      "url": "https://365datascience.com/career-advice/job-interview-tips/data-scientist-interview-questions/",
+      "publisher": "365 Data Science",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Data Science Salaries 2024 - Kaggle Dataset",
+      "url": "https://www.kaggle.com/datasets/sazidthe1/data-science-salaries",
+      "publisher": "Kaggle",
+      "date_accessed": "2024"
+    },
+    {
+      "title": "Top Data Scientist Interview Questions and Answers (2025)",
+      "url": "https://www.interviewbit.com/data-science-interview-questions/",
+      "publisher": "InterviewBit",
+      "date_accessed": "2024"
+    }
   ]
 }

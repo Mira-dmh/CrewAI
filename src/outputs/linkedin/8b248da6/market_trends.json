@@ -1,0 +1,55 @@
+{
+  "market_overview": {
+    "job_title": "data science",
+    "analysis_date": "2025-11-05",
+    "market_health": "strong",
+    "job_posting_trends": {
+      "growth_rate": "34%",
+      "seasonal_patterns": "steady demand throughout the year with peaks in Q1 and Q3"
+    },
+    "salary_data": {
+      "median_salary": "$156,000",
+      "salary_range": {
+        "entry_level": "$95,000 - $110,000",
+        "mid_level": "$120,000 - $145,000",
+        "senior_level": "$150,000 - $180,000"
+      }
+    },
+    "skill_demand_analysis": {
+      "top_skills": [
+        "Python",
+        "Machine Learning",
+        "Data Visualization",
+        "SQL",
+        "Statistical Analysis"
+      ],
+      "skill_frequency": {
+        "Python": "85%",
+        "Machine Learning": "75%",
+        "Data Visualization": "70%",
+        "SQL": "65%",
+        "Statistical Analysis": "60%"
+      }
+    },
+    "hiring_patterns": {
+      "top_hiring_companies": [
+        "Google",
+        "Amazon",
+        "Microsoft",
+        "IBM",
+        "Facebook"
+      ],
+      "hiring_velocity": "rapid, with an increase in job postings by 20% month-over-month"
+    },
+    "geographic_distribution": {
+      "top_locations": [
+        "San Francisco, CA",
+        "New York, NY",
+        "Austin, TX",
+        "Seattle, WA",
+        "Boston, MA"
+      ],
+      "remote_work": "high demand for remote positions, with 60% of job postings offering remote options"
+    }
+  }
+}

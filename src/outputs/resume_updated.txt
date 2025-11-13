@@ -1,53 +1,57 @@
-Here’s an improved version of your resume tailored for Data Scientist and Data Analyst positions:
+```markdown
+# Mengran ZHUANG
+**Address:** 450 S Easton Road, Glenside, PA 19038, USA  
+**Email:** 1242445057@qq.com  
+**Tel:** (+1) 267 551 9335  
 
 ---
 
-**Mona Zhuang**  
-Email: mona.zhuang@example.com  
-Location: Philadelphia, PA  
+## EDUCATION
+
+**Arcadia University**, Pennsylvania, USA  
+**Bachelor of Science in Mathematics & Applied Mathematics**  
+_Sep 2024 – Jul 2026_  
+- **GPA:** 3.72/4.0  
+- **Relevant Courses:** Theory of Computation, Computer Ethics, Database Management System Design, Introduction to Data Science with R, Design & Analysis of Algorithms  
+
+**Jiangsu University**, Jiangsu, China  
+**Major in Mathematics & Applied Mathematics**  
+_Sep 2022 – Jun 2024_  
+- **GPA:** 3.32/4.0  
+- **Relevant Courses:** Application Software Practice, Fundamentals of Computer Programming (I & II), Mathematical Analysis (I, II & III)  
+- **Supplementary Education:** National University of Singapore (NUS) - Data Analytics and Mathematical Statistics Programme  
 
 ---
 
-🎯 **PROFESSIONAL SUMMARY**  
-Detail-oriented and analytical Computer Science and Mathematics student with hands-on experience in data analysis, machine learning, and web applications. Proficient in Python, SQL, and statistical modeling, with a strong passion for utilizing data-driven approaches to enhance decision-making and drive business outcomes.
+## ACADEMIC PROJECTS
+
+**AI-Assisted Human Memory Research**  
+_2025_  
+- Conducted a group study involving 30 participants to evaluate the effectiveness of AI in assisting human memory for remembering Wi-Fi passwords.  
+- Designed and implemented two AI-driven memory-assistive strategies, achieving a 25% improvement in recall rates.  
+- Developed Python scripts utilizing the OpenAI API for real-time generation of memory prompts, enhancing user engagement.  
+- Visualized experimental data, leading to actionable insights for improving memory retention techniques.
+
+**Economic & Social Development Data Analysis**  
+_CS229.1 - Introduction to Data Science with R_  
+_2024_  
+- Analyzed data from 150 countries to establish correlations between GDP and key social indicators, including life expectancy and enrollment rates.  
+- Collected, cleaned, and integrated data from World Bank GEM and HNP databases using R, resulting in a comprehensive dataset for statistical modeling.  
+- Identified significant trends indicating a 30% increase in education and health outcomes correlated with GDP growth, underscoring the impact of economic development on social well-being.
+
+**Dynamic Web Game Deployment with Docker**  
+_CS358.1 - Operating Systems_  
+_2024_  
+- Developed a web-based interactive game using HTML, CSS, and JavaScript, engaging over 200 users who tested the game in a lab environment.  
+- Successfully containerized the application with Docker and deployed it using Nginx, enabling seamless cross-platform access.  
+- Managed practical deployment challenges, including port mapping and network settings, enhancing understanding of web development and containerization.
 
 ---
 
-💻 **TECHNICAL SKILLS**  
-- **Programming Languages:** Python, R, SQL  
-- **Data Science:** Machine Learning, Data Visualization, Statistical Analysis  
-- **Tools & Technologies:** Git, VS Code, AWS, Streamlit, Tableau  
-- **Soft Skills:** Effective Communication, Team Collaboration, Problem Solving  
+## SKILLS & INTERESTS
 
----
-
-🎓 **EDUCATION**  
-**Arcadia University** — B.S. in Computer Science & Mathematics (Expected May 2026)  
-- Relevant Coursework: Data Science, Probability & Statistics, Computer Ethics, Algorithms, Data Structures
-
----
-
-💼 **PROJECT EXPERIENCE**  
-**CrewAI Career Assistant** — Developer  
-- Developed a multi-agent job search assistant using Python and Streamlit, improving user engagement by 30%.  
-- Integrated resume analysis and job trend visualization features, resulting in a 25% reduction in job search time for users.
-
-**Data Analytics Project** — Researcher  
-- Analyzed global education and health datasets using R and Quarto, uncovering key correlations that informed policy recommendations.  
-- Created regression models that demonstrated a 15% increase in GDP associated with educational investments.
-
----
-
-🏆 **ACHIEVEMENTS**  
-- Dean’s List (2024) for academic excellence with a GPA of 3.8 or higher  
-- Earned AWS Academy Cloud Foundations Certificate, validating cloud computing knowledge  
-
----
-
-🤝 **ACTIVITIES**  
-- Member of Arcadia AI Club, collaborating on data science projects and hackathons  
-- Volunteer: STEM Outreach for High School Students, mentoring and teaching data science fundamentals  
-
---- 
-
-This revised resume enhances clarity, quantifies achievements, and presents a more professional tone while accurately reflecting your skills and experiences.
+- **Languages:** Chinese (native), English (IELTS: 6.0)  
+- **Programming Skills:** Proficient in Python, R, and Java for data processing, analysis, and visualization. Strong foundation in algorithms, data structures, and SQL database management.  
+- **Technical Tools:** Experienced in LaTeX, VS Code, Docker, and Nginx.  
+- **Interests:** Data analytics, machine learning, and web development.
+```
