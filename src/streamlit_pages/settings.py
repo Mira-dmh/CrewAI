@@ -21,7 +21,7 @@ def settings_page():
     except:
         pass  # Fail silently if tracking is unavailable
     
-    st.markdown("# ⚙️ Settings & Configuration")
+    st.markdown("#  Settings & Configuration")
     st.markdown("*Configure your AI assistant and personalize your experience*")
     
     # Load environment variables
@@ -31,10 +31,10 @@ def settings_page():
     current_openai_key = os.getenv("OPENAI_API_KEY", "")
     
     # Tabs for different settings categories
-    tab1, tab2 = st.tabs(["👤 Profile", "🤖 AI Settings"])
+    tab1, tab2 = st.tabs([" Profile", " AI Settings"])
     
     with tab1:
-        st.markdown("## 👤 User Profile")
+        st.markdown("##  User Profile")
         st.markdown("Personalize your job search experience.")
         
         # Personal information
@@ -60,7 +60,7 @@ def settings_page():
             )
         
         # Job preferences
-        st.markdown("### 🎯 Job Preferences")
+        st.markdown("###  Job Preferences")
         
         preferred_roles = st.text_area(
             "Preferred Job Titles",
@@ -80,7 +80,7 @@ def settings_page():
             default=["Technology"]
         )
         
-        if st.button("💾 Save Profile"):
+        if st.button(" Save Profile"):
             # Save to session state (in real app, save to database)
             st.session_state['user_name'] = name
             st.session_state['user_email'] = email
@@ -90,17 +90,17 @@ def settings_page():
             st.session_state['preferred_roles'] = preferred_roles
             st.session_state['skills'] = skills
             st.session_state['industries'] = industries
-            st.success("✅ Profile saved successfully!")
+            st.success(" Profile saved successfully!")
     
     with tab2:
-        st.markdown("## 🤖 AI Assistant Configuration")
+        st.markdown("##  AI Assistant Configuration")
         st.markdown("*Customize AI behavior for job search and analysis*")
         
         # AI response settings
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 📝 Response Style")
+            st.markdown("###  Response Style")
             response_style = st.selectbox(
                 "How should the AI respond?",
                 ["Professional", "Casual", "Detailed", "Concise"],
@@ -116,7 +116,7 @@ def settings_page():
             )
         
         with col2:
-            st.markdown("### ⚡ Performance")
+            st.markdown("###  Performance")
             auto_refresh = st.selectbox(
                 "Data Auto-refresh",
                 ["Disabled", "Every hour", "Every 6 hours", "Daily"],
@@ -138,12 +138,12 @@ def settings_page():
         # Save button
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 1])
         with col_btn2:
-            if st.button("💾 Save AI Settings", use_container_width=True, type="primary"):
+            if st.button(" Save AI Settings", use_container_width=True, type="primary"):
                 st.session_state['response_style'] = response_style
                 st.session_state['analysis_depth'] = analysis_depth
                 st.session_state['auto_refresh'] = auto_refresh
                 st.session_state['max_results'] = max_results
-                st.success("✅ AI settings saved successfully!")
+                st.success(" AI settings saved successfully!")
 
 if __name__ == "__main__":
     settings_page()

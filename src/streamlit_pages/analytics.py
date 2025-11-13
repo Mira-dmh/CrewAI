@@ -24,12 +24,12 @@ def analytics_page():
     except:
         pass  # Fail silently if tracking is unavailable
     
-    st.markdown("# 📊 Job Market Analytics")
+    st.markdown("#  Job Market Analytics")
     st.markdown("*Comprehensive insights into the job market powered by AI analysis*")
     
     # Sidebar filters
     with st.sidebar:
-        st.markdown("## 🔧 Analysis Filters")
+        st.markdown("##  Analysis Filters")
         
         # Job category filter
         job_categories = [
@@ -61,7 +61,7 @@ def analytics_page():
         time_ranges = ["Last 7 days", "Last 30 days", "Last 90 days", "Last year"]
         selected_time = st.selectbox("Time Range", time_ranges)
         
-        if st.button("🔄 Refresh Data"):
+        if st.button(" Refresh Data"):
             st.rerun()
     
     # Generate sample data (in real app, this would come from your CrewAI agents)
@@ -77,7 +77,7 @@ def analytics_page():
     data = generate_sample_data()
     
     # Key metrics row
-    st.markdown("## 📈 Key Metrics")
+    st.markdown("##  Key Metrics")
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -112,13 +112,13 @@ def analytics_page():
         )
     
     # Charts section
-    st.markdown("## 📊 Market Trends")
+    st.markdown("##  Market Trends")
     
     # Job postings over time
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📈 Job Postings Trend")
+        st.markdown("###  Job Postings Trend")
         df_postings = pd.DataFrame({
             'Date': data['dates'],
             'Job Postings': data['job_postings']
@@ -135,7 +135,7 @@ def analytics_page():
         st.plotly_chart(fig_postings, use_container_width=True)
     
     with col2:
-        st.markdown("### 💰 Salary Trends")
+        st.markdown("###  Salary Trends")
         df_salary = pd.DataFrame({
             'Date': data['dates'],
             'Average Salary': data['avg_salary']
@@ -152,7 +152,7 @@ def analytics_page():
         st.plotly_chart(fig_salary, use_container_width=True)
     
     # Skills demand analysis
-    st.markdown("## 🔥 Top In-Demand Skills")
+    st.markdown("##  Top In-Demand Skills")
     
     skills_data = {
         'Skill': ['Python', 'JavaScript', 'SQL', 'React', 'AWS', 'Machine Learning', 'Docker', 'Git'],
@@ -176,7 +176,7 @@ def analytics_page():
         st.plotly_chart(fig_skills, use_container_width=True)
     
     with col2:
-        st.markdown("### 💡 Skill Insights")
+        st.markdown("###  Skill Insights")
         for i, skill in enumerate(skills_data['Skill'][:5]):
             st.markdown(f"""
             **{skill}**  
@@ -185,7 +185,7 @@ def analytics_page():
             """)
     
     # Company insights
-    st.markdown("## 🏢 Top Hiring Companies")
+    st.markdown("##  Top Hiring Companies")
     
     company_data = {
         'Company': ['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'Uber'],
@@ -211,7 +211,7 @@ def analytics_page():
         st.plotly_chart(fig_companies, use_container_width=True)
     
     with col2:
-        st.markdown("### 🏆 Top Employers")
+        st.markdown("###  Top Employers")
         for i, company in enumerate(company_data['Company'][:5]):
             st.markdown(f"""
             **{i+1}. {company}**  
@@ -220,34 +220,34 @@ def analytics_page():
             """)
     
     # AI-Generated Insights
-    st.markdown("## 🤖 AI-Generated Market Insights")
+    st.markdown("##  AI-Generated Market Insights")
     
     insights = [
-        "🔥 **Hot Trend**: Remote work positions increased by 34% this month",
-        "💰 **Salary Alert**: AI/ML roles showing 15% salary increase", 
-        "📍 **Location Insight**: Austin becoming new tech hub with 28% job growth",
-        "⚡ **Skill Gap**: High demand for cloud architecture skills",
-        "🎯 **Opportunity**: Entry-level data science positions up 45%"
+        " **Hot Trend**: Remote work positions increased by 34% this month",
+        " **Salary Alert**: AI/ML roles showing 15% salary increase", 
+        " **Location Insight**: Austin becoming new tech hub with 28% job growth",
+        " **Skill Gap**: High demand for cloud architecture skills",
+        " **Opportunity**: Entry-level data science positions up 45%"
     ]
     
     for insight in insights:
         st.info(insight)
     
     # Export section
-    st.markdown("## 📥 Export Data")
+    st.markdown("##  Export Data")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("📊 Export Charts", use_container_width=True):
+        if st.button(" Export Charts", use_container_width=True):
             st.success("Charts exported successfully!")
     
     with col2:
-        if st.button("📋 Export Data", use_container_width=True):
+        if st.button(" Export Data", use_container_width=True):
             st.success("Data exported to CSV!")
     
     with col3:
-        if st.button("📧 Email Report", use_container_width=True):
+        if st.button(" Email Report", use_container_width=True):
             st.success("Report sent to your email!")
 
 if __name__ == "__main__":

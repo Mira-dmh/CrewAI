@@ -1,6 +1,78 @@
 {
   "sessions": [
     {
+      "id": "session_1fa769da",
+      "timestamp": "2025-11-11T21:30:13.544377",
+      "type": "navigation",
+      "title": "Settings Visited",
+      "details": "User visited Settings page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_f0eb6ac5",
+      "timestamp": "2025-11-11T21:05:34.218755",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_8096e36c",
+      "timestamp": "2025-11-10T16:08:56.297766",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_ac4be66a",
+      "timestamp": "2025-11-10T15:49:49.775956",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_db68f751",
+      "timestamp": "2025-11-10T15:37:34.773708",
+      "type": "navigation",
+      "title": "Settings Visited",
+      "details": "User visited Settings page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
+      "id": "session_5fc34acc",
+      "timestamp": "2025-11-10T15:37:22.798873",
+      "type": "navigation",
+      "title": "Analytics Visited",
+      "details": "User visited Analytics page",
+      "job_title": "",
+      "location": "",
+      "results_count": 0,
+      "duration_minutes": 1,
+      "status": "completed"
+    },
+    {
       "id": "session_4e6c7652",
       "timestamp": "2025-11-04T13:35:08.746699",
       "type": "navigation",
@@ -50,8 +122,8 @@
     }
   ],
   "metadata": {
-    "last_updated": "2025-11-04T13:35:08.746863",
-    "total_sessions": 4,
+    "last_updated": "2025-11-11T21:30:13.544595",
+    "total_sessions": 10,
     "version": "1.0"
   }
 }
