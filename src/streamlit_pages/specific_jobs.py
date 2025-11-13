@@ -1650,8 +1650,203 @@ def render_job_postings_analytics(job_postings_file):
         
         st.markdown("---")
         
+        # Salary Analysis Section - Using REAL data from market_trends.json
+        st.markdown("###  💰 Salary Analysis (Real Market Data)")
+        
+        # Load market trends for salary benchmarks
+        latest_session = get_latest_session_folder()
+        market_trends_data = None
+        if latest_session:
+            mt_file = f"{latest_session}/market_trends.json"
+            market_trends_data = safe_load_json(mt_file)
+        
+        # Extract and parse salary information from actual job postings
+        salary_data = []
+        jobs_with_salary = 0
+        
+        for job in postings:
+            salary_range = job.get("salary_range")
+            if salary_range and salary_range not in [None, "null", "Not mentioned", ""] and str(salary_range).strip():
+                jobs_with_salary += 1
+                # Try to parse salary range
+                try:
+                    # Handle formats like "$100k - $150k", "$100,000 - $150,000", etc.
+                    import re
+                    numbers = re.findall(r'\$?([\d,]+)k?', str(salary_range).replace(',', ''))
+                    if len(numbers) >= 2:
+                        # Extract min and max
+                        min_sal = float(numbers[0])
+                        max_sal = float(numbers[1])
+                        # Handle 'k' notation
+                        if 'k' in str(salary_range).lower():
+                            min_sal *= 1000
+                            max_sal *= 1000
+                        avg_sal = (min_sal + max_sal) / 2
+                        salary_data.append({
+                            'min': min_sal,
+                            'max': max_sal,
+                            'avg': avg_sal,
+                            'company': job.get('company_name', 'Unknown'),
+                            'title': job.get('job_title', 'Unknown')
+                        })
+                    elif len(numbers) == 1:
+                        # Single salary value
+                        sal = float(numbers[0])
+                        if 'k' in str(salary_range).lower():
+                            sal *= 1000
+                        salary_data.append({
+                            'min': sal,
+                            'max': sal,
+                            'avg': sal,
+                            'company': job.get('company_name', 'Unknown'),
+                            'title': job.get('job_title', 'Unknown')
+                        })
+                except Exception:
+                    continue
+        
+        # Display metrics
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(" Jobs with Salary Listed", 
+                     f"{jobs_with_salary} / {len(postings)}",
+                     delta=f"{(jobs_with_salary/len(postings)*100):.1f}%" if len(postings) > 0 else "0%")
+        
+        # Show market benchmark from market_trends.json (REAL DATA)
+        if market_trends_data and isinstance(market_trends_data, dict):
+            salary_info = market_trends_data.get('salary_data') or market_trends_data.get('market_overview', {}).get('salary_data')
+            if salary_info and isinstance(salary_info, dict):
+                avg_salary_str = salary_info.get('average_salary', '')
+                salary_range_info = salary_info.get('salary_range') or salary_info.get('salary_ranges')
+                
+                with col2:
+                    if avg_salary_str:
+                        st.metric(" Market Average (Real Data)", avg_salary_str, 
+                                 help="From verified market trends data")
+                    else:
+                        st.caption("Market average not available")
+                
+                with col3:
+                    if salary_range_info:
+                        if isinstance(salary_range_info, dict):
+                            min_sal = salary_range_info.get('min', '')
+                            max_sal = salary_range_info.get('max', '')
+                            if min_sal and max_sal:
+                                st.metric(" Market Range", 
+                                         f"{min_sal} - {max_sal}",
+                                         help="Industry benchmark range")
+                        elif isinstance(salary_range_info, str):
+                            st.metric(" Market Range", salary_range_info)
+        
+        # If we have actual salary data from postings, show distribution
+        if salary_data:
+            st.markdown("---")
+            st.markdown("**📊 Actual Posted Salaries Distribution:**")
+            
+            avg_posted = sum(s['avg'] for s in salary_data) / len(salary_data)
+            st.info(f"💡 Average from posted salaries: **${avg_posted:,.0f}** (based on {len(salary_data)} jobs with salary info)")
+            
+            # Salary distribution visualization
+            if PLOTLY_AVAILABLE:
+                fig = go.Figure()
+                
+                # Add box plot for distribution
+                fig.add_trace(go.Box(
+                    y=[s['avg'] for s in salary_data],
+                    name='Posted Salaries',
+                    marker_color='#0066cc',
+                    boxmean='sd',
+                    hovertext=[f"{s['company']}: {s['title']}" for s in salary_data],
+                    hoverinfo='y+text'
+                ))
+                
+                fig.update_layout(
+                    title="Salary Distribution from Actual Job Postings",
+                    yaxis_title="Annual Salary (USD)",
+                    height=400,
+                    showlegend=False
+                )
+                
+                fig.update_yaxis(tickformat="$,.0f")
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Salary by company (top companies with salary data)
+                if len(salary_data) >= 3:
+                    st.markdown("**💼 Average Salary by Company (Real Postings):**")
+                    
+                    # Group by company
+                    company_salaries = {}
+                    for s in salary_data:
+                        comp = s['company']
+                        if comp not in company_salaries:
+                            company_salaries[comp] = []
+                        company_salaries[comp].append(s['avg'])
+                    
+                    # Calculate average per company
+                    company_avg = {
+                        comp: sum(sals) / len(sals) 
+                        for comp, sals in company_salaries.items()
+                    }
+                    
+                    # Sort and take top 8
+                    sorted_companies = sorted(company_avg.items(), key=lambda x: x[1], reverse=True)[:8]
+                    
+                    if sorted_companies:
+                        fig2 = go.Figure(data=[
+                            go.Bar(
+                                x=[sal for _, sal in sorted_companies],
+                                y=[comp for comp, _ in sorted_companies],
+                                orientation='h',
+                                marker_color='#28a745',
+                                text=[f'${sal:,.0f}' for _, sal in sorted_companies],
+                                textposition='auto',
+                            )
+                        ])
+                        
+                        fig2.update_layout(
+                            title="Companies by Average Posted Salary",
+                            xaxis_title="Average Salary (USD)",
+                            yaxis_title="Company",
+                            height=350,
+                            yaxis={'categoryorder':'total ascending'}
+                        )
+                        
+                        fig2.update_xaxis(tickformat="$,.0f")
+                        st.plotly_chart(fig2, use_container_width=True)
+        else:
+            # No direct salary data in postings, show market benchmark
+            st.markdown("---")
+            if market_trends_data and salary_info:
+                st.info("💡 **Note**: Most LinkedIn postings don't list salary ranges directly. See market benchmark data above from verified sources.")
+                
+                # Show detailed market salary breakdown if available
+                if 'salary_ranges' in salary_info:
+                    st.markdown("**📈 Market Salary Benchmarks by Experience Level:**")
+                    ranges = salary_info['salary_ranges']
+                    
+                    if isinstance(ranges, dict):
+                        exp_cols = st.columns(3)
+                        levels = [
+                            ('entry_level', 'Entry Level', 0),
+                            ('mid_level', 'Mid Level', 1),
+                            ('senior_level', 'Senior Level', 2)
+                        ]
+                        
+                        for key, label, idx in levels:
+                            if key in ranges:
+                                with exp_cols[idx]:
+                                    val = ranges[key]
+                                    if isinstance(val, str):
+                                        st.metric(label, val)
+                                    elif isinstance(val, dict):
+                                        avg = val.get('average', val.get('avg', ''))
+                                        st.metric(label, avg if avg else f"{val.get('min', '')} - {val.get('max', '')}")
+            else:
+                st.info("💡 **Tip**: Salary data will appear here when jobs include compensation information. Check the Market Trends tab for industry benchmarks.")
+        
+        st.markdown("---")
+        
         # Recent vs Older Postings
-        st.markdown("###  Posting Freshness")
+        st.markdown("###  📅 Posting Freshness")
         recent_count = sum(1 for job in postings if job.get("date_posted") == "Recent")
         older_count = len(postings) - recent_count
         
