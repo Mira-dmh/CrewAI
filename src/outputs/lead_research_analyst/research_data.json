@@ -1,130 +1,234 @@
 {
-  "job_title": "AI Engineer",
-  "last_updated": "2024-06-27",
+  "job_title": "Project Manager",
+  "last_updated": "October 2023",
   "sources": [
-    "https://blog.theinterviewguys.com/the-great-ai-salary-bubble/",
-    "https://interviewkickstart.com/blogs/articles/ai-engineer-salary",
-    "https://www.interviewquery.com/p/the-2024-data-science-report",
-    "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
-    "https://www.dewintergroup.com/how-to-stand-out-as-an-ai-engineer-in-a-competitive-job-market",
-    "https://www.cbsnews.com/news/ai-job-postings-brookings-lightcast/"
+    "Bureau of Labor Statistics",
+    "PMI Job Outlook Report",
+    "IC Agile Salary Guide"
   ],
-  "overview": "AI Engineers design, develop, and deploy artificial intelligence systems and models that enable machines to simulate human intelligence. They work with machine learning algorithms, deep learning frameworks, natural language processing, computer vision, and data analysis to create AI-powered applications in various sectors such as technology, finance, healthcare, and automotive. The demand for AI Engineers is growing rapidly due to the expansion of AI capabilities and enterprise adoption.",
-  "skills": [
-    "Proficiency in programming languages: Python, R, Java, C++",
-    "Machine Learning and Deep Learning frameworks (TensorFlow, PyTorch, Keras)",
-    "Data manipulation and analysis (SQL, Pandas, NumPy)",
-    "Natural language processing (NLP)",
-    "Computer vision techniques",
-    "Cloud platforms (AWS, Google Cloud, Microsoft Azure)",
-    "Model deployment and monitoring",
-    "Version control (Git)",
-    "Strong mathematical foundation in linear algebra, probability, and statistics",
-    "Problem-solving and critical thinking"
-  ],
-  "education_and_training": {
-    "minimum_education": "Bachelor's degree in Computer Science, Data Science, Engineering, Mathematics, or related field",
-    "preferred_education": "Master's degree or PhD in AI, Machine Learning, Computer Science or related fields",
+
+  "overview": {
+    "summary": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources and communicate with stakeholders.",
+    "key_responsibilities": [
+      "Defining project scope and objectives.",
+      "Coordinating project resources and managing the project team.",
+      "Maintaining communication with stakeholders.",
+      "Tracking project performance and reporting on progress."
+    ],
+    "daily_tasks": [
+      "Conducting project meetings.",
+      "Managing budgets and resources.",
+      "Communicating with clients and stakeholders.",
+      "Updating project status and performance reports."
+    ],
+    "work_environment": "Primarily office-based, with some remote work opportunities depending on the organization.",
+    "industries": [
+      "Information Technology",
+      "Construction",
+      "Healthcare",
+      "Telecommunications",
+      "Finance"
+    ]
+  },
+
+  "skills": {
+    "technical_skills": [
+      "Agile methodologies",
+      "Project management software (e.g., JIRA, Microsoft Project)",
+      "Budget management tools"
+    ],
+    "soft_skills": [
+      "Leadership",
+      "Communication",
+      "Problem-solving",
+      "Interpersonal skills"
+    ],
+    "tools_and_technologies": [
+      "Microsoft Project",
+      "Trello",
+      "Asana",
+      "Basecamp"
+    ],
     "certifications": [
-      "Certified Artificial Intelligence Practitioner",
-      "AWS Certified Machine Learning Specialty",
-      "Google Professional Machine Learning Engineer",
-      "Microsoft Certified: Azure AI Engineer Associate"
-    ],
-    "recommended_training": [
-      "Online platforms: Coursera, edX, Udacity AI and ML specialization courses",
-      "Bootcamps focused on AI and machine learning",
-      "Hands-on projects and Kaggle competitions"
+      "Project Management Professional (PMP)",
+      "Certified ScrumMaster (CSM)",
+      "Agile Certified Practitioner (PMI-ACP)"
     ]
   },
-  "career_path": [
-    "Junior AI Engineer / AI Developer",
-    "AI Engineer / Machine Learning Engineer",
-    "Senior AI Engineer / Research Scientist",
-    "AI Architect / Lead AI Engineer",
-    "AI Engineering Manager / Director of AI",
-    "Chief AI Officer / Head of AI"
-  ],
+
+  "education_and_training": {
+    "minimum_education": "Bachelor's degree in project management or related field.",
+    "common_degrees": [
+      "Bachelor's Degree in Business Administration",
+      "Master's Degree in Project Management",
+      "MBA"
+    ],
+    "recommended_courses": [
+      "Project Management",
+      "Business Communication",
+      "Risk Management"
+    ],
+    "professional_certifications": [
+      "PMP",
+      "PMI-ACP",
+      "CSM"
+    ]
+  },
+
+  "career_path": {
+    "entry_level_positions": [
+      "Project Coordinator",
+      "Project Assistant"
+    ],
+    "mid_level_positions": [
+      "Project Manager",
+      "Senior Project Manager"
+    ],
+    "senior_positions": [
+      "Program Manager",
+      "Project Director"
+    ],
+    "advancement_opportunities": "Opportunities for advancement to senior management roles, such as Program Manager or Department Director.",
+    "related_roles": [
+      "Product Manager",
+      "Operations Manager",
+      "Portfolio Manager"
+    ]
+  },
+
   "salary_and_outlook": {
-    "entry_level_salary_usd": 115458,
-    "median_salary_usd": 153490,
-    "experienced_salary_usd": 203812,
-    "top_market_salary_usd": 300600,
-    "salary_premium_percentage": 56,
-    "job_growth_rate_percent_per_year": 40,
-    "job_openings_global": 500000,
-    "market_trends": "Strong demand driven by AI adoption. Salary premiums for AI skills are increasing rapidly. Growth is fueled by industries including tech, finance, healthcare, and e-commerce."
+    "average_salary": {
+      "us": "$100,750",
+      "international": [
+        {
+          "country": "Canada",
+          "average_salary": "CAD 85,000"
+        },
+        {
+          "country": "United Kingdom",
+          "average_salary": "GBP 60,000"
+        }
+      ],
+      "by_experience_level": {
+        "entry_level": "$62,254",
+        "mid_level": "$90,560",
+        "senior_level": "$122,337"
+      }
+    },
+    "job_outlook": {
+      "growth_rate": "6% growth projected from 2024 to 2034.",
+      "future_trends": "Increasing emphasis on Agile project management methodologies and project management software integration."
+    }
   },
+
   "employment_data": {
-    "key_employers": [
-      "Google",
-      "Microsoft",
-      "Meta",
-      "IBM",
+    "top_employers": [
       "Amazon",
-      "Apple",
-      "Netflix",
-      "Infosys",
-      "TCS",
-      "Flipkart"
+      "Google",
+      "IBM",
+      "Deloitte",
+      "Accenture"
     ],
-    "employment_locations": [
-      "United States (Silicon Valley, Seattle, New York)",
-      "India (Bangalore, Hyderabad)",
-      "Europe (London, Berlin)",
-      "China (Beijing, Shanghai)"
+    "geographic_hotspots": [
+      "San Francisco, CA",
+      "New York, NY",
+      "Austin, TX",
+      "Seattle, WA"
+    ],
+    "remote_vs_in_person": "Increasing number of remote work opportunities alongside traditional office-based roles."
+  },
+
+  "tools_and_software": {
+    "common_tools": [
+      "Trello",
+      "Asana",
+      "Microsoft Project"
+    ],
+    "emerging_tools": [
+      "Monday.com",
+      "Wrike"
+    ],
+    "software_categories": [
+      "Project Management Software",
+      "Collaboration Tools",
+      "Time Tracking Software"
     ]
   },
-  "tools_and_software": [
-    "TensorFlow",
-    "PyTorch",
-    "Keras",
-    "Scikit-learn",
-    "Jupyter Notebook",
-    "SQL databases",
-    "Docker",
-    "Kubernetes",
-    "AWS SageMaker",
-    "Google AI Platform"
-  ],
+
   "interview_and_hiring": {
-    "common_interview_themes": [
-      "Algorithm and data structure proficiency",
-      "Machine learning concepts and coding exercises",
-      "System design and scalability of AI applications",
-      "Statistical analysis and problem-solving scenarios",
-      "Behavioral questions assessing teamwork and communication",
-      "Portfolio review of AI projects and research"
+    "common_interview_questions": [
+      "Describe a challenging project you managed.",
+      "How do you handle project scope changes?",
+      "What project management tools do you prefer?",
+      "How do you manage communication with stakeholders?"
     ],
-    "recommended_preparation": [
-      "Practice coding problems on platforms like LeetCode and HackerRank",
-      "Deep dive into ML algorithms and math foundations",
-      "Prepare explanations on past AI/ML projects",
-      "Mock interviews focusing on system design and AI cases",
-      "Stay updated on industry AI trends and advancements"
+    "assessment_types": [
+      "Behavioral interviews",
+      "Case studies",
+      "Skill assessments"
     ],
-    "hiring_trends": "Increasing use of AI skill assessments, practical coding tests, and project-based interviews. Companies value candidates with diverse, hands-on experience across AI subfields."
+    "recruitment_process": "Typically includes initial screening, interviews, and practical assessments."
   },
-  "industry_trends": [
-    "Rapid growth with AI skill demand increasing over 600% in job listings over the last decade",
-    "Higher salary premiums for roles requiring AI compared to non-AI roles",
-    "Shift towards hybrid and on-site roles in major tech hubs",
-    "Expanded AI adoption in sectors beyond traditional tech: healthcare, finance, manufacturing",
-    "Increased focus on ethical AI and explainability impacting hiring criteria"
-  ],
-  "additional_resources": [
-    "Coursera AI For Everyone by Andrew Ng",
-    "Udacity Machine Learning Nanodegree",
-    "AI and Machine Learning tutorial series on YouTube channels like Two Minute Papers",
-    "Kaggle competitions for practical ML experience",
-    "Books: 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow' by Aurélien Géron"
-  ],
+
+  "industry_trends": {
+    "emerging_technologies": [
+      "AI in project management",
+      "Project automation tools",
+      "Data analytics for project performance tracking"
+    ],
+    "market_demand_drivers": [
+      "Technological advancements",
+      "Demand for project efficiency",
+      "Globalization of projects"
+    ],
+    "regulatory_factors": [
+      "Compliance with industry standards",
+      "Data protection regulations"
+    ],
+    "future_opportunities": [
+      "Increase in Agile transformation projects",
+      "Growth in sectors like IT and healthcare"
+    ]
+  },
+
+  "additional_resources": {
+    "professional_associations": [
+      "Project Management Institute (PMI)",
+      "International Project Management Association (IPMA)"
+    ],
+    "online_communities": [
+      "ProjectManagement.com",
+      "PMI LinkedIn Groups"
+    ],
+    "recommended_readings": [
+      "A Guide to the Project Management Body of Knowledge (PMBOK Guide)",
+      "Scrum: The Art of Doing Twice the Work in Half the Time"
+    ],
+    "training_platforms": [
+      "Coursera",
+      "LinkedIn Learning",
+      "Udemy"
+    ]
+  },
+
   "citations": [
-    "https://blog.theinterviewguys.com/the-great-ai-salary-bubble/",
-    "https://interviewkickstart.com/blogs/articles/ai-engineer-salary",
-    "https://www.interviewquery.com/p/the-2024-data-science-report",
-    "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
-    "https://www.dewintergroup.com/how-to-stand-out-as-an-ai-engineer-in-a-competitive-job-market",
-    "https://www.cbsnews.com/news/ai-job-postings-brookings-lightcast/"
+    {
+      "title": "Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/business-and-financial/project-management-specialists.htm",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "date_accessed": "October 1, 2023"
+    },
+    {
+      "title": "2023 Project Manager Salary Guide",
+      "url": "https://www.icagile.com/resources/the-project-manager-salary-what-to-expect-and-how-to-earn-more",
+      "publisher": "IC Agile",
+      "date_accessed": "October 1, 2023"
+    },
+    {
+      "title": "Global Project Management Job Trends 2023",
+      "url": "https://www.pmi.org/-/media/pmi/documents/public/pdf/learning/career-central/global-project-management-job-trends-2023.pdf",
+      "publisher": "PMI",
+      "date_accessed": "October 1, 2023"
+    }
   ]
 }

@@ -28,15 +28,16 @@ def search_top_job (keyword: str, start: int = 1, limit: int = 1):
         top_job = occupations[0]  
         relevance = top_job["relevance_score"]
         if relevance > 95:
+            print("Found Job, relevance: " + str(relevance))
             soc_code = top_job["code"]
             job_data = get_occupation_data(soc_code)
             with open("src/data/onet/onet_snapshot.json", "w") as f:
                 json.dump(job_data, f, indent=2)
             
         else: 
-            return "No Relevant Jobs"
+            print("No Relevant Jobs")
     else:
-        return "No relevant Jobs"
+        print("No Relevant Jobs")
         
 
         

@@ -1,42 +1,28 @@
 {
-  "job_overview": "AI Engineers design, develop, and deploy artificial intelligence systems and models that enable machines to simulate human intelligence. They apply machine learning algorithms, deep learning frameworks, natural language processing, and computer vision techniques to create AI-powered applications across diverse sectors such as technology, finance, healthcare, and automotive. This role demands a strong foundation in programming, mathematics, and critical thinking to innovate and optimize AI solutions in an expanding market.",
-  "market_insights": "The demand for AI Engineers is rapidly increasing driven by expanding AI capabilities and enterprise adoption worldwide. Key industries hiring AI Engineers include technology firms, financial services, healthcare providers, and automotive companies. Leading locations for AI roles are major tech hubs in the United States, Europe, and Asia. Industry trends show a strong focus on cloud platform integration, real-time machine learning model deployment, and ethical AI development practices. Competition is growing, making advanced education and recognized certifications important to stand out.",
+  "job_overview": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources, and communicate with stakeholders. Key responsibilities include defining project scope and objectives, managing the project team, tracking project performance, and maintaining communication with stakeholders. Project Managers typically work in various industries, including Information Technology, Construction, Healthcare, Telecommunications, and Finance.",
+  "market_insights": "The job outlook for Project Managers is promising, with a projected growth rate of 6% from 2024 to 2034. Recent trends indicate an increasing demand for those familiar with Agile methodologies and advanced project management software. Companies are seeking Project Managers who can adapt to changing project requirements and utilize emerging technologies to improve project efficiency. Geographic hotspots for Project Manager roles include San Francisco, CA, and New York, NY, with a notable rise in remote work opportunities.",
   "top_hiring_companies": [
-    "Google",
-    "Microsoft",
     "Amazon",
+    "Google",
     "IBM",
-    "Facebook (Meta)",
-    "NVIDIA",
-    "Tesla",
-    "Apple"
+    "Deloitte",
+    "Accenture"
   ],
   "skills_in_demand": [
-    "Proficient programming in Python, R, Java, and C++",
-    "Expertise with machine learning & deep learning frameworks: TensorFlow, PyTorch, Keras",
-    "Data analysis and manipulation using SQL, Pandas, NumPy",
-    "Natural Language Processing (NLP) capabilities",
-    "Computer vision techniques",
-    "Experience with cloud platforms: AWS, Google Cloud, Microsoft Azure",
-    "Model deployment, monitoring, and version control (Git)",
-    "Strong mathematical skills in linear algebra, probability, and statistics",
-    "Problem-solving and critical thinking"
+    "Agile methodologies",
+    "Leadership",
+    "Communication",
+    "Project management software (e.g., JIRA, Microsoft Project)",
+    "Budget management"
   ],
-  "salary_expectations": {
-    "entry_level": "$90,000 - $110,000 per year",
-    "mid_level": "$120,000 - $150,000 per year",
-    "senior_level": "$160,000 - $210,000+ per year",
-    "note": "Salaries vary based on location, company, and candidate experience. Rapid growth in AI demand is driving salary inflation, especially in top tech hubs."
-  },
-  "next_steps": {
-    "education": "Pursue a Bachelor’s degree in Computer Science, Data Science, Engineering, Mathematics, or related fields. Consider advanced degrees (Master’s or PhD) for competitive advantage.",
-    "certifications": [
-      "Certified Artificial Intelligence Practitioner",
-      "AWS Certified Machine Learning Specialty",
-      "Google Professional Machine Learning Engineer",
-      "Microsoft Certified: Azure AI Engineer Associate"
-    ],
-    "training": "Engage in online courses on platforms like Coursera, edX, and Udacity focusing on AI and machine learning. Participate in bootcamps and hands-on projects, including competitions on Kaggle to build practical skills.",
-    "career_advice": "Build a strong portfolio showcasing AI projects and collaborations. Stay updated on AI trends and continuously develop expertise in emerging tools and technologies. Network with professionals in top hiring companies and attend industry events."
-  }
+  "salary_expectations": [
+    "Entry level: $62,254",
+    "Mid level: $90,560",
+    "Senior level: $122,337"
+  ],
+  "next_steps": [
+    "Consider pursuing PMP certification to enhance credentials.",
+    "Stay updated with the latest project management tools and methodologies.",
+    "Engage in professional networks and forums to expand connections and resources."
+  ]
 }

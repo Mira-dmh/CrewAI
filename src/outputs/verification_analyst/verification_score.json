@@ -1,5 +1,10 @@
 {
-  "claim_text": "The AI Engineer job research summary is factually accurate, logically consistent, well-aligned with O*NET schema, uses valid and relevant sources, and is recently updated.",
-  "verification_confidence_score": 0.955,
-  "reasoning": "All source URLs checked out as valid and relevant, core job data points on skills, education, salary, and outlook closely match trusted external sources and O*NET 15-1221.00 occupation schema. The summary is internally consistent with current market trends and industry standards. It uses recent data updated in mid-2024 with reference to O*NET 2025 data. Overall, the research summary's content is highly reliable."
+  "claim_text": {
+    "job_title": "Project Manager",
+    "summary": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources and communicate with stakeholders.",
+    "average_salary": "$100,750",
+    "job_outlook": "6% growth projected from 2024 to 2034."
+  },
+  "verification_confidence_score": 1.0,
+  "reasoning": "The job research summary on Project Managers is well-supported by valid sources, shows strong cross-source agreement, aligns with O*NET schema, is current, and presents logically consistent claims."
 }
