@@ -36,6 +36,160 @@ except (ImportError, Exception) as e:
     IMPORT_ERROR = str(e)
 
 
+# ----------------------------------------------------------------------------
+# Helpers: JSON safe loading and salary parsing
+# ----------------------------------------------------------------------------
+def safe_load_json(path: str):
+    """Safely load JSON, returning None on empty/invalid files with guardrails."""
+    try:
+        if not os.path.exists(path):
+            return None
+        if os.path.getsize(path) == 0:
+            return None
+        with open(path, 'r', encoding='utf-8') as f:
+            txt = f.read().strip()
+            if not txt:
+                return None
+            return json.loads(txt)
+    except Exception:
+        return None
+
+
+def _parse_money_to_int(value):
+    """Parse money string like "$156,000" to int 156000; pass-through for numbers."""
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str):
+        # Remove currency symbols and commas, then parse
+        cleaned = value.replace('$', '').replace(',', '').strip()
+        # Handle cases like "120k" or "120K"
+        try:
+            if cleaned.lower().endswith('k'):
+                return int(float(cleaned[:-1]) * 1000)
+            return int(float(cleaned))
+        except Exception:
+            return None
+    return None
+
+
+def _parse_range_to_midpoint(range_str):
+    """Parse a range string like "$120,000 - $165,000" to midpoint integer."""
+    if not isinstance(range_str, str):
+        return None
+    parts = [p.strip() for p in range_str.split('-')]
+    if len(parts) != 2:
+        return None
+    lo = _parse_money_to_int(parts[0])
+    hi = _parse_money_to_int(parts[1])
+    if lo is None or hi is None:
+        return None
+    return int((lo + hi) / 2)
+
+
+def _extract_salary_points(data: dict):
+    """Extract numeric salary points from a market_trends JSON with flexible schema."""
+    if not data:
+        return {}
+    # Two possible schemas observed: top-level salary_data OR under market_overview
+    salary = None
+    if 'salary_data' in data and isinstance(data['salary_data'], dict):
+        salary = data['salary_data']
+    elif 'market_overview' in data and isinstance(data['market_overview'], dict):
+        mo = data['market_overview']
+        salary = mo.get('salary_data') if isinstance(mo.get('salary_data'), dict) else None
+
+    result = {}
+    if not salary:
+        # Alternate schema used in earlier UI: data['salary_trends']['salary_ranges'] with numeric dict
+        st_ranges = data.get('salary_trends', {}).get('salary_ranges', {}) if isinstance(data.get('salary_trends'), dict) else {}
+        for level in ['entry_level', 'mid_level', 'senior_level']:
+            info = st_ranges.get(level)
+            if isinstance(info, dict):
+                # expects {min, max, average}
+                avg = info.get('average')
+                if avg is not None:
+                    result[f'{level}_avg'] = _parse_money_to_int(avg)
+        return result
+
+    # Common fields
+    result['average_salary'] = _parse_money_to_int(salary.get('average_salary'))
+
+    # Salary ranges may be strings (e.g., "$120,000 - $165,000") or dicts
+    ranges = salary.get('salary_ranges')
+    if isinstance(ranges, dict):
+        for level in ['entry_level', 'mid_level', 'senior_level']:
+            val = ranges.get(level)
+            if isinstance(val, str):
+                result[f'{level}_mid'] = _parse_range_to_midpoint(val)
+            elif isinstance(val, dict):
+                # expects numbers under {min, max, average}
+                avg = val.get('average')
+                if avg is not None:
+                    result[f'{level}_mid'] = _parse_money_to_int(avg)
+
+    return result
+
+
+def _collect_session_salary_snapshots():
+    """Scan session folders under outputs/linkedin and collect salary snapshots."""
+    base = "src/outputs/linkedin"
+    if not os.path.isdir(base):
+        return []
+    snapshots = []
+    for name in os.listdir(base):
+        session_dir = os.path.join(base, name)
+        if not os.path.isdir(session_dir):
+            continue
+        mt_path = os.path.join(session_dir, 'market_trends.json')
+        data = safe_load_json(mt_path)
+        if not data:
+            continue
+        # Prefer analysis date from market_overview; fallback to folder mtime
+        analysis_date = None
+        if 'market_overview' in data and isinstance(data['market_overview'], dict):
+            analysis_date = data['market_overview'].get('analysis_date')
+        created = None
+        # Try session_info.json for created_at
+        si = safe_load_json(os.path.join(session_dir, 'session_info.json'))
+        if si and isinstance(si, dict):
+            created = si.get('created_at') or created
+        # Parse dates
+        dt = None
+        for candidate in [analysis_date, created]:
+            if candidate:
+                try:
+                    # handle YYYY-MM-DD or ISO format
+                    dt = datetime.fromisoformat(candidate)
+                    break
+                except Exception:
+                    try:
+                        dt = datetime.strptime(candidate, '%Y-%m-%d')
+                        break
+                    except Exception:
+                        pass
+        # Fallback to filesystem mtime
+        if dt is None:
+            try:
+                dt = datetime.fromtimestamp(os.path.getmtime(session_dir))
+            except Exception:
+                dt = None
+
+        salaries = _extract_salary_points(data)
+        if not salaries:
+            continue
+        snapshots.append({
+            'session_id': name,
+            'date': dt,
+            **salaries
+        })
+
+    # Sort by date if available
+    snapshots.sort(key=lambda x: x['date'] or datetime.min)
+    return snapshots
+
+
 # ============================================================================
 # MAIN PAGE
 # ============================================================================
@@ -1063,6 +1217,9 @@ def render_job_market_analytics():
     
     with analytics_tab1:
         render_market_overview_and_trends(market_trends_file)
+        st.markdown("")
+        st.markdown("###  Salary Change Across Sessions")
+        render_salary_change_across_sessions()
     
     with analytics_tab2:
         render_job_postings_analytics(job_postings_file)
@@ -1078,8 +1235,10 @@ def render_market_overview_and_trends(market_trends_file):
         return
     
     try:
-        with open(market_trends_file, 'r') as f:
-            data = json.load(f)
+        data = safe_load_json(market_trends_file)
+        if not data:
+            st.info(" Market trends file is empty or invalid for this session")
+            return
         
         # Market Overview Section
         if "market_overview" in data:
@@ -1399,8 +1558,10 @@ def render_job_postings_analytics(job_postings_file):
         return
     
     try:
-        with open(job_postings_file, 'r') as f:
-            data = json.load(f)
+        data = safe_load_json(job_postings_file)
+        if not data:
+            st.warning(" Job postings file is empty or invalid JSON for this session")
+            return
         
         postings = data.get("job_postings", [])
         metadata = data.get("search_metadata", {})
@@ -1502,6 +1663,8 @@ def render_job_postings_analytics(job_postings_file):
             st.metric(" Older Postings", older_count,
                      delta=f"{(older_count/len(postings)*100):.1f}%")
     
+    except json.JSONDecodeError as e:
+        st.error(f" Error analyzing job postings: invalid JSON ({e})")
     except Exception as e:
         st.error(f" Error analyzing job postings: {e}")
 
@@ -1630,3 +1793,107 @@ def render_page_footer():
         """)
     
     st.caption("Powered by CrewAI + OpenAI GPT-4o | LinkedIn Job Search Engine")
+
+
+# ----------------------------------------------------------------------------
+# Salary change visualization across session IDs
+# ----------------------------------------------------------------------------
+def render_salary_change_across_sessions():
+    """Compute and visualize salary changes from session-based market_trends.json files.
+
+    - Scans src/outputs/linkedin/<session_id>/market_trends.json
+    - Extracts average salary and level midpoints
+    - Lets user pick baseline and comparison session IDs
+    - Shows deltas and a line chart over time
+    """
+    snapshots = _collect_session_salary_snapshots()
+    if not snapshots:
+        st.info("No session-based salary snapshots found yet.")
+        return
+
+    # Build options for selection
+    options = [f"{s['session_id']} | {s['date'].strftime('%Y-%m-%d %H:%M') if s['date'] else 'unknown'}" for s in snapshots]
+    latest_idx = len(options) - 1
+    baseline_idx = max(0, latest_idx - 1)
+
+    col_sel1, col_sel2 = st.columns(2)
+    with col_sel1:
+        selected_baseline = st.selectbox("Baseline Session", options, index=baseline_idx, key="salary_baseline")
+    with col_sel2:
+        selected_compare = st.selectbox("Compare To", options, index=latest_idx, key="salary_compare")
+
+    def opt_to_snapshot(opt_label):
+        sid = opt_label.split('|')[0].strip()
+        for s in snapshots:
+            if s['session_id'] == sid:
+                return s
+        return None
+
+    base = opt_to_snapshot(selected_baseline)
+    comp = opt_to_snapshot(selected_compare)
+
+    if not base or not comp or base['session_id'] == comp['session_id']:
+        st.caption("Select two different sessions to compare.")
+        return
+
+    # Helper for delta formatting
+    def fmt_delta(new, old):
+        if new is None or old is None:
+            return "N/A"
+        try:
+            delta = new - old
+            pct = (delta / old) * 100 if old else 0
+            sign = "+" if delta >= 0 else ""
+            return f"{sign}${delta:,} ({pct:+.1f}%)"
+        except Exception:
+            return "N/A"
+
+    # Show metrics
+    st.markdown("#### Comparison Metrics")
+    mcols = st.columns(4)
+    with mcols[0]:
+        st.metric("Average Salary",
+                  f"${(comp.get('average_salary') or 0):,}",
+                  delta=fmt_delta(comp.get('average_salary'), base.get('average_salary')))
+    with mcols[1]:
+        st.metric("Entry Level Mid",
+                  f"${(comp.get('entry_level_mid') or comp.get('entry_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('entry_level_mid') or comp.get('entry_level_avg'),
+                                  base.get('entry_level_mid') or base.get('entry_level_avg')))
+    with mcols[2]:
+        st.metric("Mid Level Mid",
+                  f"${(comp.get('mid_level_mid') or comp.get('mid_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('mid_level_mid') or comp.get('mid_level_avg'),
+                                  base.get('mid_level_mid') or base.get('mid_level_avg')))
+    with mcols[3]:
+        st.metric("Senior Level Mid",
+                  f"${(comp.get('senior_level_mid') or comp.get('senior_level_avg') or 0):,}",
+                  delta=fmt_delta(comp.get('senior_level_mid') or comp.get('senior_level_avg'),
+                                  base.get('senior_level_mid') or base.get('senior_level_avg')))
+
+    # Line chart over time (if Plotly available)
+    if PLOTLY_AVAILABLE:
+        import plotly.graph_objects as go
+        times = [s['date'] for s in snapshots]
+        avg_series = [s.get('average_salary') for s in snapshots]
+        entry_series = [s.get('entry_level_mid') or s.get('entry_level_avg') for s in snapshots]
+        mid_series = [s.get('mid_level_mid') or s.get('mid_level_avg') for s in snapshots]
+        senior_series = [s.get('senior_level_mid') or s.get('senior_level_avg') for s in snapshots]
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=times, y=avg_series, mode='lines+markers', name='Average'))
+        if any(entry_series):
+            fig.add_trace(go.Scatter(x=times, y=entry_series, mode='lines+markers', name='Entry Mid'))
+        if any(mid_series):
+            fig.add_trace(go.Scatter(x=times, y=mid_series, mode='lines+markers', name='Mid Mid'))
+        if any(senior_series):
+            fig.add_trace(go.Scatter(x=times, y=senior_series, mode='lines+markers', name='Senior Mid'))
+
+        fig.update_layout(title="Salary Over Time by Session",
+                          xaxis_title="Session Time",
+                          yaxis_title="USD",
+                          height=420)
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Helper hint for session-specific lookup
+    st.caption("Tip: Data comes from src/outputs/linkedin/<session_id>/market_trends.json")

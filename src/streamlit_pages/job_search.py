@@ -19,9 +19,6 @@ def job_search_page():
     Complete Job Search Hub - Main page function for multipage app
     """
     
-    # Page title and description
-    st.title(" Job Search Hub")
-    st.markdown("*Your complete platform for job market research and insights*")
     
     # Display job market insights directly
     job_market_insights()
