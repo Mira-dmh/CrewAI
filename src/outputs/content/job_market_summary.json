@@ -4,6 +4,7 @@
   "market_insights": "The Data Scientist role continues to experience rapid growth, with a projected 34% increase in job opportunities from 2024 through 2034, fueled by advancements in AI, big data, and demand for data-driven business strategies. Key industry hotspots include San Francisco, New York, Seattle, Boston, London, Berlin, Amsterdam, Bangalore, Singapore, and Tokyo. Remote and hybrid work models are highly prevalent, offering flexibility. Leading sectors hiring Data Scientists are technology, finance, healthcare, retail, and consulting.",
   
   "top_hiring_companies": [
+    "Amazon",
     "Google",
     "Amazon",
     "Microsoft",
@@ -17,23 +18,6 @@
   ],
   
   "skills_in_demand": [
-<<<<<<< HEAD
-    "Agile methodologies",
-    "Leadership",
-    "Communication",
-    "Project management software (e.g., JIRA, Microsoft Project)",
-    "Budget management"
-  ],
-  "salary_expectations": [
-    "Entry level: $62,254",
-    "Mid level: $90,560",
-    "Senior level: $122,337"
-  ],
-  "next_steps": [
-    "Consider pursuing PMP certification to enhance credentials.",
-    "Stay updated with the latest project management tools and methodologies.",
-    "Engage in professional networks and forums to expand connections and resources."
-=======
     "Programming Languages: Python, R, SQL",
     "Data Manipulation: Pandas, NumPy",
     "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
@@ -64,6 +48,5 @@
     "Build a portfolio of projects demonstrating data analysis, modeling, and visualization capabilities.",
     "Prepare for interviews by practicing common Data Scientist interview questions and mastering communication of technical concepts.",
     "Follow industry trends such as AI adoption, AutoML, and explainable AI to stay competitive."
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
   ]
 }

@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "job_title": "Project Manager",
   "last_updated": "October 2023",
   "sources": [
@@ -29,74 +28,6 @@
       "Healthcare",
       "Telecommunications",
       "Finance"
-=======
-  "job_title": "Data Scientist",
-  "last_updated": "2024-06",
-  "sources": [
-    {
-      "title": "Data Scientists : Occupational Outlook Handbook",
-      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
-      "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Science Salaries & Job Market Analysis: From 2024 to 2025",
-      "url": "https://www.kdnuggets.com/data-science-salaries-job-market-analysis-2024-2025",
-      "publisher": "KDnuggets",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
-      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "2024 Data Scientist Interview Questions",
-      "url": "https://365datascience.com/career-advice/job-interview-tips/data-scientist-interview-questions/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Science Salaries 2024 - Kaggle Dataset",
-      "url": "https://www.kaggle.com/datasets/sazidthe1/data-science-salaries",
-      "publisher": "Kaggle",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Top Data Scientist Interview Questions and Answers (2025)",
-      "url": "https://www.interviewbit.com/data-science-interview-questions/",
-      "publisher": "InterviewBit",
-      "date_accessed": "2024"
-    }
-  ],
-
-  "overview": {
-    "summary": "Data scientists analyze and interpret complex digital data to help organizations make informed business decisions. They leverage statistical methods, machine learning, data mining, and programming skills to build predictive models and uncover insights.",
-    "key_responsibilities": [
-      "Collect, clean, and validate data from various sources.",
-      "Perform exploratory data analysis to identify trends and patterns.",
-      "Develop and deploy machine learning models and algorithms.",
-      "Communicate findings to stakeholders through visualizations and reports.",
-      "Collaborate with business units to define data-driven strategies.",
-      "Maintain data pipelines and ensure data quality."
-    ],
-    "daily_tasks": [
-      "Data collection, cleaning, and preprocessing.",
-      "Exploratory data analysis and visualization.",
-      "Model development, training, and testing.",
-      "Collaborating with teams to understand business needs.",
-      "Reporting insights and recommendations to stakeholders."
-    ],
-    "work_environment": "Often works in office settings within technology, finance, healthcare, or consulting companies. Increasingly supports remote or hybrid work arrangements.",
-    "industries": [
-      "Technology",
-      "Finance and Insurance",
-      "Healthcare and Biopharma",
-      "Retail and E-commerce",
-      "Manufacturing",
-      "Telecommunications"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
