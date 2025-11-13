@@ -349,24 +349,33 @@ def render_advanced_search():
         # Filters section
         st.markdown("---")
         st.markdown("####  Additional Filters")
-        col3, col4, col5 = st.columns(3)
+        col3, col4 = st.columns(2)
         
         with col3:
             job_type = st.selectbox(
                 "Job Type",
                 ["Any", "Full-time", "Part-time", "Contract", "Freelance"]
             )
-        
-        with col4:
             remote_option = st.selectbox(
                 "Remote Work",
                 ["Any", "Remote", "Hybrid", "On-site"]
             )
         
-        with col5:
+        with col4:
             industry = st.selectbox(
                 "Industry",
                 ["Any", "Technology", "Finance", "Healthcare", "Marketing", "Education"]
+            )
+            work_authorization = st.selectbox(
+                "Work Authorization",
+                [
+                    "Any",
+                    "Open to US visa sponsorship",
+                    "Open to Optional Practical Training (OPT)",
+                    "Open to Curricular Practical Training (CPT)",
+                    "No US work authorization required",
+                    "Unknown"
+                ]
             )
         
         # Submit button
@@ -387,7 +396,8 @@ def render_advanced_search():
                     "experience_level": experience,
                     "job_type": job_type,
                     "remote_option": remote_option,
-                    "industry": industry
+                    "industry": industry,
+                    "work_authorization": work_authorization
                 }
                 
                 # Show search summary
@@ -970,7 +980,7 @@ def display_verification_section():
 
 def display_search_summary(job_title, location, search_params):
     """Display a formatted search summary"""
-    cols = st.columns(4)
+    cols = st.columns(5)
     
     with cols[0]:
         st.markdown("** Position**")
@@ -987,6 +997,10 @@ def display_search_summary(job_title, location, search_params):
     with cols[3]:
         st.markdown("** Type**")
         st.markdown(search_params.get("job_type", "Any"))
+    
+    with cols[4]:
+        st.markdown("** Work Auth**")
+        st.markdown(search_params.get("work_authorization", "Any"))
 
 
 def render_search_metrics():
