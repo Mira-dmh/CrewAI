@@ -92,23 +92,10 @@ def home_page():
                 <h3 style="margin-bottom: 1.5rem; color: white; font-size: 1.7em; font-weight: 600;">
                     Career Research
                 </h3>
-                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em; margin-bottom: 2rem;">
+                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em;">
                     Discover new opportunities and explore different career directions with comprehensive 
                     role insights, industry trends, and AI-powered recommendations.
                 </p>
-                <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 12px; 
-                            backdrop-filter: blur(10px);">
-                    <strong style="color: white; font-size: 1em; display: block; margin-bottom: 0.8rem;">
-                        Key Features
-                    </strong>
-                    <ul style="color: rgba(255,255,255,0.95); font-size: 0.95em; margin: 0; padding-left: 1.2rem; 
-                               line-height: 1.8;">
-                        <li>Market trend analysis</li>
-                        <li>Role requirements</li>
-                        <li>Career pathways</li>
-                        <li>Skill recommendations</li>
-                    </ul>
-                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -132,23 +119,10 @@ def home_page():
                 <h3 style="margin-bottom: 1.5rem; color: white; font-size: 1.7em; font-weight: 600;">
                     Job Search
                 </h3>
-                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em; margin-bottom: 2rem;">
+                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em;">
                     Find targeted positions with advanced AI-powered search. Get verified job postings, 
                     market analytics, and quality insights from real LinkedIn data.
                 </p>
-                <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 12px; 
-                            backdrop-filter: blur(10px);">
-                    <strong style="color: white; font-size: 1em; display: block; margin-bottom: 0.8rem;">
-                        Key Features
-                    </strong>
-                    <ul style="color: rgba(255,255,255,0.95); font-size: 0.95em; margin: 0; padding-left: 1.2rem; 
-                               line-height: 1.8;">
-                        <li>Real LinkedIn scraping</li>
-                        <li>Market analytics</li>
-                        <li>Salary insights</li>
-                        <li>Skills analysis</li>
-                    </ul>
-                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -172,23 +146,10 @@ def home_page():
                 <h3 style="margin-bottom: 1.5rem; color: white; font-size: 1.7em; font-weight: 600;">
                     Career Preparation
                 </h3>
-                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em; margin-bottom: 2rem;">
+                <p style="color: rgba(255,255,255,0.95); line-height: 1.8; font-size: 1.05em;">
                     Optimize your resume and ace interviews with AI coaching. Get personalized feedback 
                     and strategic guidance tailored to your target roles.
                 </p>
-                <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 12px; 
-                            backdrop-filter: blur(10px);">
-                    <strong style="color: white; font-size: 1em; display: block; margin-bottom: 0.8rem;">
-                        Key Features
-                    </strong>
-                    <ul style="color: rgba(255,255,255,0.95); font-size: 0.95em; margin: 0; padding-left: 1.2rem; 
-                               line-height: 1.8;">
-                        <li>Resume optimization</li>
-                        <li>Interview coaching</li>
-                        <li>Custom feedback</li>
-                        <li>Success strategies</li>
-                    </ul>
-                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
