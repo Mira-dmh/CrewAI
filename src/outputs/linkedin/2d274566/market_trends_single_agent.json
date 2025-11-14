@@ -1,0 +1,57 @@
+{
+  "market_overview": {
+    "job_title": "data science",
+    "analysis_date": "2025-11-13",
+    "market_health": "moderate",
+    "job_posting_trends": {
+      "growth_rate": "N/A",
+      "recent_postings": "Analysis based on available data",
+      "seasonal_patterns": "N/A"
+    },
+    "salary_data": {
+      "average_salary": "$112,590",
+      "salary_ranges": {
+        "entry_level": "N/A",
+        "mid_level": "N/A",
+        "senior_level": "N/A"
+      },
+      "factors_influencing_salary": [
+        "Experience level",
+        "Location",
+        "Industry sector"
+      ]
+    },
+    "skill_demand_analysis": {
+      "most_in_demand_skills": [
+        "Python",
+        "Machine Learning",
+        "Tableau"
+      ],
+      "skill_frequencies": {
+        "Python": "N/A",
+        "Machine Learning": "N/A",
+        "Tableau": "N/A"
+      }
+    },
+    "hiring_patterns": {
+      "top_hiring_companies": [
+        "N/A"
+      ],
+      "hiring_velocity": {
+        "average_time_to_hire": "N/A",
+        "common_hiring_channels": [
+          "LinkedIn",
+          "Company Websites"
+        ]
+      }
+    },
+    "geographic_distribution": {
+      "top_cities_for_jobs": [
+        "N/A"
+      ],
+      "emerging_markets": [
+        "Remote opportunities"
+      ]
+    }
+  }
+}

@@ -1178,67 +1178,105 @@ def process_ai_instruction(instruction: str, job_postings: list):
 
 def render_job_market_analytics():
     """Render job market analytics based on LinkedIn search results"""
-    st.markdown("###  Job Market Analytics")
-    st.markdown("*Insights from your LinkedIn job search results*")
-    st.markdown("")
+    
+    # Title Banner
+    st.markdown("""
+    <div style='background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); 
+                padding: 20px; border-radius: 10px; margin-bottom: 20px;'>
+        <h2 style='color: white; margin: 0;'>📊 Job Market Analytics Dashboard</h2>
+        <p style='color: #f0f0f0; margin: 5px 0 0 0;'>Comprehensive insights from LinkedIn job search data</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Get latest session data
     latest_session = get_latest_session_folder()
     
     if not latest_session:
-        st.info(" No search data available yet. Run a job search first to see market analytics.")
+        st.info("📭 No search data available yet. Run a job search first to see market analytics.")
         st.markdown("""
-        **To get started:**
-        1. Go to the " Advanced Search" tab
+        **🚀 To get started:**
+        1. Navigate to the **"🔍 Advanced Search"** tab
         2. Enter your job criteria and run a search
-        3. Come back here to view analytics based on your results
+        3. Return here to view comprehensive analytics based on your results
         """)
         return
     
-    # Load session files
-    job_postings_file = f"{latest_session}/job_postings.json"
-    market_trends_file = f"{latest_session}/market_trends.json"
-    verification_file = f"{latest_session}/verification_report.json"
+    # Load session files - HARDCODED to session 2d274566 for comparison study
+    session_dir = "src/outputs/linkedin/2d274566"
+    job_postings_file = f"{session_dir}/job_postings.json"
+    market_trends_file = f"{session_dir}/market_trends.json"
+    verification_file = f"{session_dir}/verification_report.json"
     
-    # Display session info
+    # Display session info with improved layout
+    st.markdown("### 📌 Session Information")
+    st.markdown("<div style='background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;'>", unsafe_allow_html=True)
+    
     try:
-        with open(f"{latest_session}/session_info.json", 'r') as f:
+        with open(f"{session_dir}/session_info.json", 'r') as f:
             session_info = json.load(f)
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric(" Session ID", session_info.get("session_id", "N/A"))
+            st.metric(
+                label="🆔 Session ID", 
+                value=session_info.get("session_id", "N/A")[:8] + "...",
+                help=f"Full ID: {session_info.get('session_id', 'N/A')}"
+            )
         with col2:
             created_at = session_info.get("created_at", "")
             if created_at:
                 dt = datetime.fromisoformat(created_at)
-                st.metric(" Search Date", dt.strftime("%Y-%m-%d %H:%M"))
+                st.metric(
+                    label="📅 Search Date", 
+                    value=dt.strftime("%Y-%m-%d"),
+                    delta=dt.strftime("%H:%M")
+                )
             else:
-                st.metric(" Search Date", "N/A")
+                st.metric("📅 Search Date", "N/A")
         with col3:
-            st.metric(" Status", session_info.get("status", "completed"))
+            status = session_info.get("status", "completed")
+            status_emoji = "✅" if status == "completed" else "⏳"
+            st.metric(
+                label="📊 Status", 
+                value=f"{status_emoji} {status.title()}"
+            )
+        with col4:
+            # Add search params info
+            params = session_info.get("search_params", {})
+            job_title = params.get("job_title", "N/A")
+            st.metric(
+                label="💼 Job Role",
+                value=job_title.title() if job_title != "N/A" else "N/A",
+                help="The job title searched in this session"
+            )
         
-        st.markdown("---")
     except:
-        pass
+        st.warning("⚠️ Session information not available")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("")
     
     # Create sub-tabs for different analytics sections
     analytics_tab1, analytics_tab2, analytics_tab3 = st.tabs([
-        " Overview & Trends",
-        " Job Postings Analysis", 
-        " Data Quality Report"
+        "📈 Market Overview & Trends",
+        "💼 Job Postings Deep Dive", 
+        "✅ Data Quality & Verification"
     ])
     
     with analytics_tab1:
-        render_market_overview_and_trends(market_trends_file)
         st.markdown("")
-        st.markdown("###  Salary Change Across Sessions")
+        render_market_overview_and_trends(market_trends_file)
+        st.markdown("---")
+        st.markdown("### 📊 Historical Salary Trends")
+        st.caption("Compare salary changes across different search sessions")
         render_salary_change_across_sessions()
     
     with analytics_tab2:
+        st.markdown("")
         render_job_postings_analytics(job_postings_file)
     
     with analytics_tab3:
+        st.markdown("")
         render_verification_report(verification_file)
 
 
@@ -1256,36 +1294,63 @@ def render_market_overview_and_trends(market_trends_file):
         
         # Market Overview Section
         if "market_overview" in data:
-            st.markdown("###  Market Overview")
+            st.markdown("### 🌐 Market Overview")
+            st.markdown("<div style='background-color: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+            
             overview = data["market_overview"]
             
             cols = st.columns(4)
             with cols[0]:
-                st.metric(" Market Health", overview.get("market_health", "N/A").upper())
+                market_health = overview.get("market_health", "N/A")
+                health_emoji = "🟢" if "strong" in market_health.lower() else "🟡" if "moderate" in market_health.lower() else "🔴"
+                st.metric(
+                    label="Market Health", 
+                    value=f"{health_emoji} {market_health.title()}",
+                    help="Overall health of the job market for this role"
+                )
             with cols[1]:
-                st.metric(" Analysis Date", overview.get("analysis_date", "N/A"))
+                st.metric(
+                    label="📅 Analysis Date", 
+                    value=overview.get("analysis_date", "N/A"),
+                    help="Date when this market analysis was performed"
+                )
             with cols[2]:
                 job_title = overview.get("job_title", "N/A")
-                st.metric(" Job Title", job_title.title() if job_title != "N/A" else "N/A")
+                st.metric(
+                    label="💼 Target Role", 
+                    value=job_title.title() if job_title != "N/A" else "N/A",
+                    help="Job position analyzed in this session"
+                )
             with cols[3]:
                 total_jobs = overview.get("total_jobs_analyzed", "N/A")
-                st.metric(" Jobs Analyzed", total_jobs)
+                st.metric(
+                    label="📊 Sample Size", 
+                    value=f"{total_jobs:,}" if isinstance(total_jobs, int) else total_jobs,
+                    help="Total number of job postings analyzed"
+                )
             
-            st.markdown("---")
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("")
         
         # Salary Data Section
         if "salary_data" in data:
-            st.markdown("###  Salary Insights")
+            st.markdown("### 💰 Salary Insights")
+            st.markdown("<div style='background-color: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+            
             salary = data["salary_data"]
             
             col1, col2, col3 = st.columns(3)
             with col1:
                 avg_salary = salary.get("average_salary", "N/A")
-                st.metric(" Average Salary", avg_salary)
+                st.metric(
+                    label="💵 Average Salary", 
+                    value=avg_salary,
+                    help="Mean salary across all analyzed positions"
+                )
                 
                 if "salary_range" in salary:
                     salary_range = salary["salary_range"]
-                    st.markdown(f"**Range:** {salary_range.get('min', 'N/A')} - {salary_range.get('max', 'N/A')}")
+                    st.caption(f"**📊 Range:** {salary_range.get('min', 'N/A')} - {salary_range.get('max', 'N/A')}")
             
             with col2:
                 jobs_with_salary = salary.get("jobs_with_salary_info", 0)
@@ -1293,71 +1358,95 @@ def render_market_overview_and_trends(market_trends_file):
                 total = jobs_with_salary + jobs_without if isinstance(jobs_with_salary, int) else 0
                 if total > 0:
                     pct = round((jobs_with_salary / total) * 100, 1)
-                    st.metric(" Jobs with Salary", f"{jobs_with_salary} ({pct}%)")
+                    st.metric(
+                        label="📈 Salary Transparency", 
+                        value=f"{pct}%",
+                        delta=f"{jobs_with_salary} of {total} jobs",
+                        help="Percentage of job postings that include salary information"
+                    )
                 else:
-                    st.metric(" Jobs with Salary", str(jobs_with_salary))
+                    st.metric("📈 Jobs with Salary", str(jobs_with_salary))
             
             with col3:
                 # Salary distribution chart
                 if "salary_distribution" in salary:
-                    st.markdown("**Salary Distribution:**")
+                    st.markdown("**📊 Distribution:**")
                     dist = salary["salary_distribution"]
                     for range_name, count in dist.items():
                         range_label = range_name.replace('_', ' ').title()
-                        st.caption(f"{range_label}: {count} jobs")
+                        st.caption(f"• {range_label}: **{count}** jobs")
             
-            st.markdown("---")
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("")
         
         # Skills Demand Section
         if "in_demand_skills" in data:
-            st.markdown("###  In-Demand Skills")
+            st.markdown("### 🎯 In-Demand Skills")
+            st.markdown("<div style='background-color: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+            
             skills_data = data["in_demand_skills"]
             
             # Display key metrics
             col1, col2 = st.columns(2)
             with col1:
                 total_skills = skills_data.get("total_unique_skills_found", "N/A")
-                st.metric(" Unique Skills Found", total_skills)
+                st.metric(
+                    label="🔧 Unique Skills Found", 
+                    value=total_skills,
+                    help="Total number of distinct skills identified across all job postings"
+                )
             with col2:
                 if "top_skills" in skills_data:
                     top_count = len(skills_data["top_skills"])
-                    st.metric(" Top Skills Tracked", top_count)
+                    st.metric(
+                        label="⭐ Top Skills Tracked", 
+                        value=top_count,
+                        help="Number of most frequently mentioned skills being tracked"
+                    )
             
             # Display skills by category
             if "technical_skills" in skills_data or "tools_and_platforms" in skills_data or "soft_skills" in skills_data:
-                st.markdown("**Skills by Category:**")
+                st.markdown("---")
+                st.markdown("**📚 Skills by Category:**")
                 cat_col1, cat_col2, cat_col3 = st.columns(3)
                 
                 with cat_col1:
                     if "technical_skills" in skills_data:
-                        st.markdown(" **Technical Skills:**")
-                        for skill in skills_data["technical_skills"][:10]:
-                            st.caption(f"• {skill}")
+                        st.markdown("**💻 Technical Skills:**")
+                        tech_skills = skills_data["technical_skills"][:10]
+                        for i, skill in enumerate(tech_skills, 1):
+                            st.caption(f"{i}. {skill}")
                 
                 with cat_col2:
                     if "tools_and_platforms" in skills_data:
-                        st.markdown(" **Tools & Platforms:**")
-                        for tool in skills_data["tools_and_platforms"][:10]:
-                            st.caption(f"• {tool}")
+                        st.markdown("**🛠️ Tools & Platforms:**")
+                        tools = skills_data["tools_and_platforms"][:10]
+                        for i, tool in enumerate(tools, 1):
+                            st.caption(f"{i}. {tool}")
                 
                 with cat_col3:
                     if "soft_skills" in skills_data:
-                        st.markdown(" **Soft Skills:**")
-                        for skill in skills_data["soft_skills"][:10]:
-                            st.caption(f"• {skill}")
+                        st.markdown("**🤝 Soft Skills:**")
+                        soft_skills = skills_data["soft_skills"][:10]
+                        for i, skill in enumerate(soft_skills, 1):
+                            st.caption(f"{i}. {skill}")
                 
                 st.markdown("")
             
             # Display top skills as badges
             if "top_skills" in skills_data:
                 top_skills = skills_data["top_skills"]
-                st.markdown("**Top In-Demand Skills:**")
+                st.markdown("---")
+                st.markdown("**🏆 Top In-Demand Skills:**")
                 skill_html = " ".join([
-                    f'<span style="background-color:#0066cc;color:white;padding:5px 15px;border-radius:15px;margin:5px;display:inline-block;font-size:14px;">{skill}</span>'
+                    f'<span style="background-color:#667eea;color:white;padding:8px 16px;border-radius:20px;margin:5px;display:inline-block;font-size:14px;font-weight:500;box-shadow: 0 2px 4px rgba(0,0,0,0.1);">{skill}</span>'
                     for skill in top_skills[:15]
                 ])
                 st.markdown(skill_html, unsafe_allow_html=True)
                 st.markdown("")
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("")
             
             # Skill frequency visualization
             if "skill_frequency" in skills_data and PLOTLY_AVAILABLE:
@@ -1581,67 +1670,95 @@ def render_job_postings_analytics(job_postings_file):
         metadata = data.get("search_metadata", {})
         
         if not postings:
-            st.warning(" No job postings found in this session")
+            st.warning("⚠️ 本次会话中未找到职位发布")
             return
         
-        # Search Summary
-        st.markdown("###  Search Summary")
+        # Search Summary - Simplified Card Style
+        st.markdown("### 📋 搜索概览")
+        st.markdown("<div style='background-color: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px;'>", unsafe_allow_html=True)
+        
         cols = st.columns(4)
         with cols[0]:
-            st.metric(" Total Jobs", len(postings))
+            st.markdown(f"""
+            <div style='text-align: center; padding: 15px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📊 职位总数</div>
+                <div style='font-size: 32px; font-weight: bold; color: #667eea;'>{len(postings)}</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with cols[1]:
-            st.metric(" Job Title", metadata.get("job_title", "N/A").title())
+            job_title = metadata.get("job_title", "N/A")
+            st.markdown(f"""
+            <div style='text-align: center; padding: 15px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>💼 职位名称</div>
+                <div style='font-size: 18px; font-weight: bold; color: #333;'>{job_title.title()}</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with cols[2]:
-            st.metric(" Location", metadata.get("location", "Any"))
+            location = metadata.get("location", "不限")
+            st.markdown(f"""
+            <div style='text-align: center; padding: 15px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📍 地点</div>
+                <div style='font-size: 18px; font-weight: bold; color: #333;'>{location}</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with cols[3]:
             search_date = metadata.get("search_date", "")
+            date_display = "N/A"
             if search_date:
                 try:
                     dt = datetime.fromisoformat(search_date)
-                    st.metric(" Search Date", dt.strftime("%Y-%m-%d"))
+                    date_display = dt.strftime("%Y-%m-%d")
                 except:
-                    st.metric(" Search Date", "N/A")
-            else:
-                st.metric(" Search Date", "N/A")
+                    pass
+            
+            st.markdown(f"""
+            <div style='text-align: center; padding: 15px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📅 搜索日期</div>
+                <div style='font-size: 18px; font-weight: bold; color: #333;'>{date_display}</div>
+            </div>
+            """, unsafe_allow_html=True)
         
-        st.markdown("---")
+        st.markdown("</div>", unsafe_allow_html=True)
         
-        # Company Distribution
-        st.markdown("###  Top Companies Hiring")
+        # Company Distribution - Simple Card Style
+        st.markdown("### 🏢 招聘最多的公司")
+        st.caption("统计了所有职位发布的公司分布")
+        st.markdown("<div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px;'>", unsafe_allow_html=True)
+        
         company_counts = {}
         for job in postings:
             company = job.get("company_name", "Unknown")
             company_counts[company] = company_counts.get(company, 0) + 1
         
         sorted_companies = sorted(company_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+        total_jobs = len(postings)
         
-        import plotly.graph_objects as go
+        # Display as clean list with progress bars
+        for idx, (company, count) in enumerate(sorted_companies, 1):
+            percentage = (count / total_jobs) * 100
+            col1, col2, col3 = st.columns([1, 6, 2])
+            
+            with col1:
+                st.markdown(f"**#{idx}**")
+            with col2:
+                st.markdown(f"**{company}**")
+                st.progress(percentage / 100)
+            with col3:
+                st.markdown(f"**{count}** 个职位")
+                st.caption(f"{percentage:.1f}%")
         
-        fig = go.Figure(data=[
-            go.Bar(
-                x=[count for _, count in sorted_companies],
-                y=[company for company, _ in sorted_companies],
-                orientation='h',
-                marker_color='#0066cc',
-                text=[count for _, count in sorted_companies],
-                textposition='auto',
-            )
-        ])
-        
-        fig.update_layout(
-            title="Top 10 Companies by Job Postings",
-            xaxis_title="Number of Postings",
-            yaxis_title="Company",
-            height=400,
-            yaxis={'categoryorder':'total ascending'}
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
         
         st.markdown("---")
         
-        # Location Distribution
-        st.markdown("###  Geographic Distribution")
+        # Location Distribution - Simple Card Style
+        st.markdown("### 📍 热门工作地点")
+        st.caption("按职位数量排序的主要城市")
+        st.markdown("<div style='background-color: #e8f4f8; padding: 20px; border-radius: 10px;'>", unsafe_allow_html=True)
+        
         location_counts = {}
         for job in postings:
             location = job.get("location", "Unknown")
@@ -1649,23 +1766,30 @@ def render_job_postings_analytics(job_postings_file):
         
         sorted_locations = sorted(location_counts.items(), key=lambda x: x[1], reverse=True)[:8]
         
-        fig = go.Figure(data=[go.Pie(
-            labels=[loc for loc, _ in sorted_locations],
-            values=[count for _, count in sorted_locations],
-            hole=.3
-        )])
+        # Display in 2 columns for better readability
+        col_left, col_right = st.columns(2)
         
-        fig.update_layout(
-            title="Job Distribution by Location",
-            height=400
-        )
+        for idx, (location, count) in enumerate(sorted_locations):
+            percentage = (count / total_jobs) * 100
+            
+            with col_left if idx % 2 == 0 else col_right:
+                st.markdown(f"""
+                <div style='background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
+                    <div style='display: flex; justify-content: space-between; align-items: center;'>
+                        <span style='font-size: 16px; font-weight: 600;'>📍 {location}</span>
+                        <span style='font-size: 18px; color: #667eea; font-weight: bold;'>{count}</span>
+                    </div>
+                    <div style='color: #666; font-size: 14px; margin-top: 4px;'>占总数的 {percentage:.1f}%</div>
+                </div>
+                """, unsafe_allow_html=True)
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
         
         st.markdown("---")
         
-        # Salary Analysis Section - Using REAL data from market_trends.json
-        st.markdown("###  💰 Salary Analysis (Real Market Data)")
+        # Salary Analysis Section - Simplified
+        st.markdown("### 💰 薪资分析")
+        st.caption("基于实际职位发布的薪资数据")
         
         # Load market trends for salary benchmarks
         latest_session = get_latest_session_folder()
@@ -1718,14 +1842,22 @@ def render_job_postings_analytics(job_postings_file):
                 except Exception:
                     continue
         
-        # Display metrics
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric(" Jobs with Salary Listed", 
-                     f"{jobs_with_salary} / {len(postings)}",
-                     delta=f"{(jobs_with_salary/len(postings)*100):.1f}%" if len(postings) > 0 else "0%")
+        # Display salary metrics in clear cards
+        st.markdown("<div style='background-color: #fff3cd; padding: 20px; border-radius: 10px;'>", unsafe_allow_html=True)
         
-        # Show market benchmark from market_trends.json (REAL DATA)
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            transparency_pct = (jobs_with_salary/len(postings)*100) if len(postings) > 0 else 0
+            st.markdown(f"""
+            <div style='text-align: center; padding: 20px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📋 薪资透明度</div>
+                <div style='font-size: 32px; font-weight: bold; color: #667eea;'>{transparency_pct:.1f}%</div>
+                <div style='font-size: 12px; color: #999; margin-top: 8px;'>{jobs_with_salary} / {len(postings)} 个职位</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Show market benchmark from market_trends.json
         if market_trends_data and isinstance(market_trends_data, dict):
             salary_info = market_trends_data.get('salary_data') or market_trends_data.get('market_overview', {}).get('salary_data')
             if salary_info and isinstance(salary_info, dict):
@@ -1734,143 +1866,103 @@ def render_job_postings_analytics(job_postings_file):
                 
                 with col2:
                     if avg_salary_str:
-                        st.metric(" Market Average (Real Data)", avg_salary_str, 
-                                 help="From verified market trends data")
+                        st.markdown(f"""
+                        <div style='text-align: center; padding: 20px; background: white; border-radius: 8px;'>
+                            <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>💵 市场平均薪资</div>
+                            <div style='font-size: 32px; font-weight: bold; color: #28a745;'>{avg_salary_str}</div>
+                            <div style='font-size: 12px; color: #999; margin-top: 8px;'>基于市场数据</div>
+                        </div>
+                        """, unsafe_allow_html=True)
                     else:
-                        st.caption("Market average not available")
+                        st.caption("暂无平均薪资数据")
                 
                 with col3:
                     if salary_range_info:
+                        range_text = ""
                         if isinstance(salary_range_info, dict):
                             min_sal = salary_range_info.get('min', '')
                             max_sal = salary_range_info.get('max', '')
                             if min_sal and max_sal:
-                                st.metric(" Market Range", 
-                                         f"{min_sal} - {max_sal}",
-                                         help="Industry benchmark range")
+                                range_text = f"{min_sal} - {max_sal}"
                         elif isinstance(salary_range_info, str):
-                            st.metric(" Market Range", salary_range_info)
+                            range_text = salary_range_info
+                        
+                        if range_text:
+                            st.markdown(f"""
+                            <div style='text-align: center; padding: 20px; background: white; border-radius: 8px;'>
+                                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📊 薪资范围</div>
+                                <div style='font-size: 20px; font-weight: bold; color: #ff6b6b;'>{range_text}</div>
+                                <div style='font-size: 12px; color: #999; margin-top: 8px;'>行业基准</div>
+                            </div>
+                            """, unsafe_allow_html=True)
         
-        # If we have actual salary data from postings, show distribution
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # If we have actual salary data from postings, show simple summary
         if salary_data:
-            st.markdown("---")
-            st.markdown("**📊 Actual Posted Salaries Distribution:**")
+            st.markdown("")
+            st.markdown("**💡 实际发布的薪资信息总结：**")
             
             avg_posted = sum(s['avg'] for s in salary_data) / len(salary_data)
-            st.info(f"💡 Average from posted salaries: **${avg_posted:,.0f}** (based on {len(salary_data)} jobs with salary info)")
+            min_posted = min(s['min'] for s in salary_data)
+            max_posted = max(s['max'] for s in salary_data)
             
-            # Salary distribution visualization
-            if PLOTLY_AVAILABLE:
-                fig = go.Figure()
-                
-                # Add box plot for distribution
-                fig.add_trace(go.Box(
-                    y=[s['avg'] for s in salary_data],
-                    name='Posted Salaries',
-                    marker_color='#0066cc',
-                    boxmean='sd',
-                    hovertext=[f"{s['company']}: {s['title']}" for s in salary_data],
-                    hoverinfo='y+text'
-                ))
-                
-                fig.update_layout(
-                    title="Salary Distribution from Actual Job Postings",
-                    yaxis_title="Annual Salary (USD)",
-                    height=400,
-                    showlegend=False
-                )
-                
-                fig.update_yaxis(tickformat="$,.0f")
-                st.plotly_chart(fig, use_container_width=True)
-                
-                # Salary by company (top companies with salary data)
-                if len(salary_data) >= 3:
-                    st.markdown("**💼 Average Salary by Company (Real Postings):**")
-                    
-                    # Group by company
-                    company_salaries = {}
-                    for s in salary_data:
-                        comp = s['company']
-                        if comp not in company_salaries:
-                            company_salaries[comp] = []
-                        company_salaries[comp].append(s['avg'])
-                    
-                    # Calculate average per company
-                    company_avg = {
-                        comp: sum(sals) / len(sals) 
-                        for comp, sals in company_salaries.items()
-                    }
-                    
-                    # Sort and take top 8
-                    sorted_companies = sorted(company_avg.items(), key=lambda x: x[1], reverse=True)[:8]
-                    
-                    if sorted_companies:
-                        fig2 = go.Figure(data=[
-                            go.Bar(
-                                x=[sal for _, sal in sorted_companies],
-                                y=[comp for comp, _ in sorted_companies],
-                                orientation='h',
-                                marker_color='#28a745',
-                                text=[f'${sal:,.0f}' for _, sal in sorted_companies],
-                                textposition='auto',
-                            )
-                        ])
-                        
-                        fig2.update_layout(
-                            title="Companies by Average Posted Salary",
-                            xaxis_title="Average Salary (USD)",
-                            yaxis_title="Company",
-                            height=350,
-                            yaxis={'categoryorder':'total ascending'}
-                        )
-                        
-                        fig2.update_xaxis(tickformat="$,.0f")
-                        st.plotly_chart(fig2, use_container_width=True)
+            st.markdown(f"""
+            <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 10px;'>
+                <div style='font-size: 16px; margin-bottom: 10px;'>基于 <strong>{len(salary_data)}</strong> 个有薪资信息的职位：</div>
+                <div style='display: flex; justify-content: space-around; margin-top: 15px;'>
+                    <div style='text-align: center;'>
+                        <div style='color: #666; font-size: 14px;'>最低薪资</div>
+                        <div style='font-size: 24px; font-weight: bold; color: #ff6b6b;'>${min_posted:,.0f}</div>
+                    </div>
+                    <div style='text-align: center;'>
+                        <div style='color: #666; font-size: 14px;'>平均薪资</div>
+                        <div style='font-size: 24px; font-weight: bold; color: #667eea;'>${avg_posted:,.0f}</div>
+                    </div>
+                    <div style='text-align: center;'>
+                        <div style='color: #666; font-size: 14px;'>最高薪资</div>
+                        <div style='font-size: 24px; font-weight: bold; color: #28a745;'>${max_posted:,.0f}</div>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            # No direct salary data in postings, show market benchmark
-            st.markdown("---")
-            if market_trends_data and salary_info:
-                st.info("💡 **Note**: Most LinkedIn postings don't list salary ranges directly. See market benchmark data above from verified sources.")
-                
-                # Show detailed market salary breakdown if available
-                if 'salary_ranges' in salary_info:
-                    st.markdown("**📈 Market Salary Benchmarks by Experience Level:**")
-                    ranges = salary_info['salary_ranges']
-                    
-                    if isinstance(ranges, dict):
-                        exp_cols = st.columns(3)
-                        levels = [
-                            ('entry_level', 'Entry Level', 0),
-                            ('mid_level', 'Mid Level', 1),
-                            ('senior_level', 'Senior Level', 2)
-                        ]
-                        
-                        for key, label, idx in levels:
-                            if key in ranges:
-                                with exp_cols[idx]:
-                                    val = ranges[key]
-                                    if isinstance(val, str):
-                                        st.metric(label, val)
-                                    elif isinstance(val, dict):
-                                        avg = val.get('average', val.get('avg', ''))
-                                        st.metric(label, avg if avg else f"{val.get('min', '')} - {val.get('max', '')}")
-            else:
-                st.info("💡 **Tip**: Salary data will appear here when jobs include compensation information. Check the Market Trends tab for industry benchmarks.")
+            st.markdown("")
+            st.info("📝 本次搜索的职位中，大多数未提供具体薪资信息")
         
         st.markdown("---")
         
-        # Recent vs Older Postings
-        st.markdown("###  📅 Posting Freshness")
-        recent_count = sum(1 for job in postings if job.get("date_posted") == "Recent")
+        # Recent vs Older Postings - Simplified
+        st.markdown("### 📅 职位发布时间")
+        st.caption("最新发布的职位数量统计")
+        
+        recent_count = sum(1 for job in postings if "recent" in str(job.get("date_posted", "")).lower() or "repost" in str(job.get("date_posted", "")).lower())
         older_count = len(postings) - recent_count
+        
+        st.markdown("<div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px;'>", unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
-            st.metric(" Recent Postings", recent_count, 
-                     delta=f"{(recent_count/len(postings)*100):.1f}%")
+            recent_pct = (recent_count/len(postings)*100) if len(postings) > 0 else 0
+            st.markdown(f"""
+            <div style='text-align: center; padding: 20px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>🆕 最新职位</div>
+                <div style='font-size: 36px; font-weight: bold; color: #28a745;'>{recent_count}</div>
+                <div style='font-size: 14px; color: #999; margin-top: 8px;'>占总数的 {recent_pct:.1f}%</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with col2:
-            st.metric(" Older Postings", older_count,
-                     delta=f"{(older_count/len(postings)*100):.1f}%")
+            older_pct = (older_count/len(postings)*100) if len(postings) > 0 else 0
+            st.markdown(f"""
+            <div style='text-align: center; padding: 20px; background: white; border-radius: 8px;'>
+                <div style='font-size: 14px; color: #666; margin-bottom: 8px;'>📆 较早职位</div>
+                <div style='font-size: 36px; font-weight: bold; color: #667eea;'>{older_count}</div>
+                <div style='font-size: 14px; color: #999; margin-top: 8px;'>占总数的 {older_pct:.1f}%</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("</div>", unsafe_allow_html=True)
     
     except json.JSONDecodeError as e:
         st.error(f" Error analyzing job postings: invalid JSON ({e})")
@@ -2017,32 +2109,70 @@ def render_salary_change_across_sessions():
     """
     snapshots = _collect_session_salary_snapshots()
     if not snapshots:
-        st.info("No session-based salary snapshots found yet.")
+        st.info("📊 No session-based salary snapshots found yet. Run a job search to generate data.")
         return
 
-    # Build options for selection
-    options = [f"{s['session_id']} | {s['date'].strftime('%Y-%m-%d %H:%M') if s['date'] else 'unknown'}" for s in snapshots]
+    # Information banner
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 15px; border-radius: 8px; margin-bottom: 20px;'>
+        <p style='color: white; margin: 0; font-size: 14px;'>
+            <b>📈 Salary Trend Analysis</b><br>
+            Track how salary ranges evolve across different search sessions over time
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Build options for selection with clearer formatting
+    options = []
+    for s in snapshots:
+        date_str = s['date'].strftime('%b %d, %Y %H:%M') if s['date'] else 'Unknown Date'
+        session_short = s['session_id'][:8] + "..."
+        options.append(f"{session_short} | {date_str}")
+    
     latest_idx = len(options) - 1
     baseline_idx = max(0, latest_idx - 1)
 
-    col_sel1, col_sel2 = st.columns(2)
+    # Session selector with improved UI
+    st.markdown("#### 🔍 Select Sessions to Compare")
+    col_sel1, col_sel2, col_info = st.columns([2, 2, 1])
     with col_sel1:
-        selected_baseline = st.selectbox("Baseline Session", options, index=baseline_idx, key="salary_baseline")
+        selected_baseline = st.selectbox(
+            "📅 Baseline Session", 
+            options, 
+            index=baseline_idx, 
+            key="salary_baseline",
+            help="Select the earlier session to use as baseline for comparison"
+        )
     with col_sel2:
-        selected_compare = st.selectbox("Compare To", options, index=latest_idx, key="salary_compare")
+        selected_compare = st.selectbox(
+            "📅 Compare To Session", 
+            options, 
+            index=latest_idx, 
+            key="salary_compare",
+            help="Select the later session to compare against baseline"
+        )
+    with col_info:
+        st.markdown("<br>", unsafe_allow_html=True)
+        total_sessions = len(snapshots)
+        st.metric("📊 Total Sessions", total_sessions)
 
     def opt_to_snapshot(opt_label):
-        sid = opt_label.split('|')[0].strip()
+        sid_short = opt_label.split('|')[0].strip().replace("...", "")
         for s in snapshots:
-            if s['session_id'] == sid:
+            if s['session_id'].startswith(sid_short):
                 return s
         return None
 
     base = opt_to_snapshot(selected_baseline)
     comp = opt_to_snapshot(selected_compare)
 
-    if not base or not comp or base['session_id'] == comp['session_id']:
-        st.caption("Select two different sessions to compare.")
+    if not base or not comp:
+        st.error("❌ Could not load session data. Please try again.")
+        return
+    
+    if base['session_id'] == comp['session_id']:
+        st.warning("⚠️ Please select two different sessions to compare.")
         return
 
     # Helper for delta formatting
@@ -2057,52 +2187,188 @@ def render_salary_change_across_sessions():
         except Exception:
             return "N/A"
 
-    # Show metrics
-    st.markdown("#### Comparison Metrics")
+    # Show comparison metrics with enhanced styling
+    st.markdown("---")
+    st.markdown("#### 💰 Salary Comparison Metrics")
+    st.markdown("<div style='background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;'>", unsafe_allow_html=True)
+    
     mcols = st.columns(4)
     with mcols[0]:
-        st.metric("Average Salary",
-                  f"${(comp.get('average_salary') or 0):,}",
-                  delta=fmt_delta(comp.get('average_salary'), base.get('average_salary')))
+        comp_avg = comp.get('average_salary') or 0
+        base_avg = base.get('average_salary') or 0
+        st.metric(
+            "📊 Average Salary",
+            f"${comp_avg:,}",
+            delta=fmt_delta(comp_avg, base_avg),
+            help="Overall average salary across all experience levels"
+        )
     with mcols[1]:
-        st.metric("Entry Level Mid",
-                  f"${(comp.get('entry_level_mid') or comp.get('entry_level_avg') or 0):,}",
-                  delta=fmt_delta(comp.get('entry_level_mid') or comp.get('entry_level_avg'),
-                                  base.get('entry_level_mid') or base.get('entry_level_avg')))
+        comp_entry = comp.get('entry_level_mid') or comp.get('entry_level_avg') or 0
+        base_entry = base.get('entry_level_mid') or base.get('entry_level_avg') or 0
+        st.metric(
+            "🌱 Entry Level",
+            f"${comp_entry:,}",
+            delta=fmt_delta(comp_entry, base_entry),
+            help="Entry level salary midpoint"
+        )
     with mcols[2]:
-        st.metric("Mid Level Mid",
-                  f"${(comp.get('mid_level_mid') or comp.get('mid_level_avg') or 0):,}",
-                  delta=fmt_delta(comp.get('mid_level_mid') or comp.get('mid_level_avg'),
-                                  base.get('mid_level_mid') or base.get('mid_level_avg')))
+        comp_mid = comp.get('mid_level_mid') or comp.get('mid_level_avg') or 0
+        base_mid = base.get('mid_level_mid') or base.get('mid_level_avg') or 0
+        st.metric(
+            "💼 Mid Level",
+            f"${comp_mid:,}",
+            delta=fmt_delta(comp_mid, base_mid),
+            help="Mid level salary midpoint"
+        )
     with mcols[3]:
-        st.metric("Senior Level Mid",
-                  f"${(comp.get('senior_level_mid') or comp.get('senior_level_avg') or 0):,}",
-                  delta=fmt_delta(comp.get('senior_level_mid') or comp.get('senior_level_avg'),
-                                  base.get('senior_level_mid') or base.get('senior_level_avg')))
+        comp_senior = comp.get('senior_level_mid') or comp.get('senior_level_avg') or 0
+        base_senior = base.get('senior_level_mid') or base.get('senior_level_avg') or 0
+        st.metric(
+            "🎯 Senior Level",
+            f"${comp_senior:,}",
+            delta=fmt_delta(comp_senior, base_senior),
+            help="Senior level salary midpoint"
+        )
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Line chart over time (if Plotly available)
     if PLOTLY_AVAILABLE:
         import plotly.graph_objects as go
+        
+        st.markdown("---")
+        st.markdown("#### 📈 Salary Trends Over Time")
+        
         times = [s['date'] for s in snapshots]
+        session_ids = [s['session_id'][:8] + "..." for s in snapshots]
         avg_series = [s.get('average_salary') for s in snapshots]
         entry_series = [s.get('entry_level_mid') or s.get('entry_level_avg') for s in snapshots]
         mid_series = [s.get('mid_level_mid') or s.get('mid_level_avg') for s in snapshots]
         senior_series = [s.get('senior_level_mid') or s.get('senior_level_avg') for s in snapshots]
 
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=times, y=avg_series, mode='lines+markers', name='Average'))
+        
+        # Add traces with improved styling
+        fig.add_trace(go.Scatter(
+            x=times, 
+            y=avg_series, 
+            mode='lines+markers',
+            name='Average',
+            line=dict(color='#667eea', width=3),
+            marker=dict(size=8, symbol='circle'),
+            hovertemplate='<b>Average Salary</b><br>' +
+                         'Date: %{x|%b %d, %Y}<br>' +
+                         'Salary: $%{y:,.0f}<br>' +
+                         '<extra></extra>'
+        ))
+        
         if any(entry_series):
-            fig.add_trace(go.Scatter(x=times, y=entry_series, mode='lines+markers', name='Entry Mid'))
+            fig.add_trace(go.Scatter(
+                x=times, 
+                y=entry_series, 
+                mode='lines+markers',
+                name='Entry Level',
+                line=dict(color='#48bb78', width=2, dash='dot'),
+                marker=dict(size=6, symbol='diamond'),
+                hovertemplate='<b>Entry Level</b><br>' +
+                             'Date: %{x|%b %d, %Y}<br>' +
+                             'Salary: $%{y:,.0f}<br>' +
+                             '<extra></extra>'
+            ))
+        
         if any(mid_series):
-            fig.add_trace(go.Scatter(x=times, y=mid_series, mode='lines+markers', name='Mid Mid'))
+            fig.add_trace(go.Scatter(
+                x=times, 
+                y=mid_series, 
+                mode='lines+markers',
+                name='Mid Level',
+                line=dict(color='#ed8936', width=2, dash='dash'),
+                marker=dict(size=6, symbol='square'),
+                hovertemplate='<b>Mid Level</b><br>' +
+                             'Date: %{x|%b %d, %Y}<br>' +
+                             'Salary: $%{y:,.0f}<br>' +
+                             '<extra></extra>'
+            ))
+        
         if any(senior_series):
-            fig.add_trace(go.Scatter(x=times, y=senior_series, mode='lines+markers', name='Senior Mid'))
+            fig.add_trace(go.Scatter(
+                x=times, 
+                y=senior_series, 
+                mode='lines+markers',
+                name='Senior Level',
+                line=dict(color='#e53e3e', width=2, dash='dashdot'),
+                marker=dict(size=6, symbol='star'),
+                hovertemplate='<b>Senior Level</b><br>' +
+                             'Date: %{x|%b %d, %Y}<br>' +
+                             'Salary: $%{y:,.0f}<br>' +
+                             '<extra></extra>'
+            ))
 
-        fig.update_layout(title="Salary Over Time by Session",
-                          xaxis_title="Session Time",
-                          yaxis_title="USD",
-                          height=420)
+        fig.update_layout(
+            title={
+                'text': "💵 Salary Evolution Across Search Sessions",
+                'x': 0.5,
+                'xanchor': 'center',
+                'font': {'size': 18, 'color': '#2d3748'}
+            },
+            xaxis_title="Search Session Date",
+            yaxis_title="Salary (USD)",
+            height=500,
+            hovermode='x unified',
+            plot_bgcolor='rgba(248, 249, 250, 0.5)',
+            paper_bgcolor='white',
+            font=dict(family="Arial, sans-serif", size=12),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                bgcolor='rgba(255, 255, 255, 0.8)',
+                bordercolor='#e2e8f0',
+                borderwidth=1
+            ),
+            xaxis=dict(
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='rgba(0, 0, 0, 0.1)',
+                zeroline=False
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridwidth=1,
+                gridcolor='rgba(0, 0, 0, 0.1)',
+                zeroline=False,
+                tickformat='$,.0f'
+            )
+        )
+        
         st.plotly_chart(fig, use_container_width=True)
+        
+        # Data table summary
+        with st.expander("📋 View Detailed Session Data", expanded=False):
+            st.markdown("**Session Salary Summary**")
+            table_data = []
+            for s in snapshots:
+                date_str = s['date'].strftime('%Y-%m-%d %H:%M') if s['date'] else 'N/A'
+                table_data.append({
+                    'Session ID': s['session_id'][:12] + "...",
+                    'Date': date_str,
+                    'Average': f"${s.get('average_salary') or 0:,}",
+                    'Entry': f"${(s.get('entry_level_mid') or s.get('entry_level_avg') or 0):,}",
+                    'Mid': f"${(s.get('mid_level_mid') or s.get('mid_level_avg') or 0):,}",
+                    'Senior': f"${(s.get('senior_level_mid') or s.get('senior_level_avg') or 0):,}"
+                })
+            st.table(table_data)
+    else:
+        st.warning("📊 Plotly is not available. Install it to view the salary trend chart.")
 
-    # Helper hint for session-specific lookup
-    st.caption("Tip: Data comes from src/outputs/linkedin/<session_id>/market_trends.json")
+    # Data source info
+    st.markdown("---")
+    st.markdown("""
+    <div style='background-color: #edf2f7; padding: 12px; border-radius: 6px; border-left: 4px solid #667eea;'>
+        <p style='margin: 0; font-size: 13px; color: #4a5568;'>
+            <b>ℹ️ Data Source:</b> Salary data is extracted from <code>src/outputs/linkedin/&lt;session_id&gt;/market_trends.json</code>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
