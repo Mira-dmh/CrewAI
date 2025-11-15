@@ -1,0 +1,18 @@
+{
+  "search_metadata": {
+    "job_title": "AI Engineer",
+    "location": "CA",
+    "search_timestamp": "2025-11-14T18:06:14.743365",
+    "search_parameters": {
+      "company": "",
+      "experience_level": "Any",
+      "job_type": "Any",
+      "remote_option": "Hybrid",
+      "industry": "Any",
+      "work_authorization": "Any",
+      "date_posted": "Any time"
+    }
+  },
+  "crew_output": "{\n  \"verification_summary\": {\n    \"total_jobs_verified\": 0,\n    \"average_confidence_score\": 0.0,\n    \"high_confidence_jobs\": 0,\n    \"medium_confidence_jobs\": 0,\n    \"low_confidence_jobs\": 0,\n    \"flagged_for_review\": 0\n  },\n  \"ground_truth_sources_used\": [\n    \"U.S. Bureau of Labor Statistics (BLS)\",\n    \"Glassdoor Salary Data\",\n    \"Indeed Market Trends\",\n    \"PayScale Benchmarks\",\n    \"LinkedIn Salary Insights\",\n    \"O*NET Occupation Taxonomy\"\n  ],\n  \"verified_jobs\": [],\n  \"critical_issues\": [],\n  \"date_validation_report\": {\n    \"recent_postings\": 0,\n    \"moderately_recent\": 0,\n    \"older_postings\": 0,\n    \"outdated_postings\": 0,\n    \"invalid_postings\": 0\n  },\n  \"overall_data_quality\": \"LOW\",\n  \"user_recommendations\": [\n    \"Consider expanding the search criteria or checking for available job postings at a later time.\"\n  ]\n}",
+  "raw_result": "{\n  \"verification_summary\": {\n    \"total_jobs_verified\": 0,\n    \"average_confidence_score\": 0.0,\n    \"high_confidence_jobs\": 0,\n    \"medium_confidence_jobs\": 0,\n    \"low_confidence_jobs\": 0,\n    \"flagged_for_review\": 0\n  },\n  \"ground_truth_sources_used\": [\n    \"U.S. Bureau of Labor Statistics (BLS)\",\n    \"Glassdoor Salary Data\",\n    \"Indeed Market Trends\",\n    \"PayScale Benchmarks\",\n    \"LinkedIn Salary Insights\",\n    \"O*NET Occupation Taxonomy\"\n  ],\n  \"verified_jobs\": [],\n  \"critical_issues\": [],\n  \"date_validation_report\": {\n    \"recent_postings\": 0,\n    \"moderately_recent\": 0,\n    \"older_postings\": 0,\n    \"outdated_postings\": 0,\n    \"invalid_postings\": 0\n  },\n  \"overall_data_quality\": \"LOW\",\n  \"user_recommendations\": [\n    \"Consider expanding the search criteria or checking for available job postings at a later time.\"\n  ]\n}"
+}

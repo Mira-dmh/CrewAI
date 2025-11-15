@@ -101,7 +101,7 @@ class LinkedInSearchCrew:
     def linkedin_verification_task(self) -> Task:
         """Verify LinkedIn search results and market analysis accuracy"""
         return Task(
-            config=self.tasks_config['research_verification_task'], # type: ignore[index]
+            config=self.tasks_config['linkedin_verification_task'], # type: ignore[index]
             agent=self.verification_specialist(),
             context=[self.linkedin_scraping_task(), self.linkedin_market_trends_task()],
             output_file="src/outputs/linkedin/verification_report.json"
