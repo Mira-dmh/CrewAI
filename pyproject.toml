@@ -26,4 +26,5 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "requests>=2.31.0",
     "dotenv>=0.9.9",
+    "pypdf2>=3.0.1",
 ]
