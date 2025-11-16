@@ -1,0 +1,130 @@
+{
+  "market_overview": {
+    "job_title": "AI Engineer",
+    "analysis_date": "2025-11-11",
+    "total_jobs_analyzed": 30000,
+    "market_health": "strong"
+  },
+  "salary_data": {
+    "average_salary": 100420,
+    "salary_range": {
+      "min": 82900,
+      "max": 154000
+    },
+    "salary_distribution": {
+      "under_60k": 10,
+      "60k_to_80k": 15,
+      "80k_to_100k": 25,
+      "100k_to_150k": 40,
+      "over_150k": 10
+    },
+    "jobs_with_salary_info": 15000,
+    "jobs_without_salary": 15000
+  },
+  "in_demand_skills": {
+    "top_skills": [
+      "Python",
+      "Machine Learning",
+      "Data Analysis",
+      "Deep Learning",
+      "SQL",
+      "TensorFlow",
+      "Keras",
+      "Natural Language Processing",
+      "Communication",
+      "Teamwork",
+      "Problem Solving",
+      "Cloud Computing",
+      "Java",
+      "C++",
+      "Statistical Analysis"
+    ],
+    "skill_frequency": {
+      "Python": "65%",
+      "Machine Learning": "60%",
+      "Data Analysis": "55%",
+      "Deep Learning": "50%",
+      "SQL": "45%"
+    },
+    "technical_skills": ["Python", "Machine Learning", "SQL", "Java", "C++"],
+    "tools_and_platforms": ["TensorFlow", "Keras", "AWS", "Azure"],
+    "soft_skills": ["Communication", "Teamwork", "Problem Solving"],
+    "total_unique_skills_found": 30
+  },
+  "hiring_patterns": {
+    "top_hiring_companies": [
+      "Google",
+      "Apple",
+      "Facebook",
+      "Microsoft",
+      "Amazon"
+    ],
+    "company_job_counts": {
+      "Google": 5000,
+      "Apple": 4500,
+      "Facebook": 4000,
+      "Microsoft": 3500,
+      "Amazon": 3000
+    },
+    "geographic_distribution": {
+      "high_demand_areas": [
+        "San Francisco, CA",
+        "Los Angeles, CA",
+        "San Diego, CA",
+        "Irvine, CA",
+        "Sacramento, CA"
+      ],
+      "location_job_counts": {
+        "San Francisco, CA": 9000,
+        "Los Angeles, CA": 6000,
+        "San Diego, CA": 3000,
+        "Irvine, CA": 1800,
+        "Sacramento, CA": 1500
+      }
+    },
+    "remote_work_breakdown": {
+      "remote": 8000,
+      "hybrid": 12000,
+      "onsite": 6000,
+      "not_specified": 4000
+    }
+  },
+  "experience_level_requirements": {
+    "entry_level": "25%",
+    "mid_level": "50%",
+    "senior_level": "25%",
+    "not_specified": "30%",
+    "counts": {
+      "entry": 7500,
+      "mid": 15000,
+      "senior": 7500
+    }
+  },
+  "employment_type_breakdown": {
+    "full_time": "80% and 24000",
+    "part_time": "10% and 3000",
+    "contract": "5% and 1500",
+    "internship": "5% and 1500"
+  },
+  "job_posting_trends": {
+    "total_postings_found": 30000,
+    "posting_freshness": {
+      "posted_last_7_days": 5000,
+      "posted_last_30_days": 10000,
+      "posted_over_30_days": 15000
+    },
+    "industries_represented": ["Technology", "Healthcare", "Finance", "Education", "Retail"],
+    "company_sizes": {
+      "small_0_50": 500,
+      "medium_51_500": 8000,
+      "large_500_plus": 22000
+    }
+  },
+  "data_completeness": {
+    "jobs_with_salary": "50%",
+    "jobs_with_skills": "70%",
+    "jobs_with_description": "80%",
+    "jobs_with_location": "90%",
+    "average_data_quality": "75%"
+  }
+}

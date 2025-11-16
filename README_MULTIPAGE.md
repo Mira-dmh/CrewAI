@@ -1,11 +1,17 @@
 # CrewAI Job Search Assistant - Multipage App
 
-## 🚀 Quick Start
+## 🚀 RUN
 
-Run the multipage application:
+
 
 ```bash
-streamlit run src/app.py
+streamlit run app.py
+```
+
+
+
+```bash
+python -m streamlit run app.py
 ```
 
 ## 📁 Project Structure

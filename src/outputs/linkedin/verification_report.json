@@ -1,0 +1,31 @@
+{
+  "verification_summary": {
+    "total_jobs_verified": 0,
+    "average_confidence_score": 0.0,
+    "high_confidence_jobs": 0,
+    "medium_confidence_jobs": 0,
+    "low_confidence_jobs": 0,
+    "flagged_for_review": 0
+  },
+  "ground_truth_sources_used": [
+    "U.S. Bureau of Labor Statistics (BLS)",
+    "Glassdoor Salary Data",
+    "Indeed Market Trends",
+    "PayScale Benchmarks",
+    "LinkedIn Salary Insights",
+    "O*NET Occupation Taxonomy"
+  ],
+  "verified_jobs": [],
+  "critical_issues": [],
+  "date_validation_report": {
+    "recent_postings": 0,
+    "moderately_recent": 0,
+    "older_postings": 0,
+    "outdated_postings": 0,
+    "invalid_postings": 0
+  },
+  "overall_data_quality": "LOW",
+  "user_recommendations": [
+    "Consider expanding the search criteria or checking for available job postings at a later time."
+  ]
+}

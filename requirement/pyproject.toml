@@ -1,0 +1,29 @@
+[project]
+name = "crewai-job-search-assistant"
+version = "0.1.0"
+description = "AI-powered job search assistant built with CrewAI multi-agent system for intelligent job ranking, resume optimization, and market analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # CrewAI Framework - Core multi-agent system
+    "crewai>=0.203.0",
+    "crewai-tools>=0.76.0",
+    # LLM APIs
+    "openai>=1.0.0",
+    "groq>=0.32.0",
+    # Web Framework
+    "streamlit[charts]>=1.50.0",
+    # Data Processing
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "openpyxl>=3.1.0", # For Excel export
+    # Machine Learning (for job ranking system)
+    "scikit-learn>=1.3.0",
+    # Visualization
+    "plotly>=5.18.0",
+    "altair>=5.0.0",
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "dotenv>=0.9.9",
+]

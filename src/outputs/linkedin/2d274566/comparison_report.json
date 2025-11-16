@@ -1,0 +1,64 @@
+{
+  "session_id": "2d274566",
+  "comparison_date": "2025-11-13T19:49:30.835032",
+  "single_agent": {
+    "agent_type": "Single Agent",
+    "avg_salary": "$112,590",
+    "salary_range_entry": "N/A",
+    "salary_range_mid": "N/A",
+    "salary_range_senior": "N/A",
+    "skills_identified": 3,
+    "top_skills": [
+      "Python",
+      "Machine Learning",
+      "Tableau"
+    ],
+    "companies_identified": 0,
+    "top_companies": [
+      "N/A"
+    ],
+    "growth_rate": "N/A",
+    "cities_identified": 0,
+    "top_cities": [
+      "N/A"
+    ],
+    "market_health": "moderate"
+  },
+  "multi_agent": {
+    "agent_type": "Multi Agent",
+    "avg_salary": "$156,000",
+    "salary_range_entry": "$85,000 - $110,000",
+    "salary_range_mid": "$120,000 - $165,000",
+    "salary_range_senior": "$168,730 - $200,000",
+    "skills_identified": 5,
+    "top_skills": [
+      "Python",
+      "Machine Learning",
+      "Data Visualization",
+      "SQL",
+      "Big Data Technologies"
+    ],
+    "companies_identified": 5,
+    "top_companies": [
+      "Google",
+      "Amazon",
+      "Microsoft",
+      "IBM",
+      "Facebook"
+    ],
+    "growth_rate": "34%",
+    "cities_identified": 5,
+    "top_cities": [
+      "San Francisco, CA",
+      "New York, NY",
+      "Austin, TX",
+      "Seattle, WA",
+      "Boston, MA"
+    ],
+    "market_health": "strong"
+  },
+  "completeness_scores": {
+    "single_agent": 33.33333333333333,
+    "multi_agent": 100.0
+  }
+}
