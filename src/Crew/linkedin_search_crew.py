@@ -10,6 +10,10 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 from datetime import datetime
 
+# Import custom LinkedIn tool
+from Tools.LinkedInJobSearchTool import LinkedInJobSearchTool
+from Tools.LocationVerificationTool import LocationVerificationTool
+
 # Import json_manager functions directly
 from utils.json_manager import (
     save_linkedin_search,
@@ -44,9 +48,10 @@ class LinkedInSearchCrew:
     @agent
     def linkedin_scraper(self) -> Agent:
         """Specialized agent for LinkedIn job posting discovery and scraping"""
+        linkedin_tool = LinkedInJobSearchTool(output_dir="src/outputs/linkedin")
         return Agent(
             config=self.agents_config['LinkedIn_Scraper'], # type: ignore[index]
-            tools=[SerperDevTool()],
+            tools=[linkedin_tool, SerperDevTool()],
             llm=self.llm 
         )
     
@@ -62,9 +67,10 @@ class LinkedInSearchCrew:
     @agent
     def verification_specialist(self) -> Agent:
         """Verify and validate LinkedIn search results and market data"""
+        location_verifier = LocationVerificationTool()
         return Agent(
             config=self.agents_config['verification_specialist'], # type: ignore[index]
-            tools=[SerperDevTool()],
+            tools=[SerperDevTool(), location_verifier],
             llm=self.llm 
         )
 
@@ -84,7 +90,7 @@ class LinkedInSearchCrew:
             config=self.tasks_config['linkedin_scraping_task'], # type: ignore[index]
             agent=self.linkedin_scraper(),
             context=[self.linkedin_input_processing_task()],
-            output_file="src/outputs/linkedin/job_postings.json"
+            output_file="src/outputs/linkedin/scraping_task_output.json"
         )
     
     @task
@@ -132,12 +138,22 @@ class LinkedInSearchCrew:
         Returns:
             CrewAI result object with job search results
         """
+        # Prepare inputs with all required template variables
         inputs = {
             "job_title": job_title,
             "location": location or "",
+            "company": kwargs.get("company", ""),
+            "job_type": kwargs.get("job_type", "Any"),
+            "remote_option": kwargs.get("remote_option", "Any"),
+            "date_posted": kwargs.get("date_posted", "Any time"),
+            "work_authorization": kwargs.get("work_authorization", "Any"),
             "search_timestamp": datetime.now().isoformat(),
-            **kwargs
         }
+        
+        # Add any additional kwargs that weren't explicitly handled
+        for key, value in kwargs.items():
+            if key not in inputs:
+                inputs[key] = value
         
         # Execute crew search
         result = self.crew().kickoff(inputs=inputs)

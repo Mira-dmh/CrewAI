@@ -2,16 +2,14 @@
 
 ## 🚀 RUN
 
-
-
 ```bash
-streamlit run app.py
+streamlit run src/app.py
 ```
 
-
+Or:
 
 ```bash
-python -m streamlit run app.py
+python -m streamlit run src/app.py
 ```
 
 ## 📁 Project Structure

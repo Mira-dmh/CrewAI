@@ -97,7 +97,7 @@ def resume_prep_page():
             else:
                 st.warning(" Could not find generated resume file.")
         else:
-            st.info(" Upload a `.txt` resume to start AI analysis.")
+            st.info(" Upload your resume to start AI analysis.")
 
     # ============================================================
     # === TAB 2: Interview Coach =================================

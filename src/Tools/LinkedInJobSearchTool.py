@@ -52,6 +52,30 @@ class LinkedInJobSearchTool(BaseTool):
         if output_dir:
             self.output_dir = output_dir
 
+    def _extract_location_from_text(self, title: str, snippet: str) -> str:
+        """
+        Extract actual location from LinkedIn job title or snippet.
+        Common patterns: "City, State", "City, Province", "City, Country"
+        """
+        text = f"{title} {snippet}"
+        
+        # Pattern 1: City, State/Province (e.g., "San Francisco, CA" or "Toronto, Ontario")
+        location_pattern = r'([A-Z][a-zA-Z\s]+),\s*([A-Z]{2}|[A-Z][a-zA-Z\s]+)'
+        matches = re.findall(location_pattern, text)
+        
+        if matches:
+            # Return first match (most likely to be correct)
+            city, region = matches[0]
+            return f"{city.strip()}, {region.strip()}"
+        
+        # Pattern 2: Just state/country codes (CA, NY, etc.)
+        state_pattern = r'\b([A-Z]{2})\b'
+        state_matches = re.findall(state_pattern, text)
+        if state_matches:
+            return state_matches[0]
+        
+        return "Not specified"
+    
     def _run(self, job_title: str, location: str = "", company: str = "", 
              job_type: str = "", remote_option: str = "", date_posted: str = "",
              work_authorization: str = "") -> str:
@@ -134,13 +158,17 @@ class LinkedInJobSearchTool(BaseTool):
                         if match:
                             job_id = match.group(1)
                             
+                            # Extract actual location from snippet or title
+                            actual_location = self._extract_location_from_text(title, snippet)
+                            
                             # Don't add duplicates
                             if not any(j["job_id"] == job_id for j in all_jobs):
                                 all_jobs.append({
                                     "job_id": job_id,
                                     "job_title": title,
                                     "company_name": comp,  # Searched company
-                                    "location": location or "Not specified",
+                                    "location": actual_location,  # Real location from LinkedIn
+                                    "search_location": location or "Any",  # User's search input
                                     "application_url": url,
                                     "job_description": snippet,
                                     "employment_type": params.get("job_type", "Not specified"),

@@ -25,7 +25,7 @@ def job_search_page():
     
     # Footer with navigation tips
     st.markdown("---")
-    with st.expander("ℹ How to Use This Page"):
+    with st.expander("How to Use This Page"):
         st.markdown("""
         ###  Market Insights
         View comprehensive job market data and trends from AI-generated research reports.

@@ -35,7 +35,7 @@ dashboard_input_processing_task:
 
 linkedin_scraping_task:
   description: >
-    You are tasked with finding REAL LinkedIn job postings using your tools.
+    You are tasked with finding REAL LinkedIn job postings using the LinkedIn search tool.
     
     USER INPUT PARAMETERS:
     - Job Title: {job_title} (REQUIRED)
@@ -47,55 +47,21 @@ linkedin_scraping_task:
     - Work Authorization: {work_authorization}
     
     STEP 1: Use the "Search LinkedIn Jobs with Filters" tool
-    - Pass all user parameters as JSON to get the search strategy
+    - Pass ALL user parameters to the tool
+    - The tool will automatically handle SerperDev searches with proper query formatting
+    - The tool searches multiple companies to get 30-40+ jobs
     
-    STEP 2: Use SerperDev tool to search LinkedIn (MULTIPLE SEARCHES)
-    - Build a SIMPLE search query: "site:linkedin.com/jobs [job_title] [location]"
-    - Do NOT include too many filters in the search query - it makes searches fail
-    - Start broad, then filter results programmatically
-    - SerperDev will return up to 50 results per search
-    - **IMPORTANT**: To get more jobs, perform MULTIPLE searches with variations:
-      * Search 1: "site:linkedin.com/jobs [job_title] [location]"
-      * Search 2: "site:linkedin.com/jobs [job_title] [broader_location]" (e.g., state instead of zip)
-      * Search 3: "site:linkedin.com/jobs [related_job_title] [location]" (e.g., "data analyst" → "business analyst")
-    - Combine results from all searches to get 30-50+ unique jobs
-    - Example working query: "site:linkedin.com/jobs data analyst Pennsylvania"
-    - Example backup query: "site:linkedin.com/jobs data analyst"
-    
-    STEP 3: Extract job data from SerperDev results
-    For EACH result from ALL searches (aim for 30-50+ unique jobs):
-    - Extract job_id from LinkedIn URL (numbers after /jobs/view/)
-    - **SKIP** results that are collection pages (e.g., "2000+ jobs in...")
-    - **ONLY KEEP** results with specific job IDs in the URL
-    - Get job_title from the result title
-    - Get company_name from the result
-    - Get location from the result
-    - Infer employment_type from title/description (Full-time, Part-time, Internship, Contract)
-    - Infer work_arrangement from description (Remote, Hybrid, On-site)
-    - Infer experience_level (Entry level, Mid-Senior level, Executive)
-    - Extract salary_range if mentioned in snippet
-    - Use result snippet as job_description
-    - Extract qualifications if mentioned
-    - Build application_url: https://www.linkedin.com/jobs/view/[job_id]
-    - Parse date_posted - distinguish "Posted X ago" vs "Reposted X ago"
-    - Set is_repost: true if "Reposted" appears, false otherwise
-    - Store raw date string in date_info_raw
-    - Look for work_authorization keywords (visa, sponsorship, OPT, CPT, H-1B)
-    - Extract applicant_count if shown (e.g., "50 applicants")
-    - **Remove duplicates** - keep only unique job_ids
-    
-    STEP 4: Return structured JSON with 30-50+ unique jobs
-    - Combine results from all searches
-    - Remove duplicates by job_id
-    - Sort by most recent date first
-    - Target: 30-50 jobs minimum (more is better!)
+    STEP 2: Tool will return structured JSON with job postings
+    - Each job has: job_id, job_title, company_name, location, application_url, job_description, etc.
+    - Jobs are already extracted from LinkedIn URLs
+    - Results are automatically saved to job_postings.json
     
     IMPORTANT:
-    - You MUST use SerperDev tool to get real LinkedIn results
-    - Do NOT make up job postings
-    - Extract information from actual search results
-    - If SerperDev returns fewer than 50, that's okay - return what you find
-    - Sort results by most recent date first
+    - You MUST use the "Search LinkedIn Jobs with Filters" tool
+    - Pass all user parameters (job_title, location, company, job_type, remote_option, date_posted, work_authorization)
+    - Do NOT make up job postings - only return what the tool provides
+    - If the tool returns 0 jobs, report that honestly
+    - The tool handles all SerperDev queries automatically
   expected_output: >
     A complete JSON document with this EXACT structure:
     {
@@ -275,118 +241,178 @@ linkedin_market_trends_task:
 
 linkedin_verification_task:
   description: >
-    **MISSION**: Verify EACH LinkedIn job posting against trusted ground truth sources and generate 
-    quantitative confidence scores using the LinkedIn Job Data Verifier tool.
+    **ROLE**: As the Verification Specialist, you are the final filter ensuring that all information, 
+    data, and claims produced by other agents meet the highest standard of factual integrity before 
+    being presented to the user.
     
-    **GROUND TRUTH SOURCES** (Must reference these):
+    **MISSION**: Validate and confirm the accuracy of LinkedIn job posting data, market trends analysis, 
+    and all claims made by previous agents. Cross-examine facts, validate sources, and flag any 
+    questionable information through meticulous, skeptical analysis.
+    
+    **TRUSTED GROUND TRUTH SOURCES** (Always reference these):
     1. **U.S. Bureau of Labor Statistics (BLS)** - Official median wages and employment data
     2. **Glassdoor** - Salary ranges, company reviews, and market benchmarks
     3. **Indeed** - Job market trends and salary statistics
     4. **PayScale** - Compensation benchmarks by title and location
-    5. **LinkedIn Salary Insights** - Platform's own salary data
-    6. **Levels.fyi** - Tech industry salary data (for tech roles)
+    5. **LinkedIn Salary Insights** - Platform's own verified salary data
+    6. **Levels.fyi** - Tech industry compensation data (for technical roles)
     
-    **VERIFICATION PROCESS**:
-    For EACH job posting in the input data:
+    **DISCIPLINED VERIFICATION PROCESS**:
+    For EACH job posting and EACH claim in the market trends analysis:
     
-    STEP 1: Use the "LinkedIn Job Data Verifier" tool
-    - Pass the job posting data as JSON string
-    - Tool will automatically verify against 6 dimensions:
-      * Salary Verification (30% weight) - Compare against BLS/Glassdoor/PayScale
-      * Company Verification (20% weight) - Validate against LinkedIn/Glassdoor/Fortune lists
-      * Job Title Normalization (15% weight) - Check against O*NET taxonomy
-      * Location Market Data (15% weight) - Verify against BLS regional data
-      * Temporal Consistency (10% weight) - Flag outdated postings (>3 months)
-      * Link Validity (10% weight) - Verify LinkedIn URL formats
+    STEP 1: Cross-Examine Job Posting Data
+    - Use the "LinkedIn Job Data Verifier" tool to validate each posting
+    - Apply logical reasoning to identify inconsistencies
+    - **CRITICAL: LOCATION MATCHING** - Compare actual job location with user's search location:
+      * If user searched for "CA" (California), job must be in California, NOT Canada
+      * If location doesn't match (e.g., Toronto when searching CA), REJECT the job immediately
+      * Use geographic validation: CA = California (US state), not Canada provinces like Ontario/Alberta
+      * Match city names: "San Francisco, CA" matches "CA", "Toronto, Ontario" does NOT match "CA"
+    - Verify against 7 critical dimensions (weighted by importance):
+      * Location Matching (35% weight) - MUST match user search location; automatic rejection if mismatch
+      * Salary Verification (25% weight) - Cross-reference BLS/Glassdoor/PayScale; flag outliers
+      * Company Verification (15% weight) - Validate existence via LinkedIn/Glassdoor/Fortune lists
+      * Job Title Normalization (10% weight) - Match against O*NET occupation taxonomy
+      * Location Market Data (5% weight) - Verify cost-of-living adjustments via BLS regional data
+      * Temporal Consistency (5% weight) - Flag stale postings (>90 days = potentially filled)
+      * Link Validity (5% weight) - Verify LinkedIn URL structure and accessibility
     
-    STEP 2: Collect verification report for each job
-    - overall_confidence_score (0-1 scale)
-    - confidence_level (HIGH/MEDIUM/LOW)
-    - component_scores (breakdown by dimension)
-    - flagged_issues (anomalies and warnings)
-    - recommendations (actionable next steps)
+    STEP 2: Skeptical Review of Market Trends
+    - Question every statistical claim from the market trends analyst
+    - Verify that skill frequencies match actual job description content
+    - Confirm salary averages are mathematically correct from source data
+    - Check that geographic distributions align with known market realities
+    - Flag any claims that seem implausible or lack supporting evidence
     
-    STEP 3: Aggregate results
-    - Calculate average confidence score across all jobs
-    - Count jobs by confidence level (HIGH/MEDIUM/LOW)
-    - Identify most common issues
-    - Flag critical issues requiring immediate attention
+    STEP 3: Generate Confidence Scores
+    - Calculate overall_confidence_score (0-1 scale) for each verified job
+    - Assign confidence_level: HIGH (≥0.85), MEDIUM (0.70-0.84), LOW (<0.70)
+    - Document component_scores showing breakdown by verification dimension
+    - List flagged_issues with severity levels: critical/high/medium/low
+    - Provide actionable recommendations for addressing identified issues
     
-    **DATE VALIDATION** (Critical):
-    - "Reposted X ago" = job was RE-POSTED, not originally posted
-    - "Posted X ago" = original posting time
-    - Flag jobs older than 3 months as potentially filled
-    - Flag jobs older than 1 year as invalid
+    STEP 4: Aggregate Quality Assessment
+    - Calculate average confidence score across the entire dataset
+    - Count jobs by confidence level to assess overall data quality
+    - Identify patterns in flagged issues (common problems across multiple jobs)
+    - Flag critical issues requiring immediate user attention
+    
+    **DATE VALIDATION** (Critical for Integrity):
+    - Distinguish "Reposted X ago" (re-advertisement) from "Posted X ago" (original date)
+    - Flag jobs posted >3 months ago as "potentially_filled" (high risk)
+    - Flag jobs posted >1 year ago as "invalid" (almost certainly filled or fake)
+    - Track posting freshness to help users prioritize recent opportunities
+    
+    **QUALITY STANDARDS**:
+    - Prioritize clarity, truth, and completeness in all verification outputs
+    - Never approve questionable data without flagging concerns
+    - Maintain skepticism: if something seems wrong, investigate thoroughly
+    - Be the respected "final filter" - what you approve must be trustworthy
     
     **OUTPUT REQUIREMENTS**:
-    Return comprehensive verification report with trust scores for ALL jobs.
+    Return a comprehensive verification report that validates every claim and provides 
+    quantitative confidence metrics for all jobs. Flag ALL inconsistencies, no matter how minor.
   expected_output: >
-    A complete JSON verification report with quantitative confidence scores:
+    A comprehensive JSON verification report demonstrating meticulous fact-checking and skeptical analysis:
     {
       "verification_summary": {
-        "total_jobs_verified": "number of jobs processed",
-        "average_confidence_score": "mean score (0-1)",
-        "high_confidence_jobs": "count with score >= 0.85",
-        "medium_confidence_jobs": "count with score 0.70-0.84",
-        "low_confidence_jobs": "count with score < 0.70",
-        "flagged_for_review": "count requiring manual review"
+        "total_jobs_verified": "exact count of jobs processed through verification",
+        "average_confidence_score": "mean confidence score (0.00-1.00 scale)",
+        "high_confidence_jobs": "count with score ≥ 0.85 (approved for user presentation)",
+        "medium_confidence_jobs": "count with score 0.70-0.84 (acceptable with caveats)",
+        "low_confidence_jobs": "count with score < 0.70 (flagged for review or rejection)",
+        "flagged_for_review": "count requiring immediate manual review before user display",
+        "verification_status": "PASSED/FAILED - overall assessment of data quality"
       },
       "ground_truth_sources_used": [
-        "U.S. Bureau of Labor Statistics (BLS)",
-        "Glassdoor Salary Data",
-        "Indeed Market Trends",
-        "PayScale Benchmarks",
-        "LinkedIn Salary Insights",
-        "O*NET Occupation Taxonomy"
+        "U.S. Bureau of Labor Statistics (BLS) - Official employment and wage data",
+        "Glassdoor - Salary benchmarks and company verification",
+        "Indeed - Market trends and job posting validation",
+        "PayScale - Compensation benchmarks by role and location",
+        "LinkedIn Salary Insights - Platform-native salary verification",
+        "O*NET Occupation Taxonomy - Job title standardization",
+        "Levels.fyi - Tech industry compensation data (when applicable)"
       ],
       "verified_jobs": [
         {
-          "job_id": "LinkedIn job ID",
-          "job_title": "job title",
-          "company_name": "company name",
-          "verification_status": "verified or flagged",
-          "overall_confidence_score": "0.xxx (0-1 scale)",
-          "confidence_level": "HIGH/MEDIUM/LOW",
+          "job_id": "LinkedIn job ID from posting",
+          "job_title": "exact job title as posted",
+          "company_name": "company name from posting",
+          "verification_status": "VERIFIED/FLAGGED/REJECTED",
+          "overall_confidence_score": "0.xxx (weighted composite of all dimension scores)",
+          "confidence_level": "HIGH/MEDIUM/LOW (based on score thresholds)",
           "component_scores": {
-            "salary_verification": "0.xxx (30% weight)",
-            "company_verification": "0.xxx (20% weight)",
-            "title_normalization": "0.xxx (15% weight)",
-            "location_market": "0.xxx (15% weight)",
-            "temporal_consistency": "0.xxx (10% weight)",
-            "link_validity": "0.xxx (10% weight)"
+            "location_matching": "0.xxx or 1.0 (35% weight) - CRITICAL: 1.0 if matches search location, 0.0 if mismatch",
+            "salary_verification": "0.xxx (25% weight) - BLS/Glassdoor/PayScale cross-reference",
+            "company_verification": "0.xxx (15% weight) - LinkedIn/Glassdoor/Fortune validation",
+            "title_normalization": "0.xxx (10% weight) - O*NET taxonomy match",
+            "location_market": "0.xxx (5% weight) - BLS regional data alignment",
+            "temporal_consistency": "0.xxx (5% weight) - posting date freshness assessment",
+            "link_validity": "0.xxx (5% weight) - URL structure and accessibility check"
+          },
+          "location_verification": {
+            "search_location": "user's original search input (e.g., 'CA' for California)",
+            "actual_location": "real location from LinkedIn posting (e.g., 'Toronto, Ontario')",
+            "match_status": "MATCH/MISMATCH/UNCERTAIN",
+            "match_confidence": "0.xxx - how confident we are in the location match",
+            "rejection_reason": "if MISMATCH: explain why (e.g., 'Toronto is in Canada, not California')"
           },
           "flagged_issues": [
             {
-              "type": "salary_anomaly or missing_company or outdated_posting etc.",
-              "field": "affected field name",
-              "severity": "critical/high/medium/low",
-              "message": "detailed description of the issue",
-              "expected_value": "what the value should be based on ground truth"
+              "type": "salary_anomaly/missing_company/outdated_posting/invalid_link/title_mismatch/location_inconsistency",
+              "field": "specific field with the issue (e.g., salary_range, company_name)",
+              "severity": "CRITICAL/HIGH/MEDIUM/LOW",
+              "message": "detailed explanation of what's wrong and why it's concerning",
+              "expected_value": "what the value should be based on ground truth sources",
+              "actual_value": "what was found in the posting data",
+              "recommendation": "specific action to address this issue"
             }
           ],
-          "recommendations": [
-            "actionable recommendations based on verification results"
-          ]
+          "verification_notes": "additional context from skeptical analysis and logical reasoning",
+          "user_action_required": "yes/no - whether user should take action before applying"
         }
       ],
       "critical_issues": [
         {
-          "job_id": "job with critical issue",
-          "issue_type": "type of critical issue",
-          "description": "what needs immediate attention"
+          "job_id": "job ID with critical issue requiring immediate attention",
+          "issue_type": "FAKE_POSTING/EXPIRED_JOB/SALARY_SCAM/COMPANY_NOT_FOUND/BROKEN_LINK",
+          "severity": "CRITICAL",
+          "description": "detailed explanation of the critical issue",
+          "recommendation": "DO_NOT_APPLY/VERIFY_EXTERNALLY/CONTACT_COMPANY_DIRECTLY",
+          "impact": "why this issue matters for the user's job search"
         }
       ],
-      "date_validation_report": {
-        "recent_postings": "count posted within 7 days",
-        "moderately_recent": "count posted 8-30 days ago",
-        "older_postings": "count posted 1-3 months ago",
-        "outdated_postings": "count posted >3 months ago (flagged)",
-        "invalid_postings": "count posted >1 year ago (flagged as invalid)"
+      "market_trends_validation": {
+        "salary_averages_verified": "yes/no - whether calculated averages match source data",
+        "skill_frequencies_verified": "yes/no - whether claimed frequencies match job descriptions",
+        "geographic_distribution_verified": "yes/no - whether location data aligns with market reality",
+        "flagged_statistical_claims": [
+          {
+            "claim": "specific claim from market trends analyst",
+            "issue": "why this claim is questionable",
+            "evidence": "what the ground truth sources actually show"
+          }
+        ]
       },
-      "overall_data_quality": "HIGH/MEDIUM/LOW based on average confidence",
+      "date_validation_report": {
+        "recent_postings": "count posted within 7 days (highest priority for users)",
+        "moderately_recent": "count posted 8-30 days ago (good candidates)",
+        "older_postings": "count posted 1-3 months ago (potentially filled)",
+        "outdated_postings": "count posted >3 months ago (FLAGGED - high risk)",
+        "invalid_postings": "count posted >1 year ago (FLAGGED - almost certainly invalid)",
+        "reposted_jobs": "count with 'Reposted' designation (re-advertisements)",
+        "freshness_score": "0.00-1.00 - overall posting freshness metric"
+      },
+      "overall_data_quality": "HIGH/MEDIUM/LOW - final assessment based on average confidence score",
+      "quality_assessment_rationale": "explanation of why this quality level was assigned",
       "user_recommendations": [
-        "overall recommendations for the user based on verification results"
-      ]
+        "Prioritize jobs with HIGH confidence scores and recent posting dates",
+        "Exercise caution with jobs flagged for specific issues (details in flagged_issues)",
+        "Verify critical information independently before applying to MEDIUM/LOW confidence jobs",
+        "Additional specific recommendations based on identified patterns and issues"
+      ],
+      "verification_specialist_notes": "final comments from the skeptical analysis, including any concerns about data reliability, patterns observed across the dataset, and overall assessment of information trustworthiness"
     }
     
-    Return ONLY the JSON, no other text.
+    CRITICAL REQUIREMENT: Return ONLY the JSON verification report. No additional text, explanations, 
+    or commentary outside the JSON structure. The report itself documents all findings and reasoning.
