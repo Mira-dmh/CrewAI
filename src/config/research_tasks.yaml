@@ -159,7 +159,7 @@ content_generation_task:
       "market_insights": Deep and Insightful summary of recent hiring trends and job openings as a string,
       "top_hiring_companies": ["List of hiring company names as strings"],
       "skills_in_demand": ["Prioritized list of skill requirements as strings"],
-      "salary_expectations": ["List of expected salaries for entry level, mid level and high level of experience as strings"]
+      "salary_expectations": ["List of expected salaries for,overall average, entry level, mid level and high level of experience as strings"]
       "next_steps": ["List of actionable recommendations as strings"]
     }
 

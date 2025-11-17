@@ -1,75 +1,60 @@
 {
-  "job_title": "Data Scientist",
-  "last_updated": "2024-06",
+  "job_title": "Project Manager",
+  "last_updated": "October 2023",
   "sources": [
-    {
-      "title": "Data Scientists : Occupational Outlook Handbook",
-      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
-      "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Science Salaries & Job Market Analysis: From 2024 to 2025",
-      "url": "https://www.kdnuggets.com/data-science-salaries-job-market-analysis-2024-2025",
-      "publisher": "KDnuggets",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
-      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "2024 Data Scientist Interview Questions",
-      "url": "https://365datascience.com/career-advice/job-interview-tips/data-scientist-interview-questions/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Science Salaries 2024 - Kaggle Dataset",
-      "url": "https://www.kaggle.com/datasets/sazidthe1/data-science-salaries",
-      "publisher": "Kaggle",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Top Data Scientist Interview Questions and Answers (2025)",
-      "url": "https://www.interviewbit.com/data-science-interview-questions/",
-      "publisher": "InterviewBit",
-      "date_accessed": "2024"
-    }
+    "Bureau of Labor Statistics",
+    "PMI Job Outlook Report",
+    "IC Agile Salary Guide"
   ],
 
   "overview": {
-    "summary": "Data scientists analyze and interpret complex digital data to help organizations make informed business decisions. They leverage statistical methods, machine learning, data mining, and programming skills to build predictive models and uncover insights.",
+    "summary": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources and communicate with stakeholders.",
     "key_responsibilities": [
-      "Collect, clean, and validate data from various sources.",
-      "Perform exploratory data analysis to identify trends and patterns.",
-      "Develop and deploy machine learning models and algorithms.",
-      "Communicate findings to stakeholders through visualizations and reports.",
-      "Collaborate with business units to define data-driven strategies.",
-      "Maintain data pipelines and ensure data quality."
+      "Defining project scope and objectives.",
+      "Coordinating project resources and managing the project team.",
+      "Maintaining communication with stakeholders.",
+      "Tracking project performance and reporting on progress."
     ],
     "daily_tasks": [
-      "Data collection, cleaning, and preprocessing.",
-      "Exploratory data analysis and visualization.",
-      "Model development, training, and testing.",
-      "Collaborating with teams to understand business needs.",
-      "Reporting insights and recommendations to stakeholders."
+      "Conducting project meetings.",
+      "Managing budgets and resources.",
+      "Communicating with clients and stakeholders.",
+      "Updating project status and performance reports."
     ],
-    "work_environment": "Often works in office settings within technology, finance, healthcare, or consulting companies. Increasingly supports remote or hybrid work arrangements.",
+    "work_environment": "Primarily office-based, with some remote work opportunities depending on the organization.",
     "industries": [
-      "Technology",
-      "Finance and Insurance",
-      "Healthcare and Biopharma",
-      "Retail and E-commerce",
-      "Manufacturing",
-      "Telecommunications"
+      "Information Technology",
+      "Construction",
+      "Healthcare",
+      "Telecommunications",
+      "Finance"
     ]
   },
 
   "skills": {
     "technical_skills": [
+<<<<<<< HEAD
+      "Agile methodologies",
+      "Project management software (e.g., JIRA, Microsoft Project)",
+      "Budget management tools"
+    ],
+    "soft_skills": [
+      "Leadership",
+      "Communication",
+      "Problem-solving",
+      "Interpersonal skills"
+    ],
+    "tools_and_technologies": [
+      "Microsoft Project",
+      "Trello",
+      "Asana",
+      "Basecamp"
+    ],
+    "certifications": [
+      "Project Management Professional (PMP)",
+      "Certified ScrumMaster (CSM)",
+      "Agile Certified Practitioner (PMI-ACP)"
+=======
       "Programming Languages: Python, R, SQL",
       "Data Manipulation and Analysis: Pandas, NumPy",
       "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
@@ -109,10 +94,28 @@
       "Microsoft Certified: Azure Data Scientist Associate",
       "IBM Data Science Professional Certificate",
       "AWS Certified Machine Learning - Specialty"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "education_and_training": {
+<<<<<<< HEAD
+    "minimum_education": "Bachelor's degree in project management or related field.",
+    "common_degrees": [
+      "Bachelor's Degree in Business Administration",
+      "Master's Degree in Project Management",
+      "MBA"
+    ],
+    "recommended_courses": [
+      "Project Management",
+      "Business Communication",
+      "Risk Management"
+    ],
+    "professional_certifications": [
+      "PMP",
+      "PMI-ACP",
+      "CSM"
+=======
     "minimum_education": "Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related fields.",
     "common_degrees": [
       "Computer Science",
@@ -135,11 +138,30 @@
       "Microsoft Certified: Azure Data Scientist Associate",
       "IBM Data Science Professional Certificate",
       "AWS Certified Machine Learning - Specialty"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "career_path": {
     "entry_level_positions": [
+<<<<<<< HEAD
+      "Project Coordinator",
+      "Project Assistant"
+    ],
+    "mid_level_positions": [
+      "Project Manager",
+      "Senior Project Manager"
+    ],
+    "senior_positions": [
+      "Program Manager",
+      "Project Director"
+    ],
+    "advancement_opportunities": "Opportunities for advancement to senior management roles, such as Program Manager or Department Director.",
+    "related_roles": [
+      "Product Manager",
+      "Operations Manager",
+      "Portfolio Manager"
+=======
       "Data Analyst",
       "Junior Data Scientist",
       "Business Intelligence Analyst"
@@ -161,11 +183,34 @@
       "Machine Learning Engineer",
       "Business Intelligence Analyst",
       "Data Analyst"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "salary_and_outlook": {
     "average_salary": {
+<<<<<<< HEAD
+      "us": "$100,750",
+      "international": [
+        {
+          "country": "Canada",
+          "average_salary": "CAD 85,000"
+        },
+        {
+          "country": "United Kingdom",
+          "average_salary": "GBP 60,000"
+        }
+      ],
+      "by_experience_level": {
+        "entry_level": "$62,254",
+        "mid_level": "$90,560",
+        "senior_level": "$122,337"
+      }
+    },
+    "job_outlook": {
+      "growth_rate": "6% growth projected from 2024 to 2034.",
+      "future_trends": "Increasing emphasis on Agile project management methodologies and project management software integration."
+=======
       "us": {
         "entry_level": "$83,000",
         "mid_level": "$120,000",
@@ -188,11 +233,27 @@
     "job_outlook": {
       "growth_rate": "34% (2024-2034)",
       "future_trends": "Expansion driven by data availability, AI adoption, and demand for data-driven business insights."
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     }
   },
 
   "employment_data": {
     "top_employers": [
+<<<<<<< HEAD
+      "Amazon",
+      "Google",
+      "IBM",
+      "Deloitte",
+      "Accenture"
+    ],
+    "geographic_hotspots": [
+      "San Francisco, CA",
+      "New York, NY",
+      "Austin, TX",
+      "Seattle, WA"
+    ],
+    "remote_vs_in_person": "Increasing number of remote work opportunities alongside traditional office-based roles."
+=======
       "Google",
       "Amazon",
       "Microsoft",
@@ -217,10 +278,25 @@
       "Tokyo, Japan"
     ],
     "remote_vs_in_person": "High prevalence of remote and hybrid roles, with increased flexibility post-pandemic."
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
   },
 
   "tools_and_software": {
     "common_tools": [
+<<<<<<< HEAD
+      "Trello",
+      "Asana",
+      "Microsoft Project"
+    ],
+    "emerging_tools": [
+      "Monday.com",
+      "Wrike"
+    ],
+    "software_categories": [
+      "Project Management Software",
+      "Collaboration Tools",
+      "Time Tracking Software"
+=======
       "Python",
       "R",
       "SQL",
@@ -250,11 +326,25 @@
       "Big Data Platforms",
       "Cloud Computing Services",
       "Data Storage Solutions"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "interview_and_hiring": {
     "common_interview_questions": [
+<<<<<<< HEAD
+      "Describe a challenging project you managed.",
+      "How do you handle project scope changes?",
+      "What project management tools do you prefer?",
+      "How do you manage communication with stakeholders?"
+    ],
+    "assessment_types": [
+      "Behavioral interviews",
+      "Case studies",
+      "Skill assessments"
+    ],
+    "recruitment_process": "Typically includes initial screening, interviews, and practical assessments."
+=======
       "Programming and coding questions (Python, SQL)",
       "Statistics and probability questions",
       "Machine learning algorithms and theory",
@@ -270,10 +360,29 @@
       "Onsite technical and behavioral interviews"
     ],
     "recruitment_process": "Typically includes resume screening, HR screening call, technical interviews, data challenges, onsite interviews, and final offer & negotiation."
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
   },
 
   "industry_trends": {
     "emerging_technologies": [
+<<<<<<< HEAD
+      "AI in project management",
+      "Project automation tools",
+      "Data analytics for project performance tracking"
+    ],
+    "market_demand_drivers": [
+      "Technological advancements",
+      "Demand for project efficiency",
+      "Globalization of projects"
+    ],
+    "regulatory_factors": [
+      "Compliance with industry standards",
+      "Data protection regulations"
+    ],
+    "future_opportunities": [
+      "Increase in Agile transformation projects",
+      "Growth in sectors like IT and healthcare"
+=======
       "Generative AI and large language models",
       "Automated machine learning (AutoML)",
       "Explainable AI and model interpretability",
@@ -296,11 +405,29 @@
       "Increased focus on data ethics and transparency",
       "Growth of cloud-based and edge analytics",
       "Broader adoption of automated data science tools"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "additional_resources": {
     "professional_associations": [
+<<<<<<< HEAD
+      "Project Management Institute (PMI)",
+      "International Project Management Association (IPMA)"
+    ],
+    "online_communities": [
+      "ProjectManagement.com",
+      "PMI LinkedIn Groups"
+    ],
+    "recommended_readings": [
+      "A Guide to the Project Management Body of Knowledge (PMBOK Guide)",
+      "Scrum: The Art of Doing Twice the Work in Half the Time"
+    ],
+    "training_platforms": [
+      "Coursera",
+      "LinkedIn Learning",
+      "Udemy"
+=======
       "Data Science Association",
       "Association for Computing Machinery (ACM) SIGKDD",
       "The Data Science Council of America (DASCA)",
@@ -323,11 +450,30 @@
       "DataCamp",
       "Udacity",
       "LinkedIn Learning"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     ]
   },
 
   "citations": [
     {
+<<<<<<< HEAD
+      "title": "Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/business-and-financial/project-management-specialists.htm",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "date_accessed": "October 1, 2023"
+    },
+    {
+      "title": "2023 Project Manager Salary Guide",
+      "url": "https://www.icagile.com/resources/the-project-manager-salary-what-to-expect-and-how-to-earn-more",
+      "publisher": "IC Agile",
+      "date_accessed": "October 1, 2023"
+    },
+    {
+      "title": "Global Project Management Job Trends 2023",
+      "url": "https://www.pmi.org/-/media/pmi/documents/public/pdf/learning/career-central/global-project-management-job-trends-2023.pdf",
+      "publisher": "PMI",
+      "date_accessed": "October 1, 2023"
+=======
       "title": "Data Scientists : Occupational Outlook Handbook",
       "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
       "publisher": "U.S. Bureau of Labor Statistics",
@@ -362,6 +508,7 @@
       "url": "https://www.interviewbit.com/data-science-interview-questions/",
       "publisher": "InterviewBit",
       "date_accessed": "2024"
+>>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
     }
   ]
 }

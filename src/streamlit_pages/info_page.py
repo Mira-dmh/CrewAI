@@ -4,7 +4,10 @@ from Crew.research_crew import JobResearchCrew
 from crewai import LLM
 from onet_get import search_top_job
 
-llm = LLM(model="gpt-4.1-mini")
+llm = LLM(
+    model="gpt-4o-mini",   # limit output length
+    max_completion_tokens = 1000,
+    )
 
 def run(job_title):
     """Run the CrewAI pipeline with the given job title"""
@@ -40,33 +43,108 @@ def info_page():
             st.warning("No research results found yet.")
             return
 
-        col1, col2, col3 = st.columns(3)
-        col4, col5, col6 = st.columns(3)
+
+
+
+
+        st.markdown("""
+            <style>
+                /* Add horizontal padding between Streamlit columns */
+                div[data-testid="column"] {
+                    padding: 0 0.7rem; /* spacing between columns */
+                }
+
+                /* Add vertical spacing between column rows */
+                div[data-testid="stHorizontalBlock"] {
+                    margin-bottom: 1.8rem !important;
+                }
+
+                /* Equal-height info boxes */
+                .info-box {
+                    background-color: #262731; /* dark background */
+                    border: 1px solid #3a3b46;
+                    border-radius: 18px;
+                    height: 280px;
+                    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+                    overflow-y: auto;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                .info-box:hover {
+                    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+                    transform: translateY(-2px);
+                }
+
+                /* Sticky header for scrolling */
+                .info-header {
+                    position: sticky;
+                    top: 0;
+                    background-color: #2f3040; /* slightly lighter for contrast */
+                    border-bottom: 1px solid #3a3b46;
+                    padding: 14px 18px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #ffffff; /* white text */
+                    border-top-left-radius: 18px;
+                    border-top-right-radius: 18px;
+                    z-index: 2;
+                }
+
+                .info-content {
+                    padding: 14px 18px 18px 18px;
+                    border-bottom-left-radius: 18px;
+                    border-bottom-right-radius: 18px;
+                    color: #ffffff; /* main content text */
+                }
+
+                .info-content p,
+                .info-content li {
+                    font-size: 0.95rem;
+                    color: #e0e0e0; /* soft white text for readability */
+                }
+
+                ul {
+                    margin-top: 0;
+                    padding-left: 1.2rem;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+
+
+        # --- Helper to render sticky-header boxes ---
+        def render_box(title, content_items):
+            if isinstance(content_items, list):
+                content_html = "".join([f"<li>{item}</li>" for item in content_items]) or "<p>No data available</p>"
+                content_html = f"<ul>{content_html}</ul>"
+            else:
+                content_html = f"<p>{content_items}</p>"
+            
+            st.markdown(f"""
+                <div class="info-box">
+                    <div class="info-header">{title}</div>
+                    <div class="info-content">{content_html}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+
+        # --- Layout ---
+        col1, col2, col3 = st.columns(3, gap="large")
+        col4, col5, col6 = st.columns(3, gap="large")
 
         with col1:
-            st.header("Job Description")
-            st.write(data.get("job_overview", "No data available."))
+            render_box("Job Description", data.get("job_overview", "No data available."))
 
         with col2:
-            st.header("Market Trends")
-            st.write(data.get("market_insights", "No data available"))
+            render_box("Market Trends", data.get("market_insights", "No data available"))
 
         with col3:
-            st.header("Top Hiring Companies")
-            for company in data.get("top_hiring_companies", []):
-                st.markdown(f"- {company}")
+            render_box("Top Hiring Companies", data.get("top_hiring_companies", []))
 
         with col4:
-            st.header("Required Skills")
-            for skill in data.get("skills_in_demand", []):
-                st.markdown(f"- {skill}")
+            render_box("Required Skills", data.get("skills_in_demand", []))
 
         with col5:
-            st.header("Expected Salary")
-            for salary in data.get("salary_expectations", []):
-                st.markdown(f"- {salary}")
+            render_box("Expected Salary", data.get("salary_expectations", []))
 
         with col6:
-            st.header("Next Steps")
-            for step in data.get("next_steps", []):
-                st.markdown(f"- {step}")
+            render_box("Next Steps", data.get("next_steps", []))
