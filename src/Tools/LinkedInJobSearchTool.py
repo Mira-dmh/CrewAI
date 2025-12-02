@@ -110,29 +110,17 @@ class LinkedInJobSearchTool(BaseTool):
         if not api_key:
             return json.dumps({"error": "SERPER_API_KEY not found in environment"})
         
-        # Target companies list (can be customized)
-        target_companies = [
-            "Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix", "Uber",
-            "LinkedIn", "Salesforce", "Oracle", "IBM", "Intel", "Adobe", "Cisco",
-            "Dell", "HP", "VMware", "ServiceNow", "Workday", "Zoom"
-        ]
-        
-        # If specific company provided, search only that company
-        if company and company not in ["", "Any"]:
-            target_companies = [company]
-        
         all_jobs = []
         max_jobs_target = 40  # Target: 40 job postings
         
-        # Search each company until we reach 40 jobs
-        for comp in target_companies[:15]:  # Search more companies if needed
-            if len(all_jobs) >= max_jobs_target:
-                break  # Stop when we have enough jobs
-                
-            # Build search query: target /jobs/view specifically
-            query = f'site:linkedin.com/jobs/view "{job_title}" {comp}'
+        # STRATEGY 1: If user specifies a company, search only that company
+        if company and company not in ["", "Any"]:
+            # Build search query for specific company
+            query = f'site:linkedin.com/jobs/view "{job_title}" "{company}"'
             if location:
-                query += f' {location}'
+                # Remove commas from location for SerperDev compatibility
+                clean_location = location.replace(',', '')
+                query += f' {clean_location}'
             
             try:
                 response = requests.post(
@@ -141,7 +129,7 @@ class LinkedInJobSearchTool(BaseTool):
                         "X-API-KEY": api_key,
                         "Content-Type": "application/json"
                     },
-                    json={"q": query, "num": 10}  # 10 results per company
+                    json={"q": query, "num": max_jobs_target}
                 )
                 
                 if response.status_code == 200:
@@ -157,6 +145,98 @@ class LinkedInJobSearchTool(BaseTool):
                         match = re.search(r'/jobs/view/[^/]+-(\d+)', url)
                         if match:
                             job_id = match.group(1)
+                            actual_location = self._extract_location_from_text(title, snippet)
+                            
+                            if not any(j["job_id"] == job_id for j in all_jobs):
+                                all_jobs.append({
+                                    "job_id": job_id,
+                                    "job_title": title,
+                                    "company_name": company,
+                                    "location": actual_location,
+                                    "search_location": location or "Any",
+                                    "application_url": url,
+                                    "job_description": snippet,
+                                    "employment_type": params.get("job_type", "Not specified"),
+                                    "work_arrangement": params.get("remote_option", "Not specified"),
+                                    "date_posted": "Recent",
+                                    "source": "LinkedIn"
+                                })
+            except Exception as e:
+                print(f"Error searching {company}: {e}")
+        
+        # STRATEGY 2: General search without company restriction (DEFAULT)
+        else:
+            # Build general search query
+            # Use site: to restrict to LinkedIn job view pages
+            query = f'site:linkedin.com/jobs/view "{job_title}"'
+            if location:
+                # Remove commas from location - SerperDev doesn't like them in queries
+                # "Philadelphia, PA" -> "Philadelphia PA"
+                clean_location = location.replace(',', '')
+                query += f' {clean_location}'
+            
+            # Add filters to query if specified
+            if job_type and job_type not in ["", "Any"]:
+                query += f' {job_type}'
+            if remote_option and remote_option not in ["", "Any"]:
+                query += f' {remote_option}'
+            
+            try:
+                response = requests.post(
+                    "https://google.serper.dev/search",
+                    headers={
+                        "X-API-KEY": api_key,
+                        "Content-Type": "application/json"
+                    },
+                    json={"q": query, "num": 10}  # Max 10 results per query for SerperDev free tier
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    results = data.get("organic", [])
+                    
+                    for result in results:
+                        url = result.get("link", "")
+                        title = result.get("title", "")
+                        snippet = result.get("snippet", "")
+                        
+                        # Extract company name from title
+                        # LinkedIn titles typically: "Company hiring Job Title" or "Job Title - Company" or "Job Title at Company"
+                        company_name = "Not specified"
+                        
+                        # Method 1: Pattern "Company hiring Job Title in Location"
+                        if "hiring" in title.lower():
+                            hiring_match = re.search(r'^(.+?)\s+hiring\s+', title, re.IGNORECASE)
+                            if hiring_match:
+                                company_name = hiring_match.group(1).strip()
+                        
+                        # Method 2: Extract from URL path (fallback)
+                        # URLs like: linkedin.com/jobs/view/title-at-company-name-123456
+                        if company_name == "Not specified":
+                            url_match = re.search(r'/jobs/view/.+-at-([a-z0-9-]+)-\d+', url, re.IGNORECASE)
+                            if url_match:
+                                # Convert "avesta-computer-services" to "Avesta Computer Services"
+                                company_name = url_match.group(1).replace('-', ' ').title()
+                        
+                        # Method 3: Pattern "Job Title at Company in Location"
+                        if company_name == "Not specified" and " at " in title:
+                            at_match = re.search(r'\bat\s+(.+?)(?:\s+in\s+|\s*$)', title, re.IGNORECASE)
+                            if at_match:
+                                company_name = at_match.group(1).strip()
+                        
+                        # Method 4: Pattern "Job Title - Company"
+                        if company_name == "Not specified" and " - " in title:
+                            parts = title.split(" - ")
+                            if len(parts) >= 2:
+                                # Sometimes last part is location, check for that
+                                potential_company = parts[1].strip() if len(parts) == 2 else parts[-1].strip()
+                                # Filter out common location indicators
+                                if not any(loc in potential_company for loc in [", CA", ", NY", ", TX", "United States"]):
+                                    company_name = potential_company
+                        
+                        # Extract job_id from URL
+                        match = re.search(r'/jobs/view/[^/]+-(\d+)', url)
+                        if match:
+                            job_id = match.group(1)
                             
                             # Extract actual location from snippet or title
                             actual_location = self._extract_location_from_text(title, snippet)
@@ -166,7 +246,7 @@ class LinkedInJobSearchTool(BaseTool):
                                 all_jobs.append({
                                     "job_id": job_id,
                                     "job_title": title,
-                                    "company_name": comp,  # Searched company
+                                    "company_name": company_name,  # Extracted from title/snippet
                                     "location": actual_location,  # Real location from LinkedIn
                                     "search_location": location or "Any",  # User's search input
                                     "application_url": url,
@@ -178,22 +258,21 @@ class LinkedInJobSearchTool(BaseTool):
                                 })
             
             except Exception as e:
-                print(f"Error searching {comp}: {e}")
-                continue
+                print(f"Error searching general jobs: {e}")
         
         # Build result JSON
         result_data = {
             "search_metadata": {
                 "job_title": job_title,
                 "location": location or "Any",
-                "company": company or f"Top {len(target_companies)} companies",
+                "company": company or "All companies (general search)",
                 "job_type": params.get("job_type", "Any"),
                 "remote_option": params.get("remote_option", "Any"),
                 "date_posted": params.get("date_posted", "Any time"),
                 "work_authorization": params.get("work_authorization", "Any"),
                 "search_date": datetime.now().isoformat(),
                 "total_results_found": len(all_jobs),
-                "method": "serperdev_targeted_company_search"
+                "method": "serperdev_general_search" if not company else "serperdev_targeted_company_search"
             },
             "job_postings": all_jobs
         }

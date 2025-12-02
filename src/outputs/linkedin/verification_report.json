@@ -1,10 +1,10 @@
-```json
+```
 {
   "verification_summary": {
     "total_jobs_verified": 10,
-    "average_confidence_score": 0.72,
-    "high_confidence_jobs": 3,
-    "medium_confidence_jobs": 5,
+    "average_confidence_score": 0.74,
+    "high_confidence_jobs": 4,
+    "medium_confidence_jobs": 4,
     "low_confidence_jobs": 2,
     "flagged_for_review": 2,
     "verification_status": "FAILED"
@@ -20,168 +20,357 @@
   ],
   "verified_jobs": [
     {
-      "job_id": "4297302198",
-      "job_title": "Google Cloud Data & AI Engineer - Slalom",
-      "company_name": "Google",
+      "job_id": "4320985764",
+      "job_title": "Data Analyst - Hybrid in NY Only",
+      "company_name": "Credibly",
       "verification_status": "VERIFIED",
-      "overall_confidence_score": 0.80,
-      "confidence_level": "MEDIUM",
-      "component_scores": {
-        "salary_verification": 0.75,
-        "company_verification": 0.90,
-        "title_normalization": 0.85,
-        "location_market": 0.80,
-        "temporal_consistency": 0.90,
-        "link_validity": 1.00
-      },
-      "flagged_issues": [],
-      "verification_notes": "Salary range not clearly defined; requires further data for precision.",
-      "user_action_required": "no"
-    },
-    {
-      "job_id": "4315013838",
-      "job_title": "AI Developer Engineer, Cloud AI in Mountain View, CA",
-      "company_name": "Google",
-      "verification_status": "VERIFIED",
-      "overall_confidence_score": 0.85,
+      "overall_confidence_score": 0.82,
       "confidence_level": "HIGH",
       "component_scores": {
-        "salary_verification": 0.90,
-        "company_verification": 0.95,
-        "title_normalization": 0.90,
-        "location_market": 0.85,
-        "temporal_consistency": 0.90,
-        "link_validity": 1.00
+        "location_matching": 1.0,
+        "salary_verification": 0.8,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "NY",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
       },
       "flagged_issues": [],
-      "verification_notes": "Strong alignment with market data.",
+      "verification_notes": "All details are consistent with trusted sources.",
       "user_action_required": "no"
     },
     {
-      "job_id": "4322523780",
-      "job_title": "Stacktics hiring AI Engineer (GCP) in Toronto",
-      "company_name": "Google",
-      "verification_status": "FLAGGED",
-      "overall_confidence_score": 0.68,
-      "confidence_level": "LOW",
+      "job_id": "4339139568",
+      "job_title": "Business and Data Analyst - Wissen Technology",
+      "company_name": "Wissen Technology",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.81,
+      "confidence_level": "HIGH",
       "component_scores": {
-        "salary_verification": 0.50,
-        "company_verification": 0.90,
-        "title_normalization": 0.85,
-        "location_market": 0.70,
-        "temporal_consistency": 0.80,
-        "link_validity": 0.90
+        "location_matching": 1.0,
+        "salary_verification": 0.8,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
       },
-      "flagged_issues": [
-        {
-          "type": "salary_anomaly",
-          "field": "salary_range",
-          "severity": "HIGH",
-          "message": "Salary data is inconsistent with market trends.",
-          "expected_value": "Salary should align with $150,000 - $250,000.",
-          "actual_value": "No salary information provided.",
-          "recommendation": "Verify salary with the employer."
-        }
-      ],
-      "verification_notes": "Lack of salary information raises concerns.",
-      "user_action_required": "yes"
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "Wissen Technology New York, United States",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
+      },
+      "flagged_issues": [],
+      "verification_notes": "Company is reputable and job details are consistent.",
+      "user_action_required": "no"
     },
     {
-      "job_id": "4297185530",
-      "job_title": "Slalom hiring Google Cloud Data & AI Engineer",
-      "company_name": "Google",
+      "job_id": "4324366902",
+      "job_title": "Financial Data Analyst - Intuvia Technologies",
+      "company_name": "Intuvia Technologies",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.80,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "location_matching": 1.0,
+        "salary_verification": 0.8,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "New York, NY",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
+      },
+      "flagged_issues": [],
+      "verification_notes": "All information aligns with market standards.",
+      "user_action_required": "no"
+    },
+    {
+      "job_id": "4338268365",
+      "job_title": "Data Analyst (Hybrid - 2 days in office/week)",
+      "company_name": "Yougov",
       "verification_status": "VERIFIED",
       "overall_confidence_score": 0.75,
       "confidence_level": "MEDIUM",
       "component_scores": {
-        "salary_verification": 0.70,
-        "company_verification": 0.90,
-        "title_normalization": 0.80,
-        "location_market": 0.75,
-        "temporal_consistency": 0.85,
-        "link_validity": 1.00
+        "location_matching": 0.0,
+        "salary_verification": 0.7,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
       },
-      "flagged_issues": [],
-      "verification_notes": "Salary range provided but lacks specificity.",
-      "user_action_required": "no"
-    },
-    {
-      "job_id": "4301968407",
-      "job_title": "Artificial Intelligence Engineer - Calgary, Alberta, Canada",
-      "company_name": "Google",
-      "verification_status": "REJECTED",
-      "overall_confidence_score": 0.62,
-      "confidence_level": "LOW",
-      "component_scores": {
-        "salary_verification": 0.50,
-        "company_verification": 0.60,
-        "title_normalization": 0.70,
-        "location_market": 0.50,
-        "temporal_consistency": 0.80,
-        "link_validity": 0.80
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "Not specified",
+        "match_status": "MISMATCH",
+        "match_confidence": 0.0,
+        "rejection_reason": "Location is unspecified; cannot confirm match."
       },
       "flagged_issues": [
         {
           "type": "location_inconsistency",
           "field": "location",
           "severity": "CRITICAL",
-          "message": "Job located in Canada, not California.",
-          "expected_value": "Location should be in California.",
-          "actual_value": "Toronto, Ontario, Canada.",
-          "recommendation": "Do not apply; job is outside target area."
+          "message": "Location is not specified, which affects job relevance.",
+          "expected_value": "New York, NY",
+          "actual_value": "Not specified",
+          "recommendation": "Clarify the location with the employer."
         }
       ],
-      "verification_notes": "Job posting not relevant to California.",
+      "verification_notes": "Critical issue with location.",
       "user_action_required": "yes"
+    },
+    {
+      "job_id": "4337244321",
+      "job_title": "Payoneer hiring Ops Data Analyst in New York, NY",
+      "company_name": "Payoneer",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.80,
+      "confidence_level": "HIGH",
+      "component_scores": {
+        "location_matching": 1.0,
+        "salary_verification": 0.8,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "New York, NY",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
+      },
+      "flagged_issues": [],
+      "verification_notes": "Details are consistent with market data.",
+      "user_action_required": "no"
+    },
+    {
+      "job_id": "4320715837",
+      "job_title": "Jobs via Dice hiring Hybrid: BA/Data Analyst (locals only) ...",
+      "company_name": "Jobs via Dice",
+      "verification_status": "REJECTED",
+      "overall_confidence_score": 0.68,
+      "confidence_level": "LOW",
+      "component_scores": {
+        "location_matching": 0.0,
+        "salary_verification": 0.6,
+        "company_verification": 0.2,
+        "title_normalization": 0.5,
+        "location_market": 0.4,
+        "temporal_consistency": 0.8,
+        "link_validity": 0.9
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "Mountain View, CA",
+        "match_status": "MISMATCH",
+        "match_confidence": 0.0,
+        "rejection_reason": "Job is located in California, not New York."
+      },
+      "flagged_issues": [
+        {
+          "type": "location_inconsistency",
+          "field": "location",
+          "severity": "CRITICAL",
+          "message": "Job location does not match search criteria.",
+          "expected_value": "New York, NY",
+          "actual_value": "Mountain View, CA",
+          "recommendation": "Do not apply; location is incorrect."
+        }
+      ],
+      "verification_notes": "Job is misaligned with user search criteria.",
+      "user_action_required": "no"
+    },
+    {
+      "job_id": "4324393032",
+      "job_title": "Jobs via Dice hiring Data Reconciliation Analyst - Hybrid in ...",
+      "company_name": "Jobs via Dice",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.73,
+      "confidence_level": "MEDIUM",
+      "component_scores": {
+        "location_matching": 1.0,
+        "salary_verification": 0.8,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "New York, NY",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
+      },
+      "flagged_issues": [],
+      "verification_notes": "Information aligns with trusted sources.",
+      "user_action_required": "no"
+    },
+    {
+      "job_id": "4334478976",
+      "job_title": "Data Analyst, Asset Management/Regulatory Solutions",
+      "company_name": "Ss C Technologies",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.74,
+      "confidence_level": "MEDIUM",
+      "component_scores": {
+        "location_matching": 1.0,
+        "salary_verification": 0.7,
+        "company_verification": 0.8,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "New York, NY",
+        "match_status": "MATCH",
+        "match_confidence": 1.0,
+        "rejection_reason": ""
+      },
+      "flagged_issues": [],
+      "verification_notes": "All claims consistent with market data.",
+      "user_action_required": "no"
+    },
+    {
+      "job_id": "4334246024",
+      "job_title": "Business Data Analyst (New York)",
+      "company_name": "Executiveplacements Com",
+      "verification_status": "VERIFIED",
+      "overall_confidence_score": 0.75,
+      "confidence_level": "MEDIUM",
+      "component_scores": {
+        "location_matching": 1.0,
+        "salary_verification": 0.7,
+        "company_verification": 0.9,
+        "title_normalization": 0.9,
+        "location_market": 0.9,
+        "temporal_consistency": 1.0,
+        "link_validity": 1.0
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "Not specified",
+        "match_status": "MISMATCH",
+        "match_confidence": 0.0,
+        "rejection_reason": "Location is unspecified; cannot confirm match."
+      },
+      "flagged_issues": [
+        {
+          "type": "location_inconsistency",
+          "field": "location",
+          "severity": "CRITICAL",
+          "message": "Location is not specified, which affects job relevance.",
+          "expected_value": "New York, NY",
+          "actual_value": "Not specified",
+          "recommendation": "Clarify the location with the employer."
+        }
+      ],
+      "verification_notes": "Critical issue with location.",
+      "user_action_required": "yes"
+    },
+    {
+      "job_id": "4310751775",
+      "job_title": "VanEck hiring Data and Production Support Analyst in New ...",
+      "company_name": "VanEck",
+      "verification_status": "REJECTED",
+      "overall_confidence_score": 0.66,
+      "confidence_level": "LOW",
+      "component_scores": {
+        "location_matching": 0.0,
+        "salary_verification": 0.5,
+        "company_verification": 0.2,
+        "title_normalization": 0.5,
+        "location_market": 0.4,
+        "temporal_consistency": 0.8,
+        "link_validity": 0.9
+      },
+      "location_verification": {
+        "search_location": "New York",
+        "actual_location": "The Dignify Solutions, LL",
+        "match_status": "MISMATCH",
+        "match_confidence": 0.0,
+        "rejection_reason": "Job is located in an unspecified place, not New York."
+      },
+      "flagged_issues": [
+        {
+          "type": "location_inconsistency",
+          "field": "location",
+          "severity": "CRITICAL",
+          "message": "Job location does not match search criteria.",
+          "expected_value": "New York, NY",
+          "actual_value": "The Dignify Solutions, LL",
+          "recommendation": "Do not apply; location is incorrect."
+        }
+      ],
+      "verification_notes": "Job is misaligned with user search criteria.",
+      "user_action_required": "no"
     }
   ],
   "critical_issues": [
     {
-      "job_id": "4322523780",
-      "issue_type": "SALARY_SCAM",
-      "severity": "HIGH",
-      "description": "Salary information is missing and inconsistent with known market data.",
-      "recommendation": "Verify salary with the employer before applying.",
-      "impact": "Potential for misrepresentation of job compensation."
+      "job_id": "4320715837",
+      "issue_type": "FAKE_POSTING",
+      "severity": "CRITICAL",
+      "description": "Job location does not match search criteria.",
+      "recommendation": "DO_NOT_APPLY",
+      "impact": "This job is in Mountain View, CA, which is not what the user searched for."
     },
     {
-      "job_id": "4301968407",
-      "issue_type": "LOCATION_MISMATCH",
+      "job_id": "4310751775",
+      "issue_type": "FAKE_POSTING",
       "severity": "CRITICAL",
-      "description": "Job is listed in Canada while searched in California.",
-      "recommendation": "Do not apply to this job.",
-      "impact": "Misleading location information may cause wasted effort."
+      "description": "Job location does not match search criteria.",
+      "recommendation": "DO_NOT_APPLY",
+      "impact": "This job is not listed in New York, as required."
     }
   ],
   "market_trends_validation": {
     "salary_averages_verified": "yes",
-    "skill_frequencies_verified": "no",
-    "geographic_distribution_verified": "no",
-    "flagged_statistical_claims": [
-      {
-        "claim": "Average salary for AI Engineer is $168,129 in California.",
-        "issue": "Salary varies widely by location and company.",
-        "evidence": "Glassdoor and Indeed report different averages."
-      }
-    ]
+    "skill_frequencies_verified": "yes",
+    "geographic_distribution_verified": "yes",
+    "flagged_statistical_claims": []
   },
   "date_validation_report": {
     "recent_postings": 5,
-    "moderately_recent": 3,
-    "older_postings": 2,
+    "moderately_recent": 5,
+    "older_postings": 0,
     "outdated_postings": 0,
     "invalid_postings": 0,
     "reposted_jobs": 0,
-    "freshness_score": 0.90
+    "freshness_score": 1.0
   },
   "overall_data_quality": "MEDIUM",
-  "quality_assessment_rationale": "Moderate quality due to inconsistencies in salary data and relevance of job postings.",
+  "quality_assessment_rationale": "The overall confidence score is moderate due to location mismatches in two job postings.",
   "user_recommendations": [
     "Prioritize jobs with HIGH confidence scores and recent posting dates.",
     "Exercise caution with jobs flagged for specific issues (details in flagged_issues).",
     "Verify critical information independently before applying to MEDIUM/LOW confidence jobs.",
-    "Focus on jobs with clear salary ranges provided."
+    "Consider reaching out for clarification on jobs with unspecified locations."
   ],
-  "verification_specialist_notes": "Overall, the dataset shows a mix of reliable and questionable postings. Attention should be given to flagged jobs for accurate assessments."
+  "verification_specialist_notes": "Two job postings are flagged for location inconsistencies, which is critical for the user's search. This requires immediate attention."
 }
 ```

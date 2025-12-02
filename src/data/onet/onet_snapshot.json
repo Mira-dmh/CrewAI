@@ -1,42 +1,41 @@
 {
-  "code": "15-1299.09",
-  "title": "Information Technology Project Managers",
+  "code": "15-2051.00",
+  "title": "Data Scientists",
   "tags": {
     "bright_outlook": true,
     "green": false
   },
-  "description": "Plan, initiate, and manage information technology (IT) projects. Lead and guide the work of technical staff. Serve as liaison between business and technical aspects of projects. Plan project stages and assess business implications for each stage. Monitor progress to assure deadlines, standards, and cost targets are met.",
-  "sample_of_reported_job_titles": {
-    "title": [
-      "Cloud Product Director",
-      "Cybersecurity Project Manager",
-      "Data Center Product Director",
-      "Information Systems Project Manager (IS Project Manager)",
-      "IT Manager (Information Technology Manager)",
-      "IT Program Manager (Information Technology Program Manager)",
-      "IT Project Manager (Information Technology Project Manager)",
-      "Scrum Master",
-      "Transition Program Manager"
+  "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+  "also_see": {
+    "occupation": [
+      {
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.01/",
+        "code": "15-2051.01",
+        "title": "Business Intelligence Analysts",
+        "tags": {
+          "bright_outlook": true,
+          "green": false
+        }
+      },
+      {
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.02/",
+        "code": "15-2051.02",
+        "title": "Clinical Data Managers",
+        "tags": {
+          "bright_outlook": true,
+          "green": false
+        }
+      }
     ]
   },
   "updated": {
-    "partial": false,
+    "partial": true,
     "year": 2025,
     "resource_updated": [
-      {
-        "title": "Abilities",
-        "source": "Analyst",
-        "year": 2019
-      },
       {
         "title": "Detailed Work Activities",
         "source": "Analyst",
         "year": 2024
-      },
-      {
-        "title": "Education",
-        "source": "Occupational Expert",
-        "year": 2019
       },
       {
         "title": "Interests",
@@ -45,8 +44,8 @@
       },
       {
         "title": "Job Zone",
-        "source": "Analyst",
-        "year": 2019
+        "source": "Analyst - Preliminary",
+        "year": 2021
       },
       {
         "title": "Job/Alternate Titles",
@@ -54,44 +53,19 @@
         "year": 2025
       },
       {
-        "title": "Knowledge",
-        "source": "Occupational Expert",
-        "year": 2019
-      },
-      {
         "title": "Related Occupations",
         "source": "Analyst",
         "year": 2024
       },
       {
-        "title": "Skills",
-        "source": "Analyst",
-        "year": 2019
-      },
-      {
         "title": "Tasks",
-        "source": "Occupational Expert",
-        "year": 2019
+        "source": "Analyst",
+        "year": 2020
       },
       {
         "title": "Technology Skills",
-        "source": "Multiple sources",
+        "source": "Employer Job Postings",
         "year": 2025
-      },
-      {
-        "title": "Work Activities",
-        "source": "Occupational Expert",
-        "year": 2019
-      },
-      {
-        "title": "Work Context",
-        "source": "Occupational Expert",
-        "year": 2019
-      },
-      {
-        "title": "Work Styles",
-        "source": "Occupational Expert",
-        "year": 2019
       }
     ]
   },
@@ -104,71 +78,35 @@
   "summary_resources": {
     "resource": [
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/tasks",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/tasks",
         "title": "Tasks"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/technology_skills",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/technology_skills",
         "title": "Technology Skills"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/tools_used",
-        "title": "Tools Used"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/tools_technology",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/tools_technology",
         "title": "Tools &amp; Technology"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/knowledge",
-        "title": "Knowledge"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/skills",
-        "title": "Skills"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/abilities",
-        "title": "Abilities"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/work_activities",
-        "title": "Work Activities"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/detailed_work_activities",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/detailed_work_activities",
         "title": "Detailed Work Activities"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/work_context",
-        "title": "Work Context"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/job_zone",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/job_zone",
         "title": "Job Zone"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/education",
-        "title": "Education"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/interests",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/interests",
         "title": "Interests"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/work_styles",
-        "title": "Work Styles"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/work_values",
-        "title": "Work Values"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/related_occupations",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/related_occupations",
         "title": "Related Occupations"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/summary/additional_information",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/summary/additional_information",
         "title": "Sources of Additional Information"
       }
     ]
@@ -176,71 +114,35 @@
   "details_resources": {
     "resource": [
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/tasks",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/tasks",
         "title": "Tasks"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/technology_skills",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/technology_skills",
         "title": "Technology Skills"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/tools_used",
-        "title": "Tools Used"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/tools_technology",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/tools_technology",
         "title": "Tools &amp; Technology"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/knowledge",
-        "title": "Knowledge"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/skills",
-        "title": "Skills"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/abilities",
-        "title": "Abilities"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/work_activities",
-        "title": "Work Activities"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/detailed_work_activities",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/detailed_work_activities",
         "title": "Detailed Work Activities"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/work_context",
-        "title": "Work Context"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/job_zone",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/job_zone",
         "title": "Job Zone"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/education",
-        "title": "Education"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/interests",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/interests",
         "title": "Interests"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/work_styles",
-        "title": "Work Styles"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/work_values",
-        "title": "Work Values"
-      },
-      {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/related_occupations",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/related_occupations",
         "title": "Related Occupations"
       },
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/details/additional_information",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/details/additional_information",
         "title": "Sources of Additional Information"
       }
     ]
@@ -248,7 +150,7 @@
   "custom_resources": {
     "resource": [
       {
-        "href": "https://services.onetcenter.org/ws/online/occupations/15-1299.09/custom/work_activities_outline",
+        "href": "https://services.onetcenter.org/ws/online/occupations/15-2051.00/custom/work_activities_outline",
         "title": "Work Activities Outline"
       }
     ]

@@ -1,18 +1,16 @@
-```json
 {
   "request_type": "linkedin_job_search",
   "search_parameters": {
-    "job_title": "AI Engineer",
-    "location": "CA",
+    "job_title": "data analyst",
+    "location": "New York",
     "company": "",
-    "job_type": "Any",
-    "remote_option": "Any",
+    "job_type": "Full-time",
+    "remote_option": "Hybrid",
     "date_posted": "Any time",
     "work_authorization": "Any"
   },
   "routing_recommendation": "linkedin_scraper",
-  "processed_query": "AI Engineer jobs in CA, Any company, Any job type, Any work mode, Any time posted, Any work authorization",
+  "processed_query": "data analyst jobs in New York, Full-time, Hybrid, Any time, Any work authorization",
   "validation_status": "valid",
   "validation_errors": []
 }
-```

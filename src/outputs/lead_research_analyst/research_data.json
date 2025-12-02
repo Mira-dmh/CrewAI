@@ -1,514 +1,285 @@
 {
-  "job_title": "Project Manager",
+  "job_title": "Machine Learning Engineer",
   "last_updated": "October 2023",
   "sources": [
-    "Bureau of Labor Statistics",
-    "PMI Job Outlook Report",
-    "IC Agile Salary Guide"
+    {
+      "title": "AI Engineer Job Outlook 2025: Trends, Salaries, and Skills",
+      "url": "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
+      "publisher": "365 Data Science",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "Truth About Machine Learning Jobs 2025 [Salary Data]",
+      "url": "https://lazyprogrammer.me/machine-learning-jobs/",
+      "publisher": "Lazy Programmer",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "8 Machine Learning Jobs That Are in Demand - Dataquest",
+      "url": "https://www.dataquest.io/blog/machine-learning-jobs-in-demand/",
+      "publisher": "Dataquest",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "2025 In-Demand Technology Roles and Hiring Trends - Robert Half",
+      "url": "https://www.roberthalf.com/us/en/insights/research/data-reveals-which-technology-roles-are-in-highest-demand",
+      "publisher": "Robert Half",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "Data Scientists : Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
+      "publisher": "Bureau of Labor Statistics",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "59 AI Job Statistics: Future of U.S. Jobs | National University",
+      "url": "https://www.nu.edu/blog/ai-job-statistics/",
+      "publisher": "National University",
+      "date_accessed": "October 2023"
+    }
   ],
-
   "overview": {
-    "summary": "Project Managers are responsible for planning, executing, and closing projects according to strict deadlines and within budget. They coordinate team members and resources and communicate with stakeholders.",
+    "summary": "Machine Learning Engineers design and develop machine learning systems and algorithms to solve complex problems. They play a crucial role in AI systems, focusing on predictive models and data-driven solutions.",
     "key_responsibilities": [
-      "Defining project scope and objectives.",
-      "Coordinating project resources and managing the project team.",
-      "Maintaining communication with stakeholders.",
-      "Tracking project performance and reporting on progress."
+      "Developing machine learning algorithms and models",
+      "Analyzing large datasets to extract insights",
+      "Collaborating with data scientists and engineers",
+      "Testing and validating models for accuracy"
     ],
     "daily_tasks": [
-      "Conducting project meetings.",
-      "Managing budgets and resources.",
-      "Communicating with clients and stakeholders.",
-      "Updating project status and performance reports."
+      "Collecting and cleaning data",
+      "Building and refining machine learning models",
+      "Conducting experiments to improve models",
+      "Documenting processes and results"
     ],
-    "work_environment": "Primarily office-based, with some remote work opportunities depending on the organization.",
+    "work_environment": "Typically, Machine Learning Engineers work in tech companies, data science teams, or research labs in an office or remote setting.",
     "industries": [
-      "Information Technology",
-      "Construction",
+      "Technology",
+      "Finance",
       "Healthcare",
-      "Telecommunications",
-      "Finance"
+      "Retail",
+      "Automotive"
     ]
   },
-
   "skills": {
     "technical_skills": [
-<<<<<<< HEAD
-      "Agile methodologies",
-      "Project management software (e.g., JIRA, Microsoft Project)",
-      "Budget management tools"
+      "Proficiency in programming languages (Python, R, Java)",
+      "Strong understanding of algorithms and data structures",
+      "Experience with machine learning frameworks (TensorFlow, PyTorch)",
+      "Knowledge of statistical analysis and data mining"
     ],
     "soft_skills": [
-      "Leadership",
-      "Communication",
-      "Problem-solving",
-      "Interpersonal skills"
+      "Strong analytical skills",
+      "Problem-solving capabilities",
+      "Effective communication",
+      "Collaboration and teamwork"
     ],
     "tools_and_technologies": [
-      "Microsoft Project",
-      "Trello",
-      "Asana",
-      "Basecamp"
-    ],
-    "certifications": [
-      "Project Management Professional (PMP)",
-      "Certified ScrumMaster (CSM)",
-      "Agile Certified Practitioner (PMI-ACP)"
-=======
-      "Programming Languages: Python, R, SQL",
-      "Data Manipulation and Analysis: Pandas, NumPy",
-      "Machine Learning Frameworks: scikit-learn, TensorFlow, PyTorch",
-      "Data Visualization: Matplotlib, Seaborn, Plotly, Tableau",
-      "Big Data Technologies: Spark, Hadoop",
-      "Cloud Platforms: AWS, GCP, Azure",
-      "Statistics and Probability",
-      "Data Wrangling and ETL processes",
-      "Database Management"
-    ],
-    "soft_skills": [
-      "Problem-solving and critical thinking",
-      "Effective communication of complex data insights",
-      "Collaboration and teamwork",
-      "Time management and project planning",
-      "Business acumen and domain knowledge"
-    ],
-    "tools_and_technologies": [
-      "Python",
-      "R",
-      "SQL",
-      "scikit-learn",
       "TensorFlow",
+      "Keras",
       "PyTorch",
-      "Matplotlib",
-      "Seaborn",
-      "Tableau",
-      "Spark",
-      "Hadoop",
-      "AWS",
-      "GCP",
-      "Azure"
+      "scikit-learn",
+      "Jupyter Notebook"
     ],
     "certifications": [
-      "Certified Data Scientist (DASCA)",
-      "Google Professional Data Engineer",
-      "Microsoft Certified: Azure Data Scientist Associate",
-      "IBM Data Science Professional Certificate",
-      "AWS Certified Machine Learning - Specialty"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "Google Professional Machine Learning Engineer",
+      "AWS Certified Machine Learning - Specialty",
+      "Microsoft Certified: Azure Data Scientist Associate"
     ]
   },
-
   "education_and_training": {
-<<<<<<< HEAD
-    "minimum_education": "Bachelor's degree in project management or related field.",
+    "minimum_education": "Bachelor's degree in Computer Science, Data Science, or related field",
     "common_degrees": [
-      "Bachelor's Degree in Business Administration",
-      "Master's Degree in Project Management",
-      "MBA"
-    ],
-    "recommended_courses": [
-      "Project Management",
-      "Business Communication",
-      "Risk Management"
-    ],
-    "professional_certifications": [
-      "PMP",
-      "PMI-ACP",
-      "CSM"
-=======
-    "minimum_education": "Bachelor's degree in Computer Science, Statistics, Mathematics, Engineering, or related fields.",
-    "common_degrees": [
-      "Computer Science",
-      "Statistics",
-      "Mathematics",
-      "Engineering",
-      "Data Science",
-      "Artificial Intelligence"
+      "Bachelor's in Computer Science",
+      "Master's in Data Science",
+      "PhD in Artificial Intelligence"
     ],
     "recommended_courses": [
       "Machine Learning",
-      "Data Mining",
-      "Statistical Analysis",
-      "Big Data Analytics",
-      "Deep Learning"
+      "Data Structures",
+      "Algorithms",
+      "Statistics"
     ],
     "professional_certifications": [
-      "Certified Data Scientist (DASCA)",
-      "Google Professional Data Engineer",
-      "Microsoft Certified: Azure Data Scientist Associate",
-      "IBM Data Science Professional Certificate",
-      "AWS Certified Machine Learning - Specialty"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "Certified Data Scientist",
+      "Deep Learning Specialization"
     ]
   },
-
   "career_path": {
     "entry_level_positions": [
-<<<<<<< HEAD
-      "Project Coordinator",
-      "Project Assistant"
-    ],
-    "mid_level_positions": [
-      "Project Manager",
-      "Senior Project Manager"
-    ],
-    "senior_positions": [
-      "Program Manager",
-      "Project Director"
-    ],
-    "advancement_opportunities": "Opportunities for advancement to senior management roles, such as Program Manager or Department Director.",
-    "related_roles": [
-      "Product Manager",
-      "Operations Manager",
-      "Portfolio Manager"
-=======
       "Data Analyst",
-      "Junior Data Scientist",
-      "Business Intelligence Analyst"
+      "Junior Machine Learning Engineer"
     ],
     "mid_level_positions": [
-      "Data Scientist",
       "Machine Learning Engineer",
-      "Data Engineer"
+      "Data Scientist"
     ],
     "senior_positions": [
-      "Senior Data Scientist",
-      "Lead Data Scientist",
-      "Data Science Manager",
-      "Chief Data Officer"
+      "Senior Machine Learning Engineer",
+      "Machine Learning Architect"
     ],
-    "advancement_opportunities": "Progress from entry-level roles focused on data preparation and analysis to mid-level roles building models and handling data infrastructure, ultimately advancing to senior roles that involve strategic decision making and team leadership.",
+    "advancement_opportunities": "Possibility of moving into managerial roles or specialized technical positions.",
     "related_roles": [
-      "Data Engineer",
-      "Machine Learning Engineer",
-      "Business Intelligence Analyst",
-      "Data Analyst"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "Data Scientist",
+      "AI Research Scientist",
+      "Data Engineer"
     ]
   },
-
   "salary_and_outlook": {
     "average_salary": {
-<<<<<<< HEAD
-      "us": "$100,750",
+      "us": "$130,000",
       "international": [
         {
-          "country": "Canada",
-          "average_salary": "CAD 85,000"
+          "country": "UK",
+          "salary": "£70,000"
         },
         {
-          "country": "United Kingdom",
-          "average_salary": "GBP 60,000"
-        }
-      ],
-      "by_experience_level": {
-        "entry_level": "$62,254",
-        "mid_level": "$90,560",
-        "senior_level": "$122,337"
-      }
-    },
-    "job_outlook": {
-      "growth_rate": "6% growth projected from 2024 to 2034.",
-      "future_trends": "Increasing emphasis on Agile project management methodologies and project management software integration."
-=======
-      "us": {
-        "entry_level": "$83,000",
-        "mid_level": "$120,000",
-        "senior_level": "$160,000"
-      },
-      "international": [
+          "country": "Canada",
+          "salary": "CAD 100,000"
+        },
         {
-          "region": "Global Average",
-          "entry_level": "$35,000",
-          "mid_level": "$70,000",
-          "senior_level": "$120,000"
+          "country": "Germany",
+          "salary": "€80,000"
         }
       ],
       "by_experience_level": {
-        "entry_level": "$83,000",
-        "mid_level": "$120,000",
-        "senior_level": "$160,000"
+        "entry_level": "$90,000",
+        "mid_career": "$135,000",
+        "senior_level": "$215,000"
       }
     },
     "job_outlook": {
-      "growth_rate": "34% (2024-2034)",
-      "future_trends": "Expansion driven by data availability, AI adoption, and demand for data-driven business insights."
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "growth_rate": "Projected to grow by 53% over the next decade.",
+      "future_trends": "Increasing reliance on AI technologies across various industries."
     }
   },
-
   "employment_data": {
     "top_employers": [
-<<<<<<< HEAD
-      "Amazon",
-      "Google",
-      "IBM",
-      "Deloitte",
-      "Accenture"
-    ],
-    "geographic_hotspots": [
-      "San Francisco, CA",
-      "New York, NY",
-      "Austin, TX",
-      "Seattle, WA"
-    ],
-    "remote_vs_in_person": "Increasing number of remote work opportunities alongside traditional office-based roles."
-=======
       "Google",
       "Amazon",
       "Microsoft",
-      "Facebook (Meta)",
-      "Apple",
-      "IBM",
-      "Accenture",
-      "Salesforce",
-      "Airbnb",
-      "Stripe"
+      "NVIDIA",
+      "IBM"
     ],
     "geographic_hotspots": [
-      "San Francisco Bay Area, USA",
-      "New York City, USA",
-      "Seattle, USA",
-      "Boston, USA",
-      "London, UK",
-      "Berlin, Germany",
-      "Amsterdam, Netherlands",
-      "Bangalore, India",
-      "Singapore",
-      "Tokyo, Japan"
+      "Silicon Valley, California",
+      "New York City, New York",
+      "Toronto, Canada",
+      "Berlin, Germany"
     ],
-    "remote_vs_in_person": "High prevalence of remote and hybrid roles, with increased flexibility post-pandemic."
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+    "remote_vs_in_person": "A significant percentage of roles are now offering remote or hybrid work options."
   },
-
   "tools_and_software": {
     "common_tools": [
-<<<<<<< HEAD
-      "Trello",
-      "Asana",
-      "Microsoft Project"
-    ],
-    "emerging_tools": [
-      "Monday.com",
-      "Wrike"
-    ],
-    "software_categories": [
-      "Project Management Software",
-      "Collaboration Tools",
-      "Time Tracking Software"
-=======
-      "Python",
-      "R",
-      "SQL",
-      "scikit-learn",
       "TensorFlow",
+      "Keras",
       "PyTorch",
-      "Tableau",
-      "Power BI",
-      "Matplotlib",
-      "Seaborn",
-      "Apache Spark",
-      "Hadoop",
-      "Kafka",
-      "AWS",
-      "Google Cloud Platform",
-      "Microsoft Azure"
+      "scikit-learn",
+      "Jupyter Notebook"
     ],
     "emerging_tools": [
-      "Automated Machine Learning (AutoML) platforms",
-      "Explainable AI tools",
-      "Edge computing analytics platforms"
+      "AutoML tools",
+      "MLflow",
+      "H2O.ai"
     ],
     "software_categories": [
-      "Programming Languages",
-      "Machine Learning Frameworks",
-      "Data Visualization Software",
-      "Big Data Platforms",
-      "Cloud Computing Services",
-      "Data Storage Solutions"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "Data Visualization",
+      "Data Processing",
+      "Machine Learning Frameworks"
     ]
   },
-
   "interview_and_hiring": {
     "common_interview_questions": [
-<<<<<<< HEAD
-      "Describe a challenging project you managed.",
-      "How do you handle project scope changes?",
-      "What project management tools do you prefer?",
-      "How do you manage communication with stakeholders?"
+      "Explain the difference between supervised and unsupervised learning.",
+      "How do you handle overfitting in a model?",
+      "Describe a machine learning project you've worked on.",
+      "What metrics do you use to evaluate the performance of your models?"
     ],
     "assessment_types": [
-      "Behavioral interviews",
-      "Case studies",
-      "Skill assessments"
-    ],
-    "recruitment_process": "Typically includes initial screening, interviews, and practical assessments."
-=======
-      "Programming and coding questions (Python, SQL)",
-      "Statistics and probability questions",
-      "Machine learning algorithms and theory",
-      "Data wrangling and cleaning exercises",
-      "System design and scalability questions",
-      "Behavioral questions on teamwork, communication, and project management",
-      "Business case analysis and data storytelling"
-    ],
-    "assessment_types": [
-      "Technical phone/video interviews",
       "Coding challenges",
-      "Data science case studies and presentations",
-      "Onsite technical and behavioral interviews"
+      "Technical interviews focusing on algorithms",
+      "Case studies on machine learning applications"
     ],
-    "recruitment_process": "Typically includes resume screening, HR screening call, technical interviews, data challenges, onsite interviews, and final offer & negotiation."
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+    "recruitment_process": "Typically includes an initial HR screening, followed by technical interviews and possibly a practical assessment."
   },
-
   "industry_trends": {
     "emerging_technologies": [
-<<<<<<< HEAD
-      "AI in project management",
-      "Project automation tools",
-      "Data analytics for project performance tracking"
+      "Explainable AI",
+      "Federated Learning",
+      "Generative Adversarial Networks (GANs)"
     ],
     "market_demand_drivers": [
-      "Technological advancements",
-      "Demand for project efficiency",
-      "Globalization of projects"
+      "Increased automation in industries",
+      "Demand for data-driven decision making",
+      "Growth of big data"
     ],
     "regulatory_factors": [
-      "Compliance with industry standards",
-      "Data protection regulations"
+      "Data privacy laws",
+      "Ethics in AI development"
     ],
     "future_opportunities": [
-      "Increase in Agile transformation projects",
-      "Growth in sectors like IT and healthcare"
-=======
-      "Generative AI and large language models",
-      "Automated machine learning (AutoML)",
-      "Explainable AI and model interpretability",
-      "Edge computing and real-time analytics",
-      "Integration of AI with Internet of Things (IoT)"
-    ],
-    "market_demand_drivers": [
-      "Increasing data availability and complexity",
-      "Demand for actionable business insights",
-      "Growth of AI and ML adoption across sectors",
-      "Regulatory compliance and data privacy concerns",
-      "Need for competitive advantage through data innovation"
-    ],
-    "regulatory_factors": [
-      "GDPR and similar data privacy regulations impacting data handling",
-      "Emerging ethical AI frameworks as part of corporate governance"
-    ],
-    "future_opportunities": [
-      "Expansion of AI-driven product offerings",
-      "Increased focus on data ethics and transparency",
-      "Growth of cloud-based and edge analytics",
-      "Broader adoption of automated data science tools"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "Machine Learning governance roles",
+      "Ethical AI development positions"
     ]
   },
-
   "additional_resources": {
     "professional_associations": [
-<<<<<<< HEAD
-      "Project Management Institute (PMI)",
-      "International Project Management Association (IPMA)"
-    ],
-    "online_communities": [
-      "ProjectManagement.com",
-      "PMI LinkedIn Groups"
-    ],
-    "recommended_readings": [
-      "A Guide to the Project Management Body of Knowledge (PMBOK Guide)",
-      "Scrum: The Art of Doing Twice the Work in Half the Time"
-    ],
-    "training_platforms": [
-      "Coursera",
-      "LinkedIn Learning",
-      "Udemy"
-=======
-      "Data Science Association",
-      "Association for Computing Machinery (ACM) SIGKDD",
-      "The Data Science Council of America (DASCA)",
-      "International Machine Learning Society (IMLS)"
+      "Association for Computing Machinery (ACM)",
+      "IEEE Computer Society",
+      "Data Science Society"
     ],
     "online_communities": [
       "Kaggle",
-      "r/datascience on Reddit",
-      "Stack Overflow Data Science tags",
-      "Data Science Central"
+      "Stack Overflow",
+      "Towards Data Science"
     ],
     "recommended_readings": [
-      "'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow' by Aurélien Géron",
-      "'Python for Data Analysis' by Wes McKinney",
-      "'Data Science for Business' by Foster Provost and Tom Fawcett"
+      "Machine Learning: A Probabilistic Perspective by Kevin P. Murphy",
+      "Deep Learning by Ian Goodfellow"
     ],
     "training_platforms": [
       "Coursera",
       "edX",
-      "DataCamp",
-      "Udacity",
-      "LinkedIn Learning"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "DataCamp"
     ]
   },
-
   "citations": [
     {
-<<<<<<< HEAD
-      "title": "Occupational Outlook Handbook",
-      "url": "https://www.bls.gov/ooh/business-and-financial/project-management-specialists.htm",
-      "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "October 1, 2023"
+      "title": "AI Engineer Job Outlook 2025: Trends, Salaries, and Skills",
+      "url": "https://365datascience.com/career-advice/career-guides/ai-engineer-job-outlook-2025/",
+      "publisher": "365 Data Science",
+      "date_accessed": "October 2023"
     },
     {
-      "title": "2023 Project Manager Salary Guide",
-      "url": "https://www.icagile.com/resources/the-project-manager-salary-what-to-expect-and-how-to-earn-more",
-      "publisher": "IC Agile",
-      "date_accessed": "October 1, 2023"
+      "title": "Truth About Machine Learning Jobs 2025 [Salary Data]",
+      "url": "https://lazyprogrammer.me/machine-learning-jobs/",
+      "publisher": "Lazy Programmer",
+      "date_accessed": "October 2023"
     },
     {
-      "title": "Global Project Management Job Trends 2023",
-      "url": "https://www.pmi.org/-/media/pmi/documents/public/pdf/learning/career-central/global-project-management-job-trends-2023.pdf",
-      "publisher": "PMI",
-      "date_accessed": "October 1, 2023"
-=======
+      "title": "8 Machine Learning Jobs That Are in Demand - Dataquest",
+      "url": "https://www.dataquest.io/blog/machine-learning-jobs-in-demand/",
+      "publisher": "Dataquest",
+      "date_accessed": "October 2023"
+    },
+    {
+      "title": "2025 In-Demand Technology Roles and Hiring Trends - Robert Half",
+      "url": "https://www.roberthalf.com/us/en/insights/research/data-reveals-which-technology-roles-are-in-highest-demand",
+      "publisher": "Robert Half",
+      "date_accessed": "October 2023"
+    },
+    {
       "title": "Data Scientists : Occupational Outlook Handbook",
       "url": "https://www.bls.gov/ooh/math/data-scientists.htm",
-      "publisher": "U.S. Bureau of Labor Statistics",
-      "date_accessed": "2024"
+      "publisher": "Bureau of Labor Statistics",
+      "date_accessed": "October 2023"
     },
     {
-      "title": "Data Science Salaries & Job Market Analysis: From 2024 to 2025",
-      "url": "https://www.kdnuggets.com/data-science-salaries-job-market-analysis-2024-2025",
-      "publisher": "KDnuggets",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Scientist Job Market 2024: Analysis, Trends, Opportunities",
-      "url": "https://365datascience.com/career-advice/data-scientist-job-market/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "2024 Data Scientist Interview Questions",
-      "url": "https://365datascience.com/career-advice/job-interview-tips/data-scientist-interview-questions/",
-      "publisher": "365 Data Science",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Data Science Salaries 2024 - Kaggle Dataset",
-      "url": "https://www.kaggle.com/datasets/sazidthe1/data-science-salaries",
-      "publisher": "Kaggle",
-      "date_accessed": "2024"
-    },
-    {
-      "title": "Top Data Scientist Interview Questions and Answers (2025)",
-      "url": "https://www.interviewbit.com/data-science-interview-questions/",
-      "publisher": "InterviewBit",
-      "date_accessed": "2024"
->>>>>>> 27200f3c604cab8c3989a596c775e489d63570c3
+      "title": "59 AI Job Statistics: Future of U.S. Jobs | National University",
+      "url": "https://www.nu.edu/blog/ai-job-statistics/",
+      "publisher": "National University",
+      "date_accessed": "October 2023"
     }
   ]
 }
